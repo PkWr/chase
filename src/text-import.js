@@ -39,7 +39,7 @@ import { emphasisMarks, escapeAsterisks, styleNameMark, htmlTagMark } from './ed
     var doc = new DOMParser().parseFromString(html, 'text/html');
     var qsa = function (sel) { return Array.prototype.slice.call(doc.querySelectorAll(sel)); };
     qsa('script,style,noscript,template,head').forEach(function (n) { n.remove(); });
-    qsa('br').forEach(function (n) { n.replaceWith('\n'); });
+    qsa('br').forEach(function (n) { n.replaceWith('\\\n'); }); // a <br> is a soft return
     // Asterisks in the text are plain text: escape them before the emphasis marks are added
     if (doc.body) {
       var walker = doc.createTreeWalker(doc.body, NodeFilter.SHOW_TEXT);
@@ -127,9 +127,9 @@ import { emphasisMarks, escapeAsterisks, styleNameMark, htmlTagMark } from './ed
           var text = '';
           if (c.nodeName === 'w:t') text = c.textContent;
           else if (c.nodeName === 'w:tab') text = '\t';
-          else if (c.nodeName === 'w:br') text = '\n';
+          else if (c.nodeName === 'w:br') { if (/^(page|column)$/.test(c.getAttribute('w:type') || '')) return; text = '\n'; }
           else return;
-          text.split(/(\n)/).forEach(function (piece) { if (piece) segs.push({ text: piece, em: em && piece !== '\n' }); });
+          text.split(/(\n)/).forEach(function (piece) { if (piece) segs.push(piece === '\n' ? { text: '\\\n', em: false } : { text: piece, em: em }); });
         });
       });
       var line = emphasisMarks(segs);
@@ -164,7 +164,7 @@ import { emphasisMarks, escapeAsterisks, styleNameMark, htmlTagMark } from './ed
           if (c.nodeType === 3) { segs.push({ text: c.nodeValue, em: em }); return; }
           if (c.nodeName === 'text:tab') { segs.push({ text: '\t', em: false }); return; }
           if (c.nodeName === 'text:s') { segs.push({ text: ' ', em: false }); return; }
-          if (c.nodeName === 'text:line-break') { segs.push({ text: '\n', em: false }); return; }
+          if (c.nodeName === 'text:line-break') { segs.push({ text: '\\\n', em: false }); return; }
           collect(c, em || (c.nodeName === 'text:span' && !!italic[c.getAttribute('text:style-name')]), segs);
         });
       }

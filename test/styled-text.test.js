@@ -52,3 +52,29 @@ test('a Citation is set with a real em dash whether -- or a typed em dash was th
         assert.equal(plainText([b]), '— Bringhurst, 2004');
     }
 });
+
+test('a backslash at the end of a line is a soft return inside one paragraph', () => {
+    const b = parseStyled('Line one\\\nLine two\\\nLine three\nNext paragraph');
+    assert.equal(b.length, 2);
+    assert.equal(b[0].style, 'body');
+    assert.equal(plainText([b[0]]), 'Line one Line two Line three');
+    assert.equal(b[0].runs.filter((r) => r.br).length, 2);
+});
+
+test('soft returns work in headings and quotes, and emphasis stays within a line', () => {
+    const h = parseStyled('## Long heading\\\nsecond line');
+    assert.equal(h.length, 1);
+    assert.equal(h[0].style, 'h2');
+    assert.equal(plainText(h), 'Long heading second line');
+    const q = parseStyled('> a *b*\\\nc *d*');
+    assert.deepEqual(q[0].runs.filter((r) => r.em).map((r) => r.text), ['b', 'd']);
+    // a mark on the continuation line is plain text
+    assert.equal(plainText(parseStyled('a\\\n# not a heading')), 'a # not a heading');
+});
+
+test('two backslashes keep one; a stray soft return with nothing after it is dropped', () => {
+    assert.equal(plainText(parseStyled('path\\\\\nnext')), 'path\\\nnext');
+    assert.equal(parseStyled('path\\\\\nnext').length, 2);
+    assert.equal(plainText(parseStyled('end\\')), 'end');
+    assert.equal(plainText(parseStyled('a\\\n\nb')), 'a\nb');
+});

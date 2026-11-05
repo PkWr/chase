@@ -1,7 +1,7 @@
 // The text editor: style buttons and shortcuts that write the marks, and the expanded editor that opens
 // in the page area. The text box is one element; expanding moves it (with its buttons and the how-to
 // guide) into the page area, so everything that listens to it keeps working.
-import { applyLineMark, toggleItalic } from './editor-marks.js';
+import { applyLineMark, toggleItalic, insertSoftReturn } from './editor-marks.js';
 
 const area = document.getElementById('sampleText');
 const editor = document.getElementById('textEditor');
@@ -43,7 +43,10 @@ function setText(r) {
 function run(kind) {
     const s = area.selectionStart;
     const e = area.selectionEnd;
-    setText(kind === 'italic' ? toggleItalic(area.value, s, e) : applyLineMark(area.value, s, e, kind));
+    if (kind === 'break')
+        setText(insertSoftReturn(area.value, s, e));
+    else
+        setText(kind === 'italic' ? toggleItalic(area.value, s, e) : applyLineMark(area.value, s, e, kind));
 }
 
 if (area && editor) {
@@ -53,6 +56,11 @@ if (area && editor) {
             run(b.dataset.mark);
     });
     area.addEventListener('keydown', (ev) => {
+        if (ev.key === 'Enter' && ev.shiftKey && !ev.metaKey && !ev.ctrlKey && !ev.altKey) {
+            ev.preventDefault();
+            run('break');
+            return;
+        }
         if (!(ev.metaKey || ev.ctrlKey))
             return;
         const m = /^Digit([123])$/.exec(ev.code);

@@ -417,6 +417,11 @@ function drawPage(svg, inputs, pageX, pageY, pageWidth, pageHeight, leftMargin, 
                     if (metrics.keepWithNext)
                         p.style.breakAfter = 'avoid-column';
                     block.runs.forEach(run => {
+                        if (run.br) {
+                            // Soft return: a line break inside the paragraph
+                            p.appendChild(document.createElementNS(XHTML, 'br'));
+                            return;
+                        }
                         let holder = p;
                         if (run.em) {
                             holder = document.createElementNS(XHTML, 'em');

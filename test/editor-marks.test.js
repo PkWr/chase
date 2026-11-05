@@ -62,3 +62,11 @@ test('style names map to marks', () => {
     assert.equal(htmlTagMark('blockquote'), '> ');
     assert.equal(htmlTagMark('p'), '');
 });
+
+import { insertSoftReturn } from '../src/editor-marks.js';
+test('insertSoftReturn puts a backslash and line break at the caret and parses as one paragraph', () => {
+    const r = insertSoftReturn('one two', 3, 3);
+    assert.equal(r.text, 'one\\\n two');
+    assert.equal(r.start, 5);
+    assert.equal(parseStyled(r.text).length, 1);
+});

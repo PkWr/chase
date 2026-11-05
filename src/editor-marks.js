@@ -119,6 +119,12 @@ export function toggleItalic(text, start, end) {
     return { text: out, start: ns, end: ne };
 }
 
+/** Soft return: a backslash and a line break at the caret (or in place of the selection). */
+export function insertSoftReturn(text, start, end) {
+    const next = text.slice(0, start) + '\\\n' + text.slice(end);
+    return { text: next, start: start + 2, end: start + 2 };
+}
+
 /** Escapes asterisks so imported text is not read as emphasis. */
 export const escapeAsterisks = (s) => String(s).replace(/\*/g, '\\*');
 

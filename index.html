@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>chase</title>
-  <link rel="stylesheet" href="styles/main.css?v=202611051202">
-  <link rel="stylesheet" href="styles/form-shell.css?v=202611051202">
+  <link rel="stylesheet" href="styles/main.css?v=202611051204">
+  <link rel="stylesheet" href="styles/form-shell.css?v=202611051204">
   <!-- Padding handled in main.css for better control -->
 </head>
 <body>
@@ -389,6 +389,7 @@
             <button type="button" class="mark-btn" data-mark="h3" title="Heading 3 (Cmd/Ctrl+Alt+3)">H3</button>
             <button type="button" class="mark-btn" data-mark="quote" title="Block Quote">Quote</button>
             <button type="button" class="mark-btn" data-mark="citation" title="Citation: the source line under a quote">Source</button>
+            <button type="button" class="mark-btn" data-mark="break" title="Soft return: a line break inside a paragraph (Shift+Enter)">Break</button>
             <button type="button" class="mark-btn mark-italic" data-mark="italic" title="Italic (Cmd/Ctrl+I)"><em>Italic</em></button>
           </div>
           <textarea id="sampleText" rows="10" placeholder="Enter sample text to preview how it will look in your layout..."></textarea>
@@ -411,10 +412,11 @@
                 <tr><td><code>&gt; </code></td><td>Block Quote</td></tr>
                 <tr><td><code>-- </code></td><td>Citation, set with an em dash</td></tr>
                 <tr><td><code>*words*</code></td><td>Emphasis (italic), anywhere in a line</td></tr>
+                <tr><td><code>\</code> at the end of a line</td><td>Soft return: the next line joins the same paragraph after a line break</td></tr>
               </tbody>
             </table>
             <p>Put the mark at the very start of the line, then a space. Each line is one paragraph, and blank lines are ignored. The marks are not drawn on the page or in the InDesign file. A backslash before an asterisk (<code>\*</code>) keeps it as a plain asterisk. Up to three heading levels are used, and only the styles in the text appear under Styles in the Type step.</p>
-            <p>Open the text editor for the style buttons. They set the style of the line the cursor is on, or of every selected line; pressing the same button again takes it off. Italic works on the selected words, or on the word at the cursor. The shortcuts work in the small box too: Cmd/Ctrl+I for italic, Cmd/Ctrl+Alt+1, 2 and 3 for the headings.</p>
+            <p>Open the text editor for the style buttons. They set the style of the line the cursor is on, or of every selected line; pressing the same button again takes it off. Italic works on the selected words, or on the word at the cursor. The shortcuts work in the small box too: Cmd/Ctrl+I for italic, Cmd/Ctrl+Alt+1, 2 and 3 for the headings, and Shift+Enter for a soft return (a line break that stays in the same paragraph). Write two backslashes at the end of a line to keep one.</p>
             <p>Word (.docx), OpenDocument (.odt) and html files keep Heading 1 to 3, quotes and italics when loaded. Markdown (.md) files already use these marks.</p>
           </details>
         </div>
@@ -515,13 +517,13 @@
   <!-- PDF Export Libraries -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script type="module" src="src/main.js?v=202611051202"></script>
-  <script src="src/start.js?v=202611051202"></script>
-  <script src="src/steps.js?v=202611051202"></script>
-  <script src="src/column-picker.js?v=202611051202"></script>
-  <script src="src/popout.js?v=202611051202"></script>
-  <script type="module" src="src/editor.js?v=202611051202"></script>
-  <script type="module" src="src/text-import.js?v=202611051202"></script>
-  <script src="src/layer-cycle.js?v=202611051202"></script>
+  <script type="module" src="src/main.js?v=202611051204"></script>
+  <script src="src/start.js?v=202611051204"></script>
+  <script src="src/steps.js?v=202611051204"></script>
+  <script src="src/column-picker.js?v=202611051204"></script>
+  <script src="src/popout.js?v=202611051204"></script>
+  <script type="module" src="src/editor.js?v=202611051204"></script>
+  <script type="module" src="src/text-import.js?v=202611051204"></script>
+  <script src="src/layer-cycle.js?v=202611051204"></script>
 </body>
 </html>

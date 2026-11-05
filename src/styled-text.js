@@ -5,6 +5,8 @@
 //   "# " Heading 1    "## " Heading 2    "### " Heading 3    (up to three levels, all optional)
 //   "> " Block Quote  "-- " Citation (the source line under a quote; set with a real em dash, and a typed "— " works too)
 //   *text* Emphasis (italic) inside any paragraph; a backslash before * keeps it literal
+//   a backslash at the very end of a line is a soft return: the next line joins the same paragraph after a
+//   line break (written \\ at the end for a plain backslash)
 // Anything else is Body Text. The marks are removed from the blocks; a Citation starts with an em dash.
 
 export const STYLE_NAMES = {
@@ -42,27 +44,56 @@ export function parseRuns(line) {
     return runs.map((r) => ({ text: r.text.split(ESC).join('*'), em: r.em })).filter((r) => r.text !== '');
 }
 
-/** Text box content to blocks: [{ style, runs: [{ text, em }] }]. Empty lines are ignored. */
+/** The character used for a soft return in set text. InDesign takes it as a forced line break. */
+export const SOFT_RETURN = '\u2028';
+
+/** Splits the trailing backslashes of a line: an odd run is a soft return, pairs stand for one backslash. */
+function softEnd(line) {
+    const m = /(\\+)$/.exec(line);
+    if (!m)
+        return { text: line, soft: false };
+    const n = m[1].length;
+    return { text: line.slice(0, line.length - n) + '\\'.repeat(Math.floor(n / 2)), soft: n % 2 === 1 };
+}
+
+/** Text box content to blocks: [{ style, runs: [{ text, em, br? }] }]. Empty lines are ignored. */
 export function parseStyled(text) {
     const blocks = [];
-    for (const raw of String(text || '').split(/\r?\n+/)) {
-        const line = raw.trim();
-        if (!line)
+    const lines = String(text || '').split(/\r?\n/);
+    for (let i = 0; i < lines.length; i++) {
+        let { text: first, soft } = softEnd(lines[i].trim());
+        if (!first && !soft)
             continue;
         let style = 'body';
-        let body = line;
         let m;
-        if ((m = HEADING.exec(line))) {
+        let head = first;
+        if ((m = HEADING.exec(head))) {
             style = 'h' + m[1].length;
-            body = m[2];
-        } else if ((m = QUOTE.exec(line))) {
+            head = m[2];
+        } else if ((m = QUOTE.exec(head))) {
             style = 'quote';
-            body = m[1];
-        } else if ((m = CITATION.exec(line))) {
+            head = m[1];
+        } else if ((m = CITATION.exec(head))) {
             style = 'citation';
-            body = '— ' + m[1]; // set with a real em dash, whichever mark was typed
+            head = '— ' + m[1]; // set with a real em dash, whichever mark was typed
         }
-        blocks.push({ style, runs: parseRuns(body.trim()) });
+        const pieces = [head.trim()];
+        // A soft return joins the next line to this paragraph; marks on it are plain text
+        while (soft && i + 1 < lines.length && lines[i + 1].trim()) {
+            i++;
+            const next = softEnd(lines[i].trim());
+            pieces.push(next.text);
+            soft = next.soft;
+        }
+        if (pieces.every((x) => !x))
+            continue;
+        const runs = [];
+        pieces.forEach((piece, k) => {
+            if (k > 0)
+                runs.push({ text: SOFT_RETURN, em: false, br: true });
+            runs.push(...parseRuns(piece));
+        });
+        blocks.push({ style, runs });
     }
     return blocks;
 }
