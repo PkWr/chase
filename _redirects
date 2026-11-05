@@ -1,6 +1,0 @@
-# Don't redirect static assets
-/dist/*    /dist/:splat    200
-/styles/*  /styles/:splat  200
-
-# Redirect all other routes to index.html for SPA
-/*    /index.html   200

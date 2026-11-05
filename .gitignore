@@ -1,25 +1,8 @@
-# Dependencies
-node_modules/
-
-# Build output
-dist/
-# Note: dist/ is built on Netlify during deployment, not committed to git
-
-# TypeScript
-*.tsbuildinfo
-
-# IDE
+# macOS
+.DS_Store
+# editors
 .vscode/
 .idea/
 *.swp
-*.swo
-*~
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Logs
+# logs
 *.log
-npm-debug.log*
-
