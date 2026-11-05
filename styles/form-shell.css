@@ -276,3 +276,5 @@ html.show-start #startScreen{display:block}
 @media(prefers-reduced-motion:reduce){.start-scroll{overflow:auto;-webkit-mask-image:none;mask-image:none}.start-scroll-inner{animation:none}.start-loop[aria-hidden]{display:none}}
 /* Start screen: the text under the pointer is underlined with a wavy line, as the way in. */
 .start-scroll p:hover,.start-scroll .start-title:hover{text-decoration:underline wavy var(--yellow);text-decoration-thickness:.04em;text-underline-offset:.14em;text-decoration-skip-ink:none}
+.start-scroll h2.start-title{font-weight:300}
+.start-loop .start-title:not(:first-child){margin-top:1.4em}
