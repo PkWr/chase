@@ -97,3 +97,21 @@ html.start-leaving #startScreen{opacity:0;pointer-events:none}
 .syntax-item code{color:var(--ink)}
 .syntax-code{background:transparent}
 .syntax-code code,.syntax-item code{background:#e3dfd8;color:var(--ink);border-radius:4px}
+
+/* Steps: one group of controls at a time, Back / Next at the foot of the panel */
+.container{display:flex;flex-direction:column;padding-bottom:0}
+.container #layoutForm{flex:1 1 auto;min-height:0}
+body[data-step="1"] .container [data-step]:not([data-step="1"]),
+body[data-step="2"] .container [data-step]:not([data-step="2"]),
+body[data-step="3"] .container [data-step]:not([data-step="3"]),
+body[data-step="4"] .container [data-step]:not([data-step="4"]){display:none !important}
+.step-nav{position:sticky;bottom:0;display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 -16px;padding:10px 16px;background:var(--cp-bg);border-top:1px solid var(--cp-line);z-index:1}
+.step-now{flex:1;text-align:center;font-size:11px;color:var(--cp-muted)}
+.container .step-btn{padding:7px 14px}
+.container .step-next:not(:disabled){background:var(--yellow);border-color:var(--yellow);color:var(--ink)}
+.container .step-btn:disabled{opacity:.35;cursor:default}
+.container .step-pane .specification-section{background:transparent;color:var(--cp-text);padding:0}
+.container .step-pane .specification-section h3,.container .step-pane .spec-value{color:var(--cp-text)}
+.container .step-pane .spec-label{color:var(--cp-muted)}
+.container .step-pane .btn-export{width:100%;padding:12px;background:var(--yellow);border-color:var(--yellow);color:var(--ink)}
+.container .step-pane .btn-export,.container .step-next:not(:disabled){color:var(--ink);font-weight:400;opacity:1}

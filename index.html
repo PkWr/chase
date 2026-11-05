@@ -52,7 +52,7 @@
       </header>
 
       <form id="layoutForm">
-      <section class="form-section">
+      <section data-step="1" class="form-section">
         <div class="unit-toggle-wrapper">
           <label class="unit-toggle-label">
             <span class="unit-option unit-option-mm">mm</span>
@@ -110,7 +110,7 @@
         </div>
       </section>
 
-      <section class="form-section">
+      <section data-step="1" class="form-section">
         <h2>Margins</h2>
         <div class="form-row">
           <div class="form-group">
@@ -162,7 +162,7 @@
         </div>
       </section>
 
-      <section class="form-section">
+      <section data-step="2" class="form-section">
         <h2>Columns</h2>
         <div class="form-row">
           <div class="form-group">
@@ -197,7 +197,7 @@
         </div>
       </section>
 
-      <section class="form-section">
+      <section data-step="2" class="form-section">
         <h2>Typography Settings</h2>
         <div class="form-group">
           <label for="fontFamily">Typeface</label>
@@ -256,7 +256,7 @@
         </div>
       </section>
 
-      <section class="form-section">
+      <section data-step="3" class="form-section">
         <h2>Sample Text</h2>
         <div class="form-group">
           <div class="label-with-action">
@@ -272,7 +272,7 @@
         </div>
       </section>
 
-      <section class="form-section bringhurst-section">
+      <section data-step="3" class="form-section bringhurst-section">
         <h2>Bringhurst says</h2>
         <div class="form-group">
           <p><span class="bringhurst-label">Words per line:</span> <span id="wordsPerLine" class="bringhurst-value">—</span></p>
@@ -284,14 +284,26 @@
         </div>
       </section>
 
-      <section class="form-section bringhurst-section">
+      <section data-step="3" class="form-section bringhurst-section">
         <h2>Patrick says</h2>
         <div class="form-group">
           <p><span class="bringhurst-label">Words per line:</span> <span id="patrickWordsPerLine" class="bringhurst-value">—</span></p>
           <p class="helper-text" id="patrickGuidance">Estimated based on column width and type size</p>
         </div>
       </section>
+      <section data-step="4" class="form-section step-pane">
+        <div class="specification-section">
+          <h3>Specification</h3>
+          <div id="specificationContent" class="specification-content"></div>
+        </div>
+        <button type="button" id="exportHtmlButton" class="btn-export btn-primary">Download specification (PDF)</button>
+      </section>
       </form>
+      <nav class="step-nav" aria-label="Steps">
+        <button type="button" id="stepBack" class="step-btn">Back</button>
+        <span id="stepNow" class="step-now" aria-live="polite">Step 1 of 4 · Page and margins</span>
+        <button type="button" id="stepNext" class="step-btn step-next">Next</button>
+      </nav>
     </div>
 
     <div class="preview-wrapper">
@@ -300,7 +312,6 @@
           <h2>Chase</h2>
           <div class="header-actions">
             <span id="scaleIndicator" class="scale-indicator"></span>
-                  <button type="button" id="exportHtmlButton" class="btn-export">Export to PDF</button>
           </div>
         </div>
         <div class="layer-controls">
@@ -327,11 +338,6 @@
         </div>
         <div id="visualizationContainer" class="visualization-container"></div>
       </section>
-      
-      <div class="specification-section">
-        <h3>Specification</h3>
-        <div id="specificationContent" class="specification-content"></div>
-      </div>
     </div>
   </div>
 
@@ -422,5 +428,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script type="module" src="src/main.js"></script>
   <script src="src/start.js"></script>
+  <script src="src/steps.js"></script>
 </body>
 </html>
