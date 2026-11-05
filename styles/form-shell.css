@@ -238,3 +238,6 @@ body[data-step="1"] #popOut{display:none}
 .container .pk-key .k-text{background:var(--cp-accent-bg);border-color:var(--cp-accent-line)}
 .container .pk-key .k-empty{background:var(--cp-surface)}
 .container textarea.drop-ready{border-color:var(--yellow);outline:1px dashed var(--yellow);outline-offset:2px}
+.container .text-tools{display:flex;gap:8px;margin:8px 0 0}
+.container .text-tools .icon-btn{width:34px;height:34px}
+.container #textFileStatus{display:block;margin-top:8px}
