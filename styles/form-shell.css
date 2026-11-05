@@ -426,3 +426,8 @@ body[data-step="8"] .report-stage{display:block;flex:1 1 0;min-height:0;overflow
 .report-stage .spec-table td,.report-stage .spec-table th{border-bottom:1px solid #e3e3de;padding:6px 10px 6px 0;text-align:left;font-weight:400}
 body[data-step="8"] .page-nav{width:100% !important}
 body[data-step="8"] .scale-line{display:none}
+
+/* Margins: link toggle, all margins equal */
+.container .margins-head{display:flex;align-items:center;justify-content:space-between}
+.container .margin-link{width:34px;height:34px}
+.container .margin-link[aria-pressed=true]{background:var(--yellow);border-color:var(--yellow);color:var(--ink)}
