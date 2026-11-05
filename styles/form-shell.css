@@ -282,7 +282,7 @@ body[data-step="1"] #popOut{display:none}
 #panel.collapsed{bottom:auto;height:auto;max-height:none;min-height:0}
 /* Start screen: chase, compositor and em scroll together as one slow marquee, the title first. */
 html.show-start #startScreen{display:block}
-.start-scroll{position:absolute;inset:0;overflow:hidden;text-align:left;color:#fff;--sz:calc((100vw - 18vw - var(--strip-w)) / 13);font-size:var(--sz);line-height:1.2;cursor:pointer;-webkit-mask-image:linear-gradient(transparent,#000 9%,#000 88%,transparent);mask-image:linear-gradient(transparent,#000 9%,#000 88%,transparent)}
+.start-scroll{position:absolute;inset:0;overflow:hidden;text-align:left;color:#fff;--sz:calc((100vw - 18vw - var(--strip-w)) / 13);font-size:var(--sz);line-height:1.2;cursor:pointer;-webkit-mask-image:linear-gradient(transparent,#000 9%,#000 95%,transparent);mask-image:linear-gradient(transparent,#000 9%,#000 95%,transparent)}
 .start-scroll-inner{animation:emScroll 120s linear infinite;will-change:transform}
 .start-scroll:hover .start-scroll-inner{animation-play-state:paused}
 .start-loop{padding:14vh calc(9vw + var(--strip-w)) 34vh 9vw}
@@ -491,7 +491,7 @@ body[data-step="1"] .intro-stage{display:flex;flex:1 1 0;min-height:0;overflow-y
 .intro-stage sup{font-size:.4em;margin-left:.1em;vertical-align:super;font-style:normal}
 body[data-step="1"] .page-nav{width:100% !important}
 body[data-step="1"] .scale-line,body[data-step="1"] #popOut{display:none}
-@media(max-width:900px){.intro-stage p{font-size:clamp(16px,4.6vw,28px)}body[data-step="1"] .intro-stage{padding:20px}}
+@media(max-width:900px){.intro-stage p{font-size:clamp(14px,3.9vw,26px);line-height:1.22}body[data-step="1"] .intro-stage{padding:8px 4px 20px;-webkit-mask-image:linear-gradient(#000 95%,transparent);mask-image:linear-gradient(#000 95%,transparent)}}
 
 .intro-stage{flex-direction:column}
 .intro-stage p+p{margin:1.2em 0 0;color:#666}
