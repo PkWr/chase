@@ -183,3 +183,5 @@ body[data-step="6"] .cp-foot #downloadRow{display:block}
 .page-nav .step-btn[hidden]{display:none}
 .preview-wrapper .page-nav .step-next,.preview-wrapper .page-nav #stepNext{background:var(--yellow);border-color:var(--yellow);color:var(--ink)}
 #visualizationContainer svg{box-shadow:0 6px 30px rgba(0,0,0,.5)}
+.preview-wrapper .visualization-container{display:flex;justify-content:center;align-items:center}
+.page-nav{margin-left:auto;margin-right:auto}
