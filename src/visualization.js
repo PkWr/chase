@@ -535,6 +535,7 @@ export function updateVisualization(inputs) {
     svg.classList.add('page-visualization');
     // Sizing will be set in requestAnimationFrame after container dimensions are known
     if (facingPages) {
+        svg.classList.add('facing');
         // Draw two pages side by side (flush, no gap)
         // Use facing pages specific margins if available
         const innerMarginLeft = inputs.innerMarginLeft !== undefined ? inputs.innerMarginLeft : inputs.leftMargin;
@@ -554,7 +555,7 @@ export function updateVisualization(inputs) {
         versoText.setAttribute('text-anchor', 'middle');
         versoText.setAttribute('font-size', headingFontSize.toString());
         versoText.setAttribute('font-family', 'IBM Plex Mono, monospace');
-        versoText.setAttribute('fill', '#ffffff');
+        versoText.setAttribute('fill', '#666666');
         versoText.setAttribute('font-weight', '400');
         versoText.textContent = 'Verso';
         svg.appendChild(versoText);
@@ -565,7 +566,7 @@ export function updateVisualization(inputs) {
         rectoText.setAttribute('text-anchor', 'middle');
         rectoText.setAttribute('font-size', headingFontSize.toString());
         rectoText.setAttribute('font-family', 'IBM Plex Mono, monospace');
-        rectoText.setAttribute('fill', '#ffffff');
+        rectoText.setAttribute('fill', '#666666');
         rectoText.setAttribute('font-weight', '400');
         rectoText.textContent = 'Recto';
         svg.appendChild(rectoText);
