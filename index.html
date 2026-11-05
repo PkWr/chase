@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>chase</title>
-  <link rel="stylesheet" href="styles/main.css?v=202611051212">
-  <link rel="stylesheet" href="styles/form-shell.css?v=202611051212">
+  <link rel="stylesheet" href="styles/main.css?v=202611051218">
+  <link rel="stylesheet" href="styles/form-shell.css?v=202611051218">
   <!-- Padding handled in main.css for better control -->
 </head>
 <body>
@@ -34,10 +34,14 @@
           <h2>About</h2>
           <p>chase is a small set of tools for working out page layouts. The calculator takes a page size, margins, columns and a type size, and works out column widths, gutters and line lengths following Bringhurst's principles. It draws the result as a page.</p>
           <p>A second tool builds InDesign GREP patterns for paragraph styles, to find words, digits, punctuation or enclosed text.</p>
+          <h2>Features</h2>
+          <p>The calculator works in ems or millimetres, for single pages or facing pages with inner and outer margins, and sets column widths, gutters and baseline grid from the type size and leading. The preview shows margins, columns, baseline grid, text, the ragged edge and, when justified, rivers.</p>
+          <p>Text can be typed or pasted into an editor, or imported from Word, OpenDocument or HTML files. Simple marks give three heading levels, block quotes, source lines, italics and soft returns, and each style takes a size ratio set in the panel. Hyphenation and justification can be switched on.</p>
+          <p>The result exports as an InDesign file (IDML) with the page, margins, columns, baseline grid and text, and a final page that lists every setting and where to change it in InDesign.</p>
           <h2>The names</h2>
           <p>The calculator is called Compositor, Chase, Em, after letterpress. A compositor arranged type and spacing into lines and pages. A chase is the metal frame that held the composed page. An em is a unit equal to the type size, so spacing set in ems scales with the type.</p>
           <h2>Tools</h2>
-          <p><a href="./?calculator">Layout calculator</a><br><a href="grep.html">GREP generator</a><br>Hierarchy: coming soon.</p>
+          <p><a href="./?calculator">Layout calculator</a><br><a href="grep.html">GREP generator</a></p>
           <h2>Project</h2>
           <p>chase is a GD v/x AI project, a growing typographic resource for education. <i>What you don't have to do, you won't need to know, so who will be lost.</i></p>
         </div>
@@ -515,13 +519,13 @@
   <!-- PDF Export Libraries -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script type="module" src="src/main.js?v=202611051212"></script>
-  <script src="src/start.js?v=202611051212"></script>
-  <script src="src/steps.js?v=202611051212"></script>
-  <script src="src/column-picker.js?v=202611051212"></script>
-  <script src="src/popout.js?v=202611051212"></script>
-  <script type="module" src="src/editor.js?v=202611051212"></script>
-  <script type="module" src="src/text-import.js?v=202611051212"></script>
-  <script src="src/layer-cycle.js?v=202611051212"></script>
+  <script type="module" src="src/main.js?v=202611051218"></script>
+  <script src="src/start.js?v=202611051218"></script>
+  <script src="src/steps.js?v=202611051218"></script>
+  <script src="src/column-picker.js?v=202611051218"></script>
+  <script src="src/popout.js?v=202611051218"></script>
+  <script type="module" src="src/editor.js?v=202611051218"></script>
+  <script type="module" src="src/text-import.js?v=202611051218"></script>
+  <script src="src/layer-cycle.js?v=202611051218"></script>
 </body>
 </html>
