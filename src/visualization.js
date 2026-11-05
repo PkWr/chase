@@ -1,7 +1,11 @@
+import { DEFAULT_SAMPLE_TEXT } from './defaultText.js';
 /**
- * Gets sample text from textarea
+ * Gets sample text from textarea. The intro step always shows the Bringhurst essay,
+ * whatever has been typed into the Text step.
  */
 function getSampleText() {
+    if (document.body.getAttribute('data-step') === '1')
+        return DEFAULT_SAMPLE_TEXT.trim();
     const sampleTextInput = document.getElementById('sampleText');
     return sampleTextInput?.value.trim() || '';
 }
