@@ -476,3 +476,8 @@ body[data-step="8"] .scale-line{display:none}
 
 /* Measuring the preview while the Report is showing: laid out, but out of sight */
 body.measuring #visualizationContainer{display:flex!important;position:absolute;inset:0;visibility:hidden;pointer-events:none}
+
+.container .help-tip{margin:8px 0 0;font-size:12px;line-height:1.5;color:var(--cp-text);border-left:2px solid var(--yellow);padding-left:8px}
+.container .help-tip[hidden]{display:none}
+body.help-on .container [title]:not(#helpLink),body.help-on .preview-wrapper [title]{outline:1px dashed var(--yellow);outline-offset:2px}
+.container #helpLink[aria-pressed=true]{color:var(--yellow)}
