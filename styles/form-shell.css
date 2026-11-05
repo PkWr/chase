@@ -266,3 +266,10 @@ body[data-step="1"] #popOut{display:none}
 .cp-grab:focus-visible{outline:2px solid var(--yellow);outline-offset:-2px}
 #panel.collapsed>:not(.cp-grab):not(.cp-head):not(.cp-foot){display:none}
 #panel.collapsed{bottom:auto;height:auto;max-height:none;min-height:0}
+/* Start screen: the description of the em, scrolling slowly. */
+.start-scroll{position:relative;width:min(30em,calc(100vw - 48px));height:9.5em;overflow:hidden;font-size:13px;line-height:1.6;color:rgba(255,255,255,.7);text-align:center;-webkit-mask-image:linear-gradient(transparent,#000 22%,#000 78%,transparent);mask-image:linear-gradient(transparent,#000 22%,#000 78%,transparent)}
+.start-scroll-inner{padding-top:9.5em;animation:emScroll 90s linear infinite}
+.start-scroll:hover .start-scroll-inner{animation-play-state:paused}
+.start-scroll p{margin:0 0 1.2em}
+@keyframes emScroll{from{transform:translateY(0)}to{transform:translateY(-100%)}}
+@media(prefers-reduced-motion:reduce){.start-scroll{height:auto;overflow:auto;max-height:12em;-webkit-mask-image:none;mask-image:none}.start-scroll-inner{padding-top:0;animation:none}}
