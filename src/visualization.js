@@ -387,7 +387,7 @@ function drawPage(svg, inputs, pageX, pageY, pageWidth, pageHeight, leftMargin, 
                         const rafId2 = requestAnimationFrame(() => {
                             // Double RAF ensures layout is complete
                             // Verify the SVG is still the current one in the container
-                            const container = document.getElementById('visualizationContainer');
+                            const container = window.previewEl('visualizationContainer');
                             const currentSvg = textGroup.ownerSVGElement;
                             // Check if SVG exists and is in container, and matches the parent SVG
                             if (container && currentSvg && currentSvg === parentSvg && container.contains(currentSvg) && currentSvg.contains(textGroup) && textGroup.contains(textDiv)) {
@@ -409,7 +409,7 @@ function drawPage(svg, inputs, pageX, pageY, pageWidth, pageHeight, leftMargin, 
  * @param inputs - Layout input parameters
  */
 export function updateVisualization(inputs) {
-    const container = document.getElementById('visualizationContainer');
+    const container = window.previewEl('visualizationContainer');
     if (!container)
         return;
     // Validate inputs
@@ -515,7 +515,8 @@ export function updateVisualization(inputs) {
     container.appendChild(svg);
     // Note: Decorations are now stored in app-wrapper, not visualizationContainer
     // Calculate proper sizing based on container dimensions and SVG aspect ratio
-    requestAnimationFrame(() => {
+    const hostWindow = (container.ownerDocument && container.ownerDocument.defaultView) || window;
+    hostWindow.requestAnimationFrame(() => {
         const containerRect = container.getBoundingClientRect();
         const containerStyle = getComputedStyle(container);
         const containerWidth = containerRect.width -
@@ -558,7 +559,7 @@ export function updateVisualization(inputs) {
  * Updates the scale indicator based on actual rendered SVG size
  */
 function updateScaleIndicator(container, svg, inputs, facingPages) {
-    const scaleIndicator = document.getElementById('scaleIndicator');
+    const scaleIndicator = window.previewEl('scaleIndicator');
     if (!scaleIndicator || !container)
         return;
     // Get actual rendered SVG dimensions

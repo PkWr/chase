@@ -204,3 +204,22 @@ body[data-step="7"] .cp-foot #downloadRow{display:block}
 .cp-foot .scale-line{margin:0 0 6px}
 .cp-foot .scale-indicator{color:var(--cp-muted)}
 .container .cp-foot .layer-checkbox{display:inline-block}
+
+/* Pop-out: icon buttons, the popped-out window and the full-page panel */
+.icon-btn{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;padding:0;border:1px solid var(--ink);border-radius:8px;background:transparent;color:var(--ink);cursor:pointer}
+.icon-btn:hover{background:var(--ink);color:var(--paper)}
+.icon-btn[hidden]{display:none}
+.container .icon-btn{border-color:var(--cp-line);color:var(--cp-text)}
+.container .icon-btn:hover{background:var(--cp-accent-bg);border-color:var(--cp-accent-line)}
+.header-actions{display:flex;align-items:center;gap:8px}
+body.popout-window{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font)}
+body.popout-window .preview-wrapper{top:0;bottom:0;height:auto;padding:24px 24px 16px}
+body.popped .container{position:static;width:auto;max-width:760px;margin:24px auto;height:auto;min-height:calc(100vh - 48px);bottom:auto;right:auto;top:auto}
+body.popped .container .cp-foot{bottom:0}
+body.popped .app-wrapper{display:block}
+@media(max-width:900px){body.popped .container{margin:0;max-width:none;min-height:100vh;border-radius:0}}
+.page-nav{display:block;flex:none;padding-top:12px}
+.page-nav .nav{display:flex;gap:8px}
+.page-nav .step-now{margin:0 0 6px;text-align:center;font-size:11px;color:var(--ink)}
+.preview-wrapper .section-header{justify-content:flex-end}
+.preview-wrapper .page-nav .step-now{display:block;width:100%;flex:none;text-align:center}

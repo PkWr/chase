@@ -45,6 +45,7 @@
         <div class="header-top">
           <h1>Compositor</h1>
           <div class="header-right">
+            <button type="button" id="popInPanel" class="icon-btn" title="Bring the page back into this window" aria-label="Bring the page back into this window" hidden><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10h-6V4"/><path d="M14 10l7-7"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></button>
             <a href="#" id="resetLink" class="read-me-link">Reset</a>
           </div>
         </div>
@@ -53,12 +54,12 @@
         <h3>Steps</h3>
         <div id="cpSteps" class="step-list" role="radiogroup" aria-label="Steps">
           <a href="#" role="radio" data-go="1" aria-checked="true"><span>1</span> Intro</a>
-          <a href="#" role="radio" data-go="2" aria-checked="false"><span>2</span> Page</a>
-          <a href="#" role="radio" data-go="3" aria-checked="false"><span>3</span> Margins</a>
-          <a href="#" role="radio" data-go="4" aria-checked="false"><span>4</span> Columns</a>
-          <a href="#" role="radio" data-go="5" aria-checked="false"><span>5</span> Type</a>
-          <a href="#" role="radio" data-go="6" aria-checked="false"><span>6</span> Text</a>
-          <a href="#" role="radio" data-go="7" aria-checked="false"><span>7</span> Specification and download</a>
+          <a href="#" role="radio" data-go="2" aria-checked="false"><span>2</span> Text</a>
+          <a href="#" role="radio" data-go="3" aria-checked="false"><span>3</span> Page</a>
+          <a href="#" role="radio" data-go="4" aria-checked="false"><span>4</span> Margins</a>
+          <a href="#" role="radio" data-go="5" aria-checked="false"><span>5</span> Columns</a>
+          <a href="#" role="radio" data-go="6" aria-checked="false"><span>6</span> Type</a>
+          <a href="#" role="radio" data-go="7" aria-checked="false"><span>7</span> Download</a>
         </div>
       </section>
       <section class="cp-sec cp-show" aria-label="Show on the page">
@@ -101,7 +102,7 @@
         </div>
       </section>
 
-      <section data-step="2" class="form-section">
+      <section data-step="3" class="form-section">
         <div class="unit-toggle-wrapper">
           <label class="unit-toggle-label">
             <span class="unit-option unit-option-mm">mm</span>
@@ -159,7 +160,7 @@
         </div>
       </section>
 
-      <section data-step="3" class="form-section">
+      <section data-step="4" class="form-section">
         <h2>Margins</h2>
         <div class="form-row">
           <div class="form-group">
@@ -211,7 +212,7 @@
         </div>
       </section>
 
-      <section data-step="4" class="form-section">
+      <section data-step="5" class="form-section">
         <h2>Columns</h2>
         <div class="form-group" id="numColsGroup">
           <label for="numCols">Number of columns</label>
@@ -243,7 +244,7 @@
         </div>
       </section>
 
-      <section data-step="5" class="form-section">
+      <section data-step="6" class="form-section">
         <h2>Typography Settings</h2>
         <div class="form-group">
           <label for="fontFamily">Typeface</label>
@@ -311,7 +312,7 @@
         </div>
       </section>
 
-      <section data-step="6" class="form-section">
+      <section data-step="2" class="form-section">
         <h2>Sample Text</h2>
         <div class="form-group">
           <div class="label-with-action">
@@ -327,7 +328,7 @@
         </div>
       </section>
 
-      <section data-step="6" class="form-section bringhurst-section">
+      <section data-step="2" class="form-section bringhurst-section">
         <h2>Bringhurst says</h2>
         <div class="form-group">
           <p><span class="bringhurst-label">Words per line:</span> <span id="wordsPerLine" class="bringhurst-value">—</span></p>
@@ -339,7 +340,7 @@
         </div>
       </section>
 
-      <section data-step="6" class="form-section bringhurst-section">
+      <section data-step="2" class="form-section bringhurst-section">
         <h2>Patrick says</h2>
         <div class="form-group">
           <p><span class="bringhurst-label">Words per line:</span> <span id="patrickWordsPerLine" class="bringhurst-value">—</span></p>
@@ -363,14 +364,18 @@
     <div class="preview-wrapper">
       <section class="visualization-section">
         <div class="section-header">
-          <p id="stepNow" class="step-now" aria-live="polite">Step 1 of 7 · Intro</p>
           <div class="header-actions">
-                      </div>
+            <button type="button" id="popOut" class="icon-btn" title="Open the page in its own window" aria-label="Open the page in its own window"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></button>
+            <button type="button" id="popIn" class="icon-btn" title="Bring the page back into this window" aria-label="Bring the page back into this window" hidden><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10h-6V4"/><path d="M14 10l7-7"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></button>
+          </div>
         </div>
         <div id="visualizationContainer" class="visualization-container"></div>
-        <div class="row nav page-nav" role="group" aria-label="Steps">
+        <div class="page-nav">
+          <p id="stepNow" class="step-now" aria-live="polite">Step 1 of 7 · Intro</p>
+          <div class="row nav" role="group" aria-label="Steps">
           <button type="button" id="stepBack" class="step-btn">Back</button>
           <button type="button" id="stepNext" class="step-btn">Next</button>
+          </div>
         </div>
       </section>
     </div>
@@ -437,5 +442,6 @@
   <script src="src/start.js"></script>
   <script src="src/steps.js"></script>
   <script src="src/column-picker.js"></script>
+  <script src="src/popout.js"></script>
 </body>
 </html>

@@ -1067,7 +1067,7 @@ function updateMarginInputs() {
  * Exports the current visualization as a standalone HTML file
  */
 async function exportVisualizationAsPDF() {
-    const container = document.getElementById('visualizationContainer');
+    const container = window.previewEl('visualizationContainer');
     if (!container) {
         alert('Visualization container not found');
         return;
@@ -2472,7 +2472,7 @@ export function initializeCalculator() {
         updateWordsPerLine();
     }
     // Add resize observer to update scale indicator when window/container resizes
-    const visualizationContainer = document.getElementById('visualizationContainer');
+    const visualizationContainer = window.previewEl('visualizationContainer');
     let resizeTimeout;
     if (visualizationContainer && window.ResizeObserver) {
         const resizeObserver = new ResizeObserver(() => {
@@ -2486,17 +2486,15 @@ export function initializeCalculator() {
         });
         resizeObserver.observe(visualizationContainer);
     }
-    else {
-        // Fallback to window resize listener if ResizeObserver not available
-        window.addEventListener('resize', () => {
-            if (resizeTimeout !== undefined) {
-                clearTimeout(resizeTimeout);
-            }
-            resizeTimeout = window.setTimeout(() => {
-                updateVisualizationOnInputChange();
-            }, 100);
-        });
-    }
+    // Window resize also refreshes the drawing; the pop-out window forwards its own resizes here.
+    window.addEventListener('resize', () => {
+        if (resizeTimeout !== undefined) {
+            clearTimeout(resizeTimeout);
+        }
+        resizeTimeout = window.setTimeout(() => {
+            updateVisualizationOnInputChange();
+        }, 100);
+    });
     // Initialize term modal (Verso/Recto)
     const termModal = document.getElementById('termModal');
     const termModalClose = document.getElementById('termModalClose');
