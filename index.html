@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>chase</title>
-  <link rel="stylesheet" href="styles/main.css?v=202611051249">
-  <link rel="stylesheet" href="styles/form-shell.css?v=202611051249">
+  <link rel="stylesheet" href="styles/main.css?v=202611051253">
+  <link rel="stylesheet" href="styles/form-shell.css?v=202611051253">
   <!-- Padding handled in main.css for better control -->
 </head>
 <body>
@@ -360,23 +360,10 @@
         </div>
       </section>
 
-      <section data-step="8" class="form-section bringhurst-section">
-        <h2>Bringhurst says</h2>
+      <section data-step="8" class="form-section">
+        <h2>Report</h2>
         <div class="form-group">
-          <p><span class="bringhurst-label">Words per line:</span> <span id="wordsPerLine" class="bringhurst-value">—</span></p>
-          <p class="helper-text" id="bringhurstGuidance">Estimated based on column width and type size</p>
-        </div>
-        <div class="form-group">
-          <p><span class="bringhurst-label">Leading:</span> <span id="bringhurstLeading" class="bringhurst-value">—</span></p>
-          <p class="helper-text" id="bringhurstLeadingGuidance">Recommended leading values</p>
-        </div>
-      </section>
-
-      <section data-step="8" class="form-section bringhurst-section">
-        <h2>Patrick says</h2>
-        <div class="form-group">
-          <p><span class="bringhurst-label">Words per line:</span> <span id="patrickWordsPerLine" class="bringhurst-value">—</span></p>
-          <p class="helper-text" id="patrickGuidance">Estimated based on column width and type size</p>
+          <span class="helper-text">The report is shown on the page area: warnings about line length and leading first, then the full specification. Scroll to read it.</span>
         </div>
       </section>
 
@@ -424,12 +411,6 @@
       </section>
 
 
-      <section data-step="9" class="form-section step-pane">
-        <div class="specification-section">
-          <h3>Specification</h3>
-          <div id="specificationContent" class="specification-content"></div>
-        </div>
-      </section>
       </form>
       <div class="cp-foot">
         <div id="downloadRow"><button type="button" id="exportHtmlButton" class="btn-export btn-primary">Download specification (PDF)</button><button type="button" id="exportIdmlButton" class="btn-export btn-primary" title="A layout that opens in Adobe InDesign: page, margins, columns, baseline grid, paragraph style and text frames">Download for InDesign (IDML)</button><p class="hint" id="idmlStatus" role="status"></p></div>
@@ -447,6 +428,32 @@
         <div class="section-header">
         </div>
         <div id="visualizationContainer" class="visualization-container"></div>
+      <section id="reportStage" class="report-stage" aria-label="Report">
+        <h2 class="report-title">Report</h2>
+        <h3 class="report-sub">Warnings</h3>
+      <section class="report-block bringhurst-section">
+        <h2>Bringhurst says</h2>
+        <div class="form-group">
+          <p><span class="bringhurst-label">Words per line:</span> <span id="wordsPerLine" class="bringhurst-value">—</span></p>
+          <p class="helper-text" id="bringhurstGuidance">Estimated based on column width and type size</p>
+        </div>
+        <div class="form-group">
+          <p><span class="bringhurst-label">Leading:</span> <span id="bringhurstLeading" class="bringhurst-value">—</span></p>
+          <p class="helper-text" id="bringhurstLeadingGuidance">Recommended leading values</p>
+        </div>
+      </section>
+
+      <section class="report-block bringhurst-section">
+        <h2>Patrick says</h2>
+        <div class="form-group">
+          <p><span class="bringhurst-label">Words per line:</span> <span id="patrickWordsPerLine" class="bringhurst-value">—</span></p>
+          <p class="helper-text" id="patrickGuidance">Estimated based on column width and type size</p>
+        </div>
+      </section>
+
+        <h3 class="report-sub">Specification</h3>
+        <div id="specificationContent" class="specification-content"></div>
+      </section>
         <div class="page-nav">
           <div class="page-meta">
             <p id="stepNow" class="step-now" aria-live="polite">Step 1 of 9 · Intro</p>
@@ -518,14 +525,14 @@
   <!-- PDF Export Libraries -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script type="module" src="src/main.js?v=202611051249"></script>
-  <script src="src/start.js?v=202611051249"></script>
-  <script src="src/steps.js?v=202611051249"></script>
-  <script src="src/column-picker.js?v=202611051249"></script>
-  <script src="src/popout.js?v=202611051249"></script>
-  <script type="module" src="src/editor.js?v=202611051249"></script>
-  <script type="module" src="src/text-import.js?v=202611051249"></script>
-  <script src="src/number-steppers.js?v=202611051249"></script>
-  <script src="src/layer-cycle.js?v=202611051249"></script>
+  <script type="module" src="src/main.js?v=202611051253"></script>
+  <script src="src/start.js?v=202611051253"></script>
+  <script src="src/steps.js?v=202611051253"></script>
+  <script src="src/column-picker.js?v=202611051253"></script>
+  <script src="src/popout.js?v=202611051253"></script>
+  <script type="module" src="src/editor.js?v=202611051253"></script>
+  <script type="module" src="src/text-import.js?v=202611051253"></script>
+  <script src="src/number-steppers.js?v=202611051253"></script>
+  <script src="src/layer-cycle.js?v=202611051253"></script>
 </body>
 </html>

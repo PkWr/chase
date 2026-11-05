@@ -25,7 +25,7 @@
     back.hidden = step === 1;
     next.hidden = step === titles.length;
     // The intro shows the essay over several pages; other steps show a single page.
-    if (previous !== step && (previous === 1 || step === 1)) window.dispatchEvent(new Event('resize'));
+    if (previous !== step && (previous === 1 || step === 1 || previous === 8 || step === 8)) window.dispatchEvent(new Event('resize'));
     previous = step;
     // Each layer switches on when its step is reached (and stays on until turned off).
     var layerFor = { 2: 'showText', 4: 'showMargins', 5: 'showColumns' }[step];

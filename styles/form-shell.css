@@ -409,3 +409,20 @@ body.popout-window .editor-stage{right:24px}
 .editor-stage #textEditor textarea:focus{border-color:#111}
 .editor-stage .markup-help code{color:#111;background:rgba(255,225,0,.5);padding:0 3px;border-radius:3px}
 .editor-stage .mark-btn:hover{background:rgba(255,225,0,.5)}
+
+/* Report step: the page area shows the report (warnings, then the specification) as a scrollable white sheet */
+.report-stage{display:none}
+body[data-step="8"] #visualizationContainer{display:none}
+body[data-step="8"] .report-stage{display:block;flex:1 1 0;min-height:0;overflow-y:auto;box-sizing:border-box;padding:24px 28px;background:#fff;color:#111;border:1px solid #d9d9d4;border-radius:14px;box-shadow:0 6px 30px rgba(0,0,0,.18)}
+.report-stage .report-title{margin:0 0 16px;font-size:11px;font-weight:400;letter-spacing:.08em;text-transform:uppercase;color:#6b6b66}
+.report-stage .report-sub{margin:24px 0 8px;font-size:18px;font-weight:400;color:#111}
+.report-stage .report-block{margin:0 0 14px;padding:0;background:transparent;box-shadow:none}
+.report-stage .report-block h2{margin:0 0 6px;font-size:14px;font-weight:400;color:#111}
+.report-stage .report-block p,.report-stage .bringhurst-label,.report-stage .bringhurst-value{color:#111}
+.report-stage .helper-text{display:block;color:#6b6b66;font-size:12px}
+.report-stage .spec-table{width:100%;border-collapse:collapse}
+.report-stage .spec-label{color:#6b6b66}
+.report-stage .spec-value{color:#111}
+.report-stage .spec-table td,.report-stage .spec-table th{border-bottom:1px solid #e3e3de;padding:6px 10px 6px 0;text-align:left;font-weight:400}
+body[data-step="8"] .page-nav{width:100% !important}
+body[data-step="8"] .scale-line{display:none}
