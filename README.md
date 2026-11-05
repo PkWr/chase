@@ -52,9 +52,10 @@ type-setting/
 ├── src/           # Plain JavaScript ES modules
 │   ├── calculator.js, units.js, paperSizes.js, types.js
 │   ├── ui.js, visualization.js, defaultText.js, main.js
+│   ├── start.js   # Start screen and About drawer
 │   └── grep.js    # GREP pattern generator
 ├── test/          # node:test tests
-├── styles/        # CSS
+├── styles/        # main.css, form-shell.css (Form palette, panel, start screen)
 ├── vendor/fonts/  # Self-hosted fonts
 ├── index.html     # Layout calculator
 ├── grep.html      # GREP pattern generator

@@ -1,0 +1,85 @@
+/* Form shell for the calculator: paper page, dark floating control panel, yellow accent, IBM Plex Mono italic. Tokens match Form (style.css). Loaded after main.css. */
+@font-face{font-family:"IBM Plex Mono";font-style:italic;font-weight:300;font-display:swap;src:url("../vendor/fonts/ibm-plex-mono-latin-300-italic.woff2") format("woff2")}
+@font-face{font-family:"IBM Plex Mono";font-style:italic;font-weight:400;font-display:swap;src:url("../vendor/fonts/ibm-plex-mono-latin-400-italic.woff2") format("woff2")}
+:root{--yellow:#ffe100;--ink:#111;--paper:#f4f2ee;--cp-bg:#121315;--cp-surface:#17191c;--cp-line:#2a2d31;--cp-text:#ececec;--cp-muted:#a3a3a3;--cp-accent-bg:#3a3410;--cp-accent-line:#8f7d1a;--font:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;--font-family:var(--font)}
+html{font-synthesis:none}
+body{padding:0;background:var(--paper);color:var(--ink);font:300 13px/1.5 var(--font);font-style:italic}
+.app-wrapper{display:block}
+
+/* Preview on the page, controls in the floating panel */
+.preview-wrapper{padding:24px 412px 72px 24px;min-height:100vh;color:var(--ink)}
+.visualization-section,.specification-section{background:transparent;box-shadow:none;color:var(--ink);padding:0}
+.visualization-section h2,.specification-section h3{color:var(--ink);font-weight:400;font-size:12px}
+.layer-checkbox,.layer-checkbox span{color:#555}
+.btn-export{background:var(--ink);color:var(--paper);border:1px solid var(--ink);border-radius:8px}
+.scale-indicator{color:#555}
+.spec-label{color:#555}.spec-value{color:var(--ink)}
+.container{position:fixed;top:16px;right:16px;bottom:56px;width:380px;max-width:calc(100vw - 32px);margin:0;padding:0 16px 8px;overflow:auto;flex:none;background:var(--cp-bg);color:var(--cp-text);border:1px solid var(--cp-line);border-radius:14px;box-shadow:0 12px 40px rgba(0,0,0,.5);z-index:30}
+.container header{border-bottom:1px solid var(--cp-line);position:sticky;top:0;background:var(--cp-bg);z-index:1}
+.container h1,.container h2,.container label{color:var(--cp-text);font-weight:400}
+.container h1{font-size:15px}
+.container h2{font-size:12px;color:var(--cp-muted)}
+.container .form-section{border-top:1px solid var(--cp-line);padding-right:0}
+.container .helper-text,.container .info-label,.container .page-label,.container .unit-description,.container .subtitle{color:var(--cp-muted)}
+.container .read-me-link,.container .page-link{color:var(--cp-text)}
+.container .read-me-link:hover,.container .page-link:hover{color:var(--yellow)}
+.container input[type=number],.container select,.container textarea{font:inherit;color:var(--cp-text);background:var(--cp-surface);border:1px solid var(--cp-line);border-radius:6px}
+.container input:focus,.container select:focus,.container textarea:focus{outline:none;border-color:var(--cp-accent-line)}
+.container input[type=checkbox],.container input[type=radio],.container input[type=range]{accent-color:var(--yellow)}
+.container button{font:inherit;border:1px solid var(--cp-line);border-radius:8px;background:var(--cp-surface);color:var(--cp-text)}
+.container button:hover{border-color:var(--cp-accent-line)}
+.container .btn-primary{background:var(--yellow);border-color:var(--yellow);color:var(--ink)}
+.container .btn-link{background:none;border:0;color:var(--cp-text)}
+.container .btn-link:hover{color:var(--yellow)}
+
+/* Controls recoloured to the Form palette */
+.unit-toggle-input,.unit-toggle-input:checked{background-color:#33363b}
+.unit-toggle-slider{background-color:#f4f4f4}
+.unit-toggle-label:has(.unit-toggle-input:checked) .unit-option-em,.unit-toggle-label:has(.unit-toggle-input:not(:checked)) .unit-option-mm{color:var(--yellow)}
+.modal{background:rgba(0,0,0,.6)}
+.modal-content{background:var(--cp-bg);color:var(--cp-text);border:1px solid var(--cp-line);border-radius:14px}
+.modal-content h2,.modal-content h3,.modal-content p{color:var(--cp-text)}
+.modal-content a{color:var(--yellow)}
+
+/* Footer: thin ink bar under the preview, menu in the page colours */
+.fixed-footer{background:var(--ink);right:412px}
+.fixed-footer.expanded{background:var(--paper)}
+.footer-menu-toggle{color:var(--paper);font-size:11px}
+.fixed-footer.expanded .footer-menu-toggle,.fixed-footer.expanded h1{color:var(--ink)}
+.fixed-footer h1{color:var(--paper)}
+
+/* Narrow windows: controls become a bottom sheet */
+@media(max-width:900px){
+.preview-wrapper{padding:16px 16px 52vh}
+.container{top:auto;left:0;right:0;bottom:40px;width:auto;max-width:none;height:44vh;border-width:1px 0 0;border-radius:20px 20px 0 0}
+.fixed-footer{right:0}
+}
+
+/* Start screen, as on Form: black, an open button, the About drawer under a yellow strip */
+#startScreen{display:none}
+html.show-start{overflow:hidden}
+html.show-start #startScreen{display:flex;position:fixed;inset:0;z-index:2000;align-items:center;justify-content:center;flex-direction:column;gap:28px;overflow:hidden;background:#000;color:#fff;transition:opacity .5s ease;--strip-w:44px;--panel-w:max(320px,calc(100vw / 3 - var(--strip-w)))}
+html.start-leaving #startScreen{opacity:0;pointer-events:none}
+.start-title{margin:0;font-weight:300;font-size:clamp(44px,9vw,120px);line-height:1;letter-spacing:-.03em;color:#fff}
+.start-sub{margin:0;max-width:30em;padding:0 24px;text-align:center;font-size:13px;line-height:1.6;color:rgba(255,255,255,.65)}
+#startOpen{width:92px;height:92px;padding:0;border:0;border-radius:0;transform:rotate(-8deg);background:var(--yellow);color:var(--ink);font:italic 400 17px var(--font);cursor:pointer;transition:transform .35s cubic-bezier(.2,.7,.2,1),background-color .15s ease}
+#startOpen:hover,#startOpen:focus-visible{transform:rotate(0deg);background:#fff;outline:none}
+#startOpen:active{transform:rotate(0deg) scale(.94)}
+.start-version{position:fixed;left:16px;bottom:max(12px,env(safe-area-inset-bottom));z-index:3;font-size:11px;color:rgba(255,255,255,.55);text-decoration:none}
+.start-drawer{position:fixed;top:0;right:0;bottom:0;z-index:3;display:flex;transform:translateX(var(--panel-w));transition:transform .45s cubic-bezier(.2,.7,.2,1)}
+.start-drawer.is-open{transform:translateX(0)}
+.start-strip{width:var(--strip-w);flex-shrink:0;margin:0;padding:22px 0;border:0;border-radius:0;background:var(--yellow);color:var(--ink);font:inherit;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:space-between}
+.start-drawer.is-open .start-strip{background:#fff}
+.start-strip:focus-visible{outline:2px solid var(--ink);outline-offset:-4px}
+.strip-label{writing-mode:vertical-rl;transform:rotate(180deg);font-size:12px;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap}
+.strip-icon{font-size:22px;line-height:1;transition:transform .3s cubic-bezier(.2,.7,.2,1)}
+.start-drawer.is-open .strip-icon{transform:rotate(45deg)}
+.start-panel{width:var(--panel-w);max-width:calc(100vw - var(--strip-w));background:#fff;color:var(--ink);overflow-y:auto;display:flex;flex-direction:column}
+.sa-content{padding:28px 28px 8px}
+.sa-content h2{margin:22px 0 8px;font-size:11px;font-weight:400;letter-spacing:.08em;text-transform:uppercase;color:#6b6862}
+.sa-content h2:first-child{margin-top:0}
+.sa-content p{margin:0 0 .9em;font-size:13px;line-height:1.6}
+.sa-content a,.sp-foot a{color:inherit;text-underline-offset:3px}
+.sa-content a:hover,.sa-content a:focus-visible,.sp-foot a:hover,.sp-foot a:focus-visible{background:var(--yellow);outline:none}
+.sp-foot{margin-top:auto;padding:16px 28px 22px;display:flex;justify-content:space-between;gap:12px;font-size:12px;color:#6b6862}
+@media(prefers-reduced-motion:reduce){html.show-start #startScreen,#startOpen,.start-drawer,.strip-icon{transition:none}}

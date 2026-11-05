@@ -2154,14 +2154,7 @@ export function initializeCalculator() {
                 hideIntroModal();
             }
         });
-        // Show modal on page load (only if not previously dismissed)
-        const modalDismissed = localStorage.getItem('introModalDismissed');
-        if (!modalDismissed) {
-            // Small delay to ensure page is loaded
-            setTimeout(() => {
-                showIntroModal();
-            }, 100);
-        }
+        // The start screen (index.html) carries the introduction, so the Read me modal opens only on request.
     }
     // Save dismissal state when closing
     if (closeModal) {

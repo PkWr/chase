@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Compositor Chase Em</title>
   <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="styles/form-shell.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=Lora:wght@400;700&family=Merriweather:wght@400;700&family=Crimson+Text:wght@400;600&family=Playfair+Display:wght@400;700&family=Libre+Baskerville:wght@400;700&family=EB+Garamond:wght@400;600&family=PT+Serif:wght@400;700&family=Inter:wght@400;600&family=Roboto:wght@400;500&family=Open+Sans:wght@400;600&family=Lato:wght@400;700&family=Montserrat:wght@400;600&family=Source+Sans+Pro:wght@400;600&family=Poppins:wght@400;600&family=Raleway:wght@400;600&family=Work+Sans:wght@400;600&family=Roboto+Mono:wght@400&family=Source+Code+Pro:wght@400&family=Fira+Code:wght@400&display=swap" rel="stylesheet">
@@ -12,6 +13,33 @@
   <!-- Padding handled in main.css for better control -->
 </head>
 <body>
+  <script>if (!location.search) document.documentElement.classList.add('show-start');</script>
+  <div id="startScreen">
+    <h1 class="start-title">Type Setting</h1>
+    <p class="start-sub">Tooling for typographic layout, built for teaching graphic design.</p>
+    <button type="button" id="startOpen">open</button>
+    <span class="start-version">GD v/x AI</span>
+    <div class="start-drawer" id="startDrawer">
+      <button type="button" class="start-strip" id="startStrip" aria-expanded="false" aria-controls="startPanel" aria-label="About Type Setting">
+        <span class="strip-label">Type Setting · About</span>
+        <span class="strip-icon" aria-hidden="true">+</span>
+      </button>
+      <aside class="start-panel" id="startPanel" aria-label="About Type Setting">
+        <div class="sa-content">
+          <h2>About</h2>
+          <p>Type Setting is a small set of tools for working out page layouts. The calculator takes a page size, margins, columns and a type size, and works out column widths, gutters and line lengths following Bringhurst's principles. It draws the result as a page.</p>
+          <p>A second tool builds InDesign GREP patterns for paragraph styles, to find words, digits, punctuation or enclosed text.</p>
+          <h2>The names</h2>
+          <p>The calculator is called Compositor, Chase, Em, after letterpress. A compositor arranged type and spacing into lines and pages. A chase is the metal frame that held the composed page. An em is a unit equal to the type size, so spacing set in ems scales with the type.</p>
+          <h2>Tools</h2>
+          <p><a href="./?calculator">Layout calculator</a><br><a href="grep.html">GREP generator</a><br>Hierarchy: coming soon.</p>
+          <h2>Project</h2>
+          <p>Type Setting is a GD v/x AI project, a growing typographic resource for education. <i>What you don't have to do, you won't need to know, so who will be lost.</i></p>
+        </div>
+        <footer class="sp-foot"><span>© 2026 pkwr</span><a href="https://github.com/PkWr/type-setting">Source</a></footer>
+      </aside>
+    </div>
+  </div>
   <div class="app-wrapper">
     <div class="container">
       <header>
@@ -365,10 +393,10 @@
     <div class="fixed-footer-content">
       <h1 class="footer-menu-toggle" id="footerMenuToggle">Menu</h1>
       <div class="footer-content-wrapper">
-        <h1>This a a GD v/x AI Project. PkWr 2025. A growing typographic resource for education. <i>What you don't have to do, you won't need to know, so who will be lost</i></h1>
+        <h1>This is a GD v/x AI Project. PkWr 2025. A growing typographic resource for education. <i>What you don't have to do, you won't need to know, so who will be lost</i></h1>
         <nav class="footer-nav">
           <div class="footer-nav-item">
-            <a href="index.html" class="footer-nav-link">Compositor</a>
+            <a href="index.html?calculator" class="footer-nav-link">Compositor</a>
             <p class="footer-nav-description">Typography layout calculator for designing multi-column page layouts with margins, columns, and typography settings.</p>
           </div>
           <div class="footer-nav-item">
@@ -394,5 +422,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script type="module" src="src/main.js"></script>
+  <script src="src/start.js"></script>
 </body>
 </html>
