@@ -38,9 +38,15 @@
     if (sig === last) return; // unchanged: keep the buttons, so a click in progress is not lost
     last = sig;
     var lab = document.getElementById('startPickerLabel');
-    if (lab) lab.textContent = r.n + (r.n === 1 ? ' column' : ' columns') + ', text box in ' +
-      (r.span === 1 ? 'column ' + r.start : 'columns ' + r.start + ' to ' + (r.start + r.span - 1));
-    if (help) help.textContent = 'Plus adds a column. Click columns to choose where the text box sits and how many it spans.';
+    var endCol = r.start + r.span - 1;
+    if (lab) lab.textContent = r.n + (r.n === 1 ? ' column' : ' columns');
+    if (help) {
+      help.innerHTML =
+        '<span class="pk-now">Text starts in column ' + r.start +
+        (r.span > 1 ? ' and fills columns ' + r.start + ' to ' + endCol + ', then carries on to the next page.' : ' and fills that column only, then carries on to the next page.') + '</span>' +
+        '<span class="pk-how">Plus and minus add or remove a column. To move where the text starts, widen the box to the left by clicking an earlier column, then narrow it from the right by clicking its last column. Clicking a column beside the box widens it, and clicking an end column of the box narrows it.</span>' +
+        '<span class="pk-key"><i class="k-start"></i>text starts here <i class="k-text"></i>text continues <i class="k-empty"></i>empty column</span>';
+    }
     host.innerHTML = '';
     for (var k = 1; k <= r.n; k++) {
       var b = document.createElement('button');

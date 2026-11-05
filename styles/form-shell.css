@@ -229,3 +229,11 @@ body.popped .app-wrapper{display:block}
 .preview-wrapper .visualization-container.stack{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;overflow-y:auto;gap:24px;padding:0 32px 24px}
 .visualization-container.stack>svg{flex:none}
 body[data-step="1"] #popOut{display:none}
+.container #startPickerHelp{display:block;margin-top:6px}
+.container #startPickerHelp>span{display:block;margin:0 0 6px;font-size:11px;line-height:1.5;color:var(--cp-muted)}
+.container #startPickerHelp .pk-now{color:var(--cp-text)}
+.container #startPickerHelp .pk-key i{display:inline-block;width:10px;height:14px;margin:0 4px 0 0;vertical-align:-2px;border:1px solid var(--cp-line);border-radius:2px}
+.container #startPickerHelp .pk-key i+i,.container #startPickerHelp .pk-key i:not(:first-child){margin-left:10px}
+.container .pk-key .k-start{background:var(--yellow);border-color:var(--yellow)}
+.container .pk-key .k-text{background:var(--cp-accent-bg);border-color:var(--cp-accent-line)}
+.container .pk-key .k-empty{background:var(--cp-surface)}
