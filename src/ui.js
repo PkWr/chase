@@ -2252,7 +2252,7 @@ export function initializeCalculator() {
         }
     });
     // Handle layer visibility checkboxes
-    const layerCheckboxes = ['showMargins', 'showColumns', 'showText', 'solidFills', 'showRaggedEdge'];
+    const layerCheckboxes = ['showMargins', 'showColumns', 'showText', 'solidFills', 'showRaggedEdge', 'showBaseline'];
     layerCheckboxes.forEach(id => {
         addInputChangeListeners(id, {
             onChange: () => {

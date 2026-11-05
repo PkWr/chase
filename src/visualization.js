@@ -18,7 +18,7 @@ function getLayerVisibility() {
     const showText = document.getElementById('showText')?.checked ?? true;
     const solidFills = document.getElementById('solidFills')?.checked ?? false;
     const showRaggedEdge = document.getElementById('showRaggedEdge')?.checked ?? false;
-    return { margins: showMargins, columns: showColumns, text: showText, solidFills, marginsSolid: document.getElementById('showMargins')?.dataset.solid === '1', columnsSolid: document.getElementById('showColumns')?.dataset.solid === '1', raggedEdge: showRaggedEdge };
+    return { margins: showMargins, columns: showColumns, text: showText, solidFills, marginsSolid: document.getElementById('showMargins')?.dataset.solid === '1', columnsSolid: document.getElementById('showColumns')?.dataset.solid === '1', raggedEdge: showRaggedEdge, baseline: document.getElementById('showBaseline')?.checked ?? false };
 }
 // Page dimensions and margins are always in mm, gutter is always in em
 const PAGE_UNIT = 'mm';
@@ -232,6 +232,26 @@ function drawPage(svg, inputs, pageX, pageY, pageWidth, pageHeight, leftMargin, 
                 colRect.setAttribute('stroke-width', '1');
             }
             svg.appendChild(colRect);
+        }
+    }
+    // Baseline grid: yellow lines across the page at the leading, from the first baseline
+    if (layerVisibility.baseline) {
+        const leadPt = inputs.leading !== undefined ? inputs.leading : inputs.typeSize + 2;
+        const lh = leadPt * 0.3528 * scaleY;
+        const fs = inputs.typeSize * 0.3528 * scaleY;
+        const first = pageY + scaledTopMargin + (lh - 1.107 * fs) / 2 + 0.891 * fs;
+        const limit = pageY + pageHeight - scaledBottomMargin + 0.5;
+        if (lh > 0.5) {
+            for (let y = first; y <= limit; y += lh) {
+                const ln = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                ln.setAttribute('x1', pageX.toString());
+                ln.setAttribute('x2', (pageX + pageWidth).toString());
+                ln.setAttribute('y1', y.toString());
+                ln.setAttribute('y2', y.toString());
+                ln.setAttribute('stroke', '#ffe100');
+                ln.setAttribute('stroke-width', '0.75');
+                svg.appendChild(ln);
+            }
         }
     }
     // Draw text

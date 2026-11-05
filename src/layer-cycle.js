@@ -18,3 +18,16 @@
     sync();
   });
 })();
+
+// Alignment icons drive the hidden #justifyText checkbox that the rest of the code reads.
+(function () {
+  var j = document.getElementById('justifyText'), l = document.getElementById('alignLeft'), r = document.getElementById('alignJustify');
+  if (!j || !l || !r) return;
+  function fromJ() { l.checked = !j.checked; r.checked = j.checked; }
+  function set(v) { j.checked = v; j.dispatchEvent(new Event('change', { bubbles: true })); j.dispatchEvent(new Event('input', { bubbles: true })); }
+  l.addEventListener('change', function () { if (l.checked) set(false); });
+  r.addEventListener('change', function () { if (r.checked) set(true); });
+  fromJ();
+  document.addEventListener('DOMContentLoaded', fromJ);
+  setTimeout(fromJ, 400);
+})();
