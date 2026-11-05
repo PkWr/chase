@@ -239,7 +239,16 @@ function drawPage(svg, inputs, pageX, pageY, pageWidth, pageHeight, leftMargin, 
         const leadPt = inputs.leading !== undefined ? inputs.leading : inputs.typeSize + 2;
         const lh = leadPt * 0.3528 * scaleY;
         const fs = inputs.typeSize * 0.3528 * scaleY;
-        const first = pageY + scaledTopMargin + (lh - 1.107 * fs) / 2 + 0.891 * fs;
+        // Real font metrics, so the first grid line sits on the first text baseline
+        let asc = 0.891 * fs, desc = 0.216 * fs;
+        try {
+            const fam = inputs.fontFamily || 'serif';
+            const ctx = document.createElement('canvas').getContext('2d');
+            ctx.font = `${fs}px ${fam === 'serif' || fam === 'sans-serif' || fam === 'monospace' ? fam : `'${fam}', serif`}`;
+            const m = ctx.measureText('Hxg');
+            if (m.fontBoundingBoxAscent) { asc = m.fontBoundingBoxAscent; desc = m.fontBoundingBoxDescent; }
+        } catch (e) { /* keep estimates */ }
+        const first = pageY + scaledTopMargin + (lh - (asc + desc)) / 2 + asc;
         const limit = pageY + pageHeight - scaledBottomMargin + 0.5;
         if (lh > 0.5) {
             for (let y = first; y <= limit; y += lh) {
