@@ -166,8 +166,7 @@ function drawPage(svg, inputs, pageX, pageY, pageWidth, pageHeight, leftMargin, 
     pageRect.setAttribute('width', pageWidth.toString());
     pageRect.setAttribute('height', pageHeight.toString());
     pageRect.setAttribute('fill', '#ffffff');
-    pageRect.setAttribute('stroke', '#333333');
-    pageRect.setAttribute('stroke-width', '0.5');
+    pageRect.setAttribute('stroke', 'none');
     svg.appendChild(pageRect);
     // Calculate scaled margins
     const scaledTopMargin = Math.max(topMargin * scaleY, MIN_MARGIN_VISUAL);
