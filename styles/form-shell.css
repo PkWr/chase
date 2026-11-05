@@ -107,9 +107,10 @@ body[data-step="1"] .container [data-step]:not([data-step="1"]),
 body[data-step="2"] .container [data-step]:not([data-step="2"]),
 body[data-step="3"] .container [data-step]:not([data-step="3"]),
 body[data-step="4"] .container [data-step]:not([data-step="4"]){display:none !important}
-.step-foot{position:sticky;bottom:0;margin:0 -16px;padding:10px 16px 0;background:var(--cp-bg);border-top:1px solid var(--cp-line);z-index:1}
+.step-foot{position:sticky;bottom:0;margin:0 -16px;padding:0 16px;background:var(--cp-bg);border-top:1px solid var(--cp-line);z-index:1}
 .foot-label{margin:0 0 4px;font-size:11px;color:var(--cp-muted)}
-.container .layer-controls{display:flex;flex-wrap:wrap;gap:4px 14px;margin:0 0 8px;padding:0}
+.container .layer-controls{display:flex;flex-wrap:wrap;gap:4px 14px;margin:0 0 10px;padding:0}
+.container header .foot-label{margin-top:2px}
 .container .layer-checkbox,.container .layer-checkbox span{color:var(--cp-text);font-size:12px}
 .step-nav{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 0 10px}
 .step-now{flex:1;text-align:center;font-size:11px;color:var(--cp-muted)}
