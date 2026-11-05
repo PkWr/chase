@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>chase</title>
-  <link rel="stylesheet" href="styles/main.css?v=202611051232">
-  <link rel="stylesheet" href="styles/form-shell.css?v=202611051232">
+  <link rel="stylesheet" href="styles/main.css?v=202611051233">
+  <link rel="stylesheet" href="styles/form-shell.css?v=202611051233">
   <!-- Padding handled in main.css for better control -->
 </head>
 <body>
@@ -305,7 +305,8 @@
           <span class="helper-text">Automatically hyphenate words at line breaks</span>
         </div>
         <div class="form-group">
-          <div class="layer-controls" role="radiogroup" aria-label="Text alignment">
+          <label id="alignLabel">Alignment</label>
+          <div class="layer-controls" role="radiogroup" aria-labelledby="alignLabel">
             <label class="layer-checkbox" title="Left aligned">
               <input type="radio" name="alignMode" id="alignLeft" checked>
               <span class="ic"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 10h10M4 14h16M4 18h8"/></svg><em class="sr">Left aligned</em></span>
@@ -316,7 +317,6 @@
             </label>
           </div>
           <input type="checkbox" id="justifyText" hidden>
-          <span class="helper-text">Left aligned or justified</span>
         </div>
         <div class="form-group">
           <div class="layer-controls" role="group" aria-label="Show ragged edge and rivers">
@@ -524,14 +524,14 @@
   <!-- PDF Export Libraries -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script type="module" src="src/main.js?v=202611051232"></script>
-  <script src="src/start.js?v=202611051232"></script>
-  <script src="src/steps.js?v=202611051232"></script>
-  <script src="src/column-picker.js?v=202611051232"></script>
-  <script src="src/popout.js?v=202611051232"></script>
-  <script type="module" src="src/editor.js?v=202611051232"></script>
-  <script type="module" src="src/text-import.js?v=202611051232"></script>
-  <script src="src/number-steppers.js?v=202611051232"></script>
-  <script src="src/layer-cycle.js?v=202611051232"></script>
+  <script type="module" src="src/main.js?v=202611051233"></script>
+  <script src="src/start.js?v=202611051233"></script>
+  <script src="src/steps.js?v=202611051233"></script>
+  <script src="src/column-picker.js?v=202611051233"></script>
+  <script src="src/popout.js?v=202611051233"></script>
+  <script type="module" src="src/editor.js?v=202611051233"></script>
+  <script type="module" src="src/text-import.js?v=202611051233"></script>
+  <script src="src/number-steppers.js?v=202611051233"></script>
+  <script src="src/layer-cycle.js?v=202611051233"></script>
 </body>
 </html>
