@@ -2102,12 +2102,6 @@ export function initializeCalculator() {
             }
         });
     }
-    else {
-        // If toggle doesn't exist, add decorations by default
-        setTimeout(() => {
-            addLetterpressDecorations();
-        }, 100);
-    }
     // Initialize modal
     const modal = document.getElementById('introModal');
     const readMeLink = document.getElementById('readMeLink');

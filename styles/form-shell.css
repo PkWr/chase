@@ -97,7 +97,7 @@ html.start-leaving #startScreen{opacity:0;pointer-events:none}
 
 /* Steps: one group of controls at a time, Back / Next at the foot of the panel */
 .container{display:flex;flex-direction:column;padding-bottom:0}
-.container #layoutForm{flex:1 1 auto;min-height:0}
+.container #layoutForm{flex:none;min-height:0}
 body[data-step="1"] .container [data-step]:not([data-step="1"]),
 body[data-step="2"] .container [data-step]:not([data-step="2"]),
 body[data-step="3"] .container [data-step]:not([data-step="3"]),
@@ -155,7 +155,7 @@ body[data-step="7"] .cp-foot #downloadRow{display:block}
 .container .form-section{margin:12px 0 0;padding:12px;border:1px solid #24272b;border-radius:12px;background:var(--cp-surface)}
 .container .form-section h2{margin:0 0 8px;font-size:11px;letter-spacing:.08em;text-transform:uppercase}
 .container .step-pane .specification-section{margin:12px 0 0}
-@media(max-width:900px){.scale-indicator{display:none}.step-now{max-width:55%}}
+@media(max-width:900px){.step-now{max-width:55%}}
 .preview-wrapper .visualization-section{display:flex;flex-direction:column}
 .page-nav{display:flex;justify-content:center;gap:8px;padding-top:12px;flex:none}
 .container .step-list{display:flex;flex-direction:column;gap:2px;font-size:13px;line-height:1.9}
@@ -193,3 +193,14 @@ body[data-step="7"] .cp-foot #downloadRow{display:block}
 .container .intro-terms a{color:var(--cp-text)}
 .container .intro-pane p{font-size:12px;line-height:1.6;margin:0 0 8px}
 .container .intro-pane h2{margin-bottom:6px}
+/* Show toggles as text with a yellow underline when on, no tick boxes */
+.container .cp-sec .layer-controls{gap:4px 16px}
+.container .layer-checkbox{position:relative;display:inline-block;cursor:pointer}
+.container .layer-checkbox input{position:absolute;opacity:0;width:100%;height:100%;margin:0;inset:0;cursor:pointer}
+.container .layer-checkbox span{display:inline-block;padding:0 0 2px;color:var(--cp-muted);border-bottom:2px solid transparent}
+.container .layer-checkbox:hover span{color:var(--cp-text)}
+.container .layer-checkbox input:checked+span{color:var(--cp-text);border-bottom-color:var(--yellow)}
+.container .layer-checkbox input:focus-visible+span{outline:2px solid var(--yellow);outline-offset:2px}
+.cp-foot .scale-line{margin:0 0 6px}
+.cp-foot .scale-indicator{color:var(--cp-muted)}
+.container .cp-foot .layer-checkbox{display:inline-block}

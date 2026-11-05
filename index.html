@@ -80,14 +80,6 @@
             <input type="checkbox" id="solidFills">
             <span>Solid fills</span>
           </label>
-          <label class="layer-checkbox">
-            <input type="checkbox" id="showRaggedEdge">
-            <span>Ragged edge</span>
-          </label>
-                  <label class="layer-checkbox">
-            <input type="checkbox" id="sparkleToggle">
-            <span>Sparkle</span>
-          </label>
         </div>
       </section>
 
@@ -308,6 +300,15 @@
           </label>
           <span class="helper-text">Align text to both left and right</span>
         </div>
+        <div class="form-group">
+          <div class="layer-controls" role="group" aria-label="Show ragged edge and rivers">
+            <label class="layer-checkbox">
+              <input type="checkbox" id="showRaggedEdge">
+              <span>Ragged edge and rivers</span>
+            </label>
+          </div>
+          <span class="helper-text">Marks the ragged right edge, and the rivers of white space when the text is justified</span>
+        </div>
       </section>
 
       <section data-step="6" class="form-section">
@@ -354,6 +355,7 @@
       </form>
       <div class="cp-foot">
         <div id="downloadRow"><button type="button" id="exportHtmlButton" class="btn-export btn-primary">Download specification (PDF)</button></div>
+        <p class="hint scale-line"><span id="scaleIndicator" class="scale-indicator"></span></p>
         <p class="hint"><a href="index.html?calculator" aria-current="page">Compositor</a> · <a href="grep.html">Grep</a> · <a href="./">About</a> · <a href="changelog.html"><!--version-->v1.0<!--/version--></a></p>
       </div>
     </div>
@@ -363,7 +365,7 @@
         <div class="section-header">
           <p id="stepNow" class="step-now" aria-live="polite">Step 1 of 7 · Intro</p>
           <div class="header-actions">
-            <span id="scaleIndicator" class="scale-indicator"></span>          </div>
+                      </div>
         </div>
         <div id="visualizationContainer" class="visualization-container"></div>
         <div class="row nav page-nav" role="group" aria-label="Steps">
