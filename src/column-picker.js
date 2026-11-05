@@ -39,33 +39,22 @@
     last = sig;
     var lab = document.getElementById('startPickerLabel');
     var endCol = r.start + r.span - 1;
-    if (lab) lab.textContent = r.n + (r.n === 1 ? ' column' : ' columns');
+    if (lab) lab.textContent = 'Columns';
     if (help) {
-      help.innerHTML =
-        '<span class="pk-now">Text starts in column ' + r.start +
-        (r.span > 1 ? ' and spans columns ' + r.start + ' to ' + endCol + ', then carries on to the next page.' : ' and spans that column only, then carries on to the next page.') + '</span>' +
-        '<span class="pk-how">Plus and minus add or remove a column. To move where the text starts, widen the box to the left by clicking an earlier column, then narrow it from the right by clicking its last column. Clicking a column beside the box widens it, and clicking an end column of the box narrows it.</span>' +
-        '<span class="pk-key"><i class="k-start"></i>text starts here <i class="k-text"></i>text spans <i class="k-empty"></i>empty column</span>';
+      help.textContent = 'Text box: ' + (r.span > 1 ? 'columns ' + r.start + '\u2013' + endCol : 'column ' + r.start) + '. Tap columns to resize it.';
     }
     host.innerHTML = '';
+    var head = document.createElement('div');
+    head.className = 'start-ctrl';
     var colsRow = document.createElement('div');
     colsRow.className = 'start-cols';
-    var ctrlRow = document.createElement('div');
-    ctrlRow.className = 'start-ctrl';
+    host.appendChild(head);
     host.appendChild(colsRow);
-    colsRow.appendChild(ctrlRow); // − + sit at the front; columns flow after them
-    for (var k = 1; k <= r.n; k++) {
-      var b = document.createElement('button');
-      b.type = 'button';
-      b.setAttribute('aria-pressed', String(k >= r.start && k < r.start + r.span));
-      b.setAttribute('aria-label', 'Column ' + k);
-      b.title = 'Column ' + k;
-      b.dataset.col = String(k);
-      b.className = 'start-col' + (k >= r.start && k < r.start + r.span ? ' has-text' : '') + (k === r.start ? ' is-start' : '');
-      b.innerHTML = '<span class="n">' + k + '</span>';
-      colsRow.appendChild(b);
-    }
-    [['minus', '−', 'Remove a column', r.n <= 1], ['plus', '+', 'Add a column', r.n >= MAX]].forEach(function (d) {
+    var cnt = document.createElement('span');
+    cnt.className = 'start-count';
+    cnt.setAttribute('aria-live', 'polite');
+    cnt.textContent = String(r.n);
+    [['minus', '\u2212', 'Remove a column', r.n <= 1], ['plus', '+', 'Add a column', r.n >= MAX]].forEach(function (d) {
       var c = document.createElement('button');
       c.type = 'button';
       c.className = 'start-col start-' + d[0];
@@ -74,8 +63,21 @@
       c.setAttribute('aria-label', d[2]);
       c.disabled = d[3];
       c.textContent = d[1];
-      ctrlRow.appendChild(c);
+      head.appendChild(c);
+      if (d[0] === 'minus') head.appendChild(cnt);
     });
+    for (var k = 1; k <= r.n; k++) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      var on = k >= r.start && k < r.start + r.span;
+      b.setAttribute('aria-pressed', String(on));
+      b.setAttribute('aria-label', 'Column ' + k + (on ? ', in the text box' : ''));
+      b.title = 'Column ' + k;
+      b.dataset.col = String(k);
+      b.className = 'start-col' + (on ? ' has-text' : '');
+      b.innerHTML = '<span class="n">' + k + '</span>';
+      colsRow.appendChild(b);
+    }
   }
 
   function fire(el) { el.dispatchEvent(new Event('input', { bubbles: true })); }

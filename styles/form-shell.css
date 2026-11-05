@@ -447,3 +447,15 @@ body[data-step="8"] .scale-line{display:none}
 @media(max-width:900px){.preview-wrapper .page-nav{padding-bottom:18px}}
 
 .container .align-row .hyph-toggle{border-left:1px solid var(--cp-muted);padding-left:12px;margin-left:4px}
+
+/* Columns control: stepper row, then equal-width column blocks that fill the row; yellow = in the text box */
+.container .start-picker{margin:6px 0 2px}
+.container .start-picker .start-ctrl{display:flex;align-items:center;justify-content:flex-start;gap:8px;margin:0 0 8px;padding:0;border:0}
+.container .start-picker .start-ctrl .start-col{width:44px;height:44px;font-size:20px;border-style:solid;background:var(--cp-surface);border-color:var(--cp-line);color:var(--cp-text)}
+.container .start-picker .start-ctrl .start-col:hover:not(:disabled){border-color:var(--yellow)}
+.container .start-picker .start-count{min-width:44px;text-align:center;font-size:20px;color:var(--cp-text)}
+.container .start-picker .start-cols{display:flex;flex-wrap:nowrap;gap:6px;margin:0;padding:0;border:0}
+.container .start-picker .start-cols .start-col{flex:1 1 0;min-width:0;max-width:56px;width:auto;height:56px;background:transparent;border:1px dashed var(--cp-muted);color:var(--cp-muted);font-size:12px}
+.container .start-picker .start-cols .start-col.has-text{background:var(--yellow);border:1px solid var(--yellow);color:var(--ink)}
+.container .start-picker .start-cols .start-col .n{bottom:5px}
+.container #startPickerHelp{display:block;margin-top:8px}
