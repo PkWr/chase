@@ -43,6 +43,9 @@ function refresh() {
     const none = document.getElementById('stylesNone');
     if (none)
         none.hidden = any;
+    const note = document.getElementById('stylesNote');
+    if (note)
+        note.hidden = !any;
 }
 
 /** Wires the panel. onChange redraws the page. */

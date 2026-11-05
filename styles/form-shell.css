@@ -385,3 +385,5 @@ body.popout-window .editor-stage{right:24px}
 .container .step-list a:hover{color:var(--yellow);background:transparent}
 .container .step-list a[aria-checked=true]{color:var(--yellow);background:transparent;border-bottom:1px dashed var(--yellow)}
 .container .step-list .step-sep{font-style:normal;color:var(--cp-text)}
+
+#stylesNone[hidden],#stylesNote[hidden]{display:none !important}
