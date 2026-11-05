@@ -22,6 +22,26 @@ function getLayerVisibility() {
 }
 // Page dimensions and margins are always in mm, gutter is always in em
 const PAGE_UNIT = 'mm';
+/**
+ * CSS font stack for a typeface name. Only typefaces installed on both Mac and Windows are offered,
+ * so the same names also work when the layout is opened in InDesign.
+ */
+const FONT_STACKS = {
+    'Times New Roman': "'Times New Roman', Times, serif",
+    'Georgia': "Georgia, serif",
+    'Palatino': "Palatino, 'Palatino Linotype', 'Book Antiqua', serif",
+    'Garamond': "Garamond, 'Adobe Garamond Pro', 'EB Garamond', serif",
+    'Arial': "Arial, Helvetica, sans-serif",
+    'Helvetica': "Helvetica, Arial, sans-serif",
+    'Verdana': "Verdana, Geneva, sans-serif",
+    'Gill Sans': "'Gill Sans', 'Gill Sans MT', Calibri, sans-serif",
+    'Trebuchet MS': "'Trebuchet MS', sans-serif",
+    'Courier New': "'Courier New', Courier, monospace",
+    'serif': 'serif', 'sans-serif': 'sans-serif', 'monospace': 'monospace'
+};
+function fontStack(name) {
+    return FONT_STACKS[name] || `'${name}', serif`;
+}
 const VISUALIZATION_SIZE = 400; // Maximum size for the visualization in pixels
 const MIN_MARGIN_VISUAL = 2; // Minimum margin size in pixels for visibility
 /**
@@ -244,7 +264,7 @@ function drawPage(svg, inputs, pageX, pageY, pageWidth, pageHeight, leftMargin, 
         try {
             const fam = inputs.fontFamily || 'serif';
             const ctx = document.createElement('canvas').getContext('2d');
-            ctx.font = `${fs}px ${fam === 'serif' || fam === 'sans-serif' || fam === 'monospace' ? fam : `'${fam}', serif`}`;
+            ctx.font = `${fs}px ${fontStack(fam)}`;
             const m = ctx.measureText('Hxg');
             if (m.fontBoundingBoxAscent) { asc = m.fontBoundingBoxAscent; desc = m.fontBoundingBoxDescent; }
         } catch (e) { /* keep estimates */ }
@@ -328,7 +348,7 @@ function drawPage(svg, inputs, pageX, pageY, pageWidth, pageHeight, leftMargin, 
                 textDiv.style.lineHeight = `${lineHeight}px`;
                 // Use selected font family or default to serif
                 const fontFamily = inputs.fontFamily || 'serif';
-                textDiv.style.fontFamily = fontFamily === 'serif' ? 'serif' : fontFamily === 'sans-serif' ? 'sans-serif' : fontFamily === 'monospace' ? 'monospace' : `'${fontFamily}', serif`;
+                textDiv.style.fontFamily = fontStack(fontFamily);
                 textDiv.style.width = '100%';
                 textDiv.style.height = '100%';
                 // Flow: fill each span to the bottom of the text box, then continue in the next

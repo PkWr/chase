@@ -4,11 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>chase</title>
-  <link rel="stylesheet" href="styles/main.css?v=202611051041">
-  <link rel="stylesheet" href="styles/form-shell.css?v=202611051041">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=EB+Garamond:wght@400;600&family=Crimson+Text:wght@400;600&family=Libre+Baskerville:wght@400;700&family=Lora:wght@400;700&family=Merriweather:wght@400;700&family=Source+Sans+Pro:wght@400;600&family=Open+Sans:wght@400;600&family=Inter:wght@400;600&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/main.css?v=202611051044">
+  <link rel="stylesheet" href="styles/form-shell.css?v=202611051044">
   <!-- Padding handled in main.css for better control -->
 </head>
 <body>
@@ -255,37 +252,28 @@
         <div class="form-group">
           <label for="fontFamily">Typeface</label>
           <select id="fontFamily" class="font-select">
-            <optgroup label="Defaults">
-            <option value="serif">Serif (default)</option>
-            <option value="sans-serif">Sans-serif (default)</option>
-            </optgroup>
             <optgroup label="Old-style serif">
-            <option value="EB Garamond">EB Garamond</option>
-            <option value="Crimson Text">Crimson Text</option>
+            <option value="Garamond">Garamond</option>
+            <option value="Palatino">Palatino</option>
             </optgroup>
             <optgroup label="Transitional serif">
-            <option value="Libre Baskerville">Libre Baskerville</option>
+            <option value="Times New Roman" selected>Times New Roman</option>
             <option value="Georgia">Georgia</option>
-            <option value="Times New Roman">Times New Roman</option>
-            </optgroup>
-            <optgroup label="Contemporary serif">
-            <option value="Lora">Lora</option>
-            <option value="Merriweather">Merriweather</option>
             </optgroup>
             <optgroup label="Humanist sans">
-            <option value="Source Sans Pro">Source Sans Pro</option>
-            <option value="Open Sans">Open Sans</option>
+            <option value="Gill Sans">Gill Sans</option>
+            <option value="Verdana">Verdana</option>
+            <option value="Trebuchet MS">Trebuchet MS</option>
             </optgroup>
-            <optgroup label="Neo-grotesque and geometric sans">
-            <option value="Inter">Inter</option>
+            <optgroup label="Neo-grotesque sans">
+            <option value="Helvetica">Helvetica</option>
             <option value="Arial">Arial</option>
-            <option value="Montserrat">Montserrat</option>
             </optgroup>
             <optgroup label="Monospace">
-            <option value="IBM Plex Mono">IBM Plex Mono</option>
+            <option value="Courier New">Courier New</option>
             </optgroup>
           </select>
-          <span class="helper-text">Select a typeface for text preview</span>
+          <span class="helper-text">Typefaces that are installed on Mac and Windows</span>
         </div>
         <div class="form-row">
           <div class="form-group">
@@ -465,12 +453,12 @@
   <!-- PDF Export Libraries -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script type="module" src="src/main.js?v=202611051041"></script>
-  <script src="src/start.js?v=202611051041"></script>
-  <script src="src/steps.js?v=202611051041"></script>
-  <script src="src/column-picker.js?v=202611051041"></script>
-  <script src="src/popout.js?v=202611051041"></script>
-  <script src="src/text-import.js?v=202611051041"></script>
-  <script src="src/layer-cycle.js?v=202611051041"></script>
+  <script type="module" src="src/main.js?v=202611051044"></script>
+  <script src="src/start.js?v=202611051044"></script>
+  <script src="src/steps.js?v=202611051044"></script>
+  <script src="src/column-picker.js?v=202611051044"></script>
+  <script src="src/popout.js?v=202611051044"></script>
+  <script src="src/text-import.js?v=202611051044"></script>
+  <script src="src/layer-cycle.js?v=202611051044"></script>
 </body>
 </html>
