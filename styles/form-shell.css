@@ -358,3 +358,12 @@ body.popout-window .editor-stage{right:24px}
 .container .align-row{display:flex;align-items:center;justify-content:space-between;gap:8px 12px;flex-wrap:wrap}
 .container .align-row .layer-controls{margin:0}
 .container .align-row .ragged-toggle{margin-left:auto;text-align:right}
+
+/* Steps as a ribbon: the current step is centred with the previous and next either side; swipe or scroll for the rest */
+.container .cp-stepsec{padding:6px 0;overflow:hidden}
+.container .step-list,.container .step-list{flex-direction:row;flex-wrap:nowrap;gap:0;line-height:1.6;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+.container .step-list::-webkit-scrollbar{display:none}
+.container .step-list::before,.container .step-list::after{content:"";flex:0 0 33.333%}
+.container .step-list a,.container .step-list a:not([aria-checked=true]){display:flex;flex:0 0 33.333%;align-items:center;justify-content:center;gap:5px;box-sizing:border-box;min-height:40px;padding:0 4px;font-size:13px;white-space:nowrap;scroll-snap-align:center;border-radius:8px;overflow:hidden;text-overflow:ellipsis}
+.container .step-list a span,.container .step-list a:not([aria-checked=true]) span{width:auto;padding:0;font-size:inherit}
+.container .step-list a:not([aria-checked=true]){opacity:.7}

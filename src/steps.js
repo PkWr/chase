@@ -18,6 +18,9 @@
     var label = 'Step ' + step + ' of ' + titles.length + ' · ' + titles[step - 1];
     now.textContent = label;
     pills.forEach(function (a) { a.setAttribute('aria-checked', String(Number(a.dataset.go) === step)); });
+    var ribbon = document.getElementById('cpSteps');
+    var cur = pills[step - 1];
+    if (ribbon && cur) ribbon.scrollTo({ left: cur.offsetLeft - (ribbon.clientWidth - cur.offsetWidth) / 2, behavior: previous ? 'smooth' : 'auto' });
     next.textContent = step < titles.length ? 'Next / ' + titles[step] : 'Next';
     back.hidden = step === 1;
     next.hidden = step === titles.length;
