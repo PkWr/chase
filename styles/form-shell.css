@@ -248,3 +248,6 @@ body[data-step="1"] #popOut{display:none}
 .container .start-ctrl .start-plus:hover{background:var(--yellow);border-color:var(--yellow)}
 .container .start-ctrl .start-minus{background:transparent;border-color:var(--cp-line);color:var(--cp-text)}
 .container .start-ctrl .start-col:disabled{opacity:.3}
+.container .layer-checkbox .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.container .cp-show .layer-controls{gap:10px}
+.container .cp-show .layer-checkbox span.ic{display:inline-flex;align-items:center;justify-content:center;width:36px;height:32px;padding:0 0 2px}
