@@ -2168,6 +2168,14 @@ export function initializeCalculator() {
     // Initialize margin inputs visibility
     updateMarginInputs();
     // Handle margin unit toggle
+    // em / mm text choice in the panel header: clicking a word sets the (hidden) checkbox that holds the unit
+    document.querySelectorAll('.unit-pick .unit-opt').forEach((opt) => {
+        opt.addEventListener('click', () => {
+            const box = document.getElementById('marginUnitToggle');
+            if (box && box.checked !== (opt.dataset.unit === 'em'))
+                box.click();
+        });
+    });
     const marginUnitToggle = document.getElementById('marginUnitToggle');
     if (marginUnitToggle) {
         let previousUnit = marginUnitToggle.checked ? 'em' : 'mm';
