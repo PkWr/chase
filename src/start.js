@@ -7,6 +7,18 @@
   var strip = document.getElementById('startStrip');
   var screen = document.getElementById('startScreen');
 
+  // Marquee: a second copy follows the first so the loop is seamless; speed is set from the height.
+  (function () {
+    var inner = document.querySelector('.start-scroll-inner'), loop = inner && inner.querySelector('.start-loop');
+    if (!loop) return;
+    var copy = loop.cloneNode(true);
+    copy.setAttribute('aria-hidden', 'true');
+    inner.appendChild(copy);
+    function speed() { inner.style.animationDuration = Math.max(60, loop.offsetHeight / 24) + 's'; }
+    speed();
+    window.addEventListener('resize', speed);
+  })();
+
   function open() {
     if (!root.classList.contains('show-start')) return;
     root.classList.add('start-leaving');

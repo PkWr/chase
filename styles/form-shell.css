@@ -266,11 +266,16 @@ body[data-step="1"] #popOut{display:none}
 .cp-grab:focus-visible{outline:2px solid var(--yellow);outline-offset:-2px}
 #panel.collapsed>:not(.cp-grab):not(.cp-head):not(.cp-foot){display:none}
 #panel.collapsed{bottom:auto;height:auto;max-height:none;min-height:0}
-/* Start screen: the description of the em, scrolling slowly. */
-.start-scroll{position:relative;width:min(30em,calc(100vw - 48px));height:9.5em;overflow:hidden;font-size:13px;line-height:1.6;color:rgba(255,255,255,.7);text-align:center;-webkit-mask-image:linear-gradient(transparent,#000 22%,#000 78%,transparent);mask-image:linear-gradient(transparent,#000 22%,#000 78%,transparent)}
-.start-scroll-inner{padding-top:9.5em;animation:emScroll 150s linear infinite}
+/* Start screen: chase, compositor and em scroll together as one slow marquee, the title first. */
+html.show-start #startScreen{display:block}
+.start-scroll{position:absolute;inset:0;overflow:hidden;text-align:left;color:#fff;font-size:clamp(14px,1.25vw,19px);line-height:1.6;-webkit-mask-image:linear-gradient(transparent,#000 9%,#000 88%,transparent);mask-image:linear-gradient(transparent,#000 9%,#000 88%,transparent)}
+.start-scroll-inner{animation:emScroll 120s linear infinite;will-change:transform}
 .start-scroll:hover .start-scroll-inner{animation-play-state:paused}
+.start-loop{padding:14vh calc(9vw + var(--strip-w)) 34vh 9vw}
+.start-loop>:not(.start-title){max-width:34em}
 .start-scroll p{margin:0 0 1.2em}
-@keyframes emScroll{from{transform:translateY(0)}to{transform:translateY(-100%)}}
-@media(prefers-reduced-motion:reduce){.start-scroll{height:auto;overflow:auto;max-height:12em;-webkit-mask-image:none;mask-image:none}.start-scroll-inner{padding-top:0;animation:none}}
-.start-scroll .term{margin:0 0 .3em;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#fff}
+.start-title{color:var(--yellow);margin:0 0 .35em -.04em;font-size:calc((100vw - 18vw - var(--strip-w)) / 2.95);line-height:.95;text-align:left}
+.start-scroll .term{margin:2.2em 0 .3em;font-size:.85em;letter-spacing:.12em;text-transform:uppercase;color:#fff}
+@keyframes emScroll{from{transform:translateY(0)}to{transform:translateY(-50%)}}
+#startOpen{position:fixed;right:calc(9vw + var(--strip-w));bottom:8vh;z-index:3}
+@media(prefers-reduced-motion:reduce){.start-scroll{overflow:auto;-webkit-mask-image:none;mask-image:none}.start-scroll-inner{animation:none}.start-loop[aria-hidden]{display:none}}

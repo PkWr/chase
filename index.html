@@ -14,18 +14,19 @@
 <body>
   <script>if (!location.search) document.documentElement.classList.add('show-start');</script>
   <div id="startScreen">
-    <h1 class="start-title">chase</h1>
     <div class="start-scroll" role="region" aria-label="About compositor, chase and em">
       <div class="start-scroll-inner">
+      <div class="start-loop">
+        <h1 class="start-title">chase</h1>
+        <p>The chase is the rectangular iron frame that holds the composed type. Lines of type and the blank spacing material around them are packed inside it and locked tight, so that the whole page can be moved, inked and printed as one piece.</p>
+        <p>What the frame fixes is the shape of the page: the outer size, the margins and the columns. On screen the same job is done by the page, margin and column guides, which is where this project takes its name.</p>
         <p class="term">compositor</p>
         <p>The compositor is the person who sets the type. Working letter by letter in a composing stick, the compositor decides the line length, the spacing between words and where each line breaks, and turns a manuscript into a page that reads well.</p>
         <p>The calculator in this tooling is named after that role. It takes the decisions a compositor once made by hand and works them out from numbers.</p>
-        <p class="term">chase</p>
-        <p>The chase is the rectangular iron frame that holds the composed type. Lines of type and the blank spacing material around them are packed inside it and locked tight, so that the whole page can be moved, inked and printed as one piece.</p>
-        <p>What the frame fixes is the shape of the page: the outer size, the margins and the columns. On screen the same job is done by the page, margin and column guides, which is where this project takes its name.</p>
         <p class="term">em</p>
         <p>The em is a unit of measure that takes its size from the type. One em equals the point size of the typeface being set, so in 12 point type an em is 12 points, and in 40 point type it is 40.</p>
         <p>The name comes from the capital M, whose body in metal type was roughly square. Because the em moves with the type, indents, dashes and letterspacing keep their relationship to the letters when the size changes.</p>
+      </div>
       </div>
     </div>
     <button type="button" id="startOpen">open</button>
