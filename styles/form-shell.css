@@ -115,3 +115,12 @@ body[data-step="4"] .container [data-step]:not([data-step="4"]){display:none !im
 .container .step-pane .spec-label{color:var(--cp-muted)}
 .container .step-pane .btn-export{width:100%;padding:12px;background:var(--yellow);border-color:var(--yellow);color:var(--ink)}
 .container .step-pane .btn-export,.container .step-next:not(:disabled){color:var(--ink);font-weight:400;opacity:1}
+
+/* Changelog page (generated) */
+.start-version:hover,.start-version:focus-visible{color:var(--yellow);outline:none}
+body.page{padding:0}
+.about{max-width:640px;margin:0 auto;padding:40px 24px 80px}
+.about h1{font-size:22px;margin:16px 0;font-weight:300;color:var(--ink)}
+.about h2{font-size:13px;margin:28px 0 6px;font-weight:400;color:#555}
+.about ul{margin:0 0 12px;padding-left:1.2em;font-size:14px;line-height:1.6;color:var(--ink)}
+.about a{color:var(--ink)}

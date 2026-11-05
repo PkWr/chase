@@ -55,6 +55,8 @@ type-setting/
 │   ├── start.js   # Start screen and About drawer
 │   └── grep.js    # GREP pattern generator
 ├── test/          # node:test tests
+├── tools/         # build-changelog.py (generates changelog.html and the version label)
+├── changelog.html # Public release notes (generated)
 ├── styles/        # main.css, form-shell.css (Form palette, panel, start screen)
 ├── vendor/fonts/  # Self-hosted fonts
 ├── index.html     # Layout calculator
