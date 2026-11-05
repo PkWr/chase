@@ -8,11 +8,11 @@ Robert Bringhurst's "The Elements of Typographic Style" is widely considered the
 
 Introduction to Bringhurst's Philosophy
 
-Bringhurst's work frames typography as a craft that merges writing, editing, and graphic design. Typography, for Bringhurst, is not simply about making text readable: it is a nuanced, historical, and aesthetic discipline whose purpose is to honor and reveal the content it presents. Letters and type must serve the text's meaning, maintain clarity, and communicate effectively, embodying both aesthetic rhythm and practical clarity.
+Bringhurst's work frames typography as a craft that merges writing, editing, and graphic design. Typography, for Bringhurst, is not simply about making text readable: it is a nuanced, historical, and aesthetic discipline whose purpose is to honour and reveal the content it presents. Letters and type must serve the text's meaning, maintain clarity, and communicate effectively, embodying both aesthetic rhythm and practical clarity.
 
 The Role and Purpose of Typography
 
-Bringhurst writes, "Typography exists to honor content. Like oratory, music, dance, calligraphy—like anything that lends its grace to language—typography is an art that can be." The designer's first duty is to read and understand the material, so the shape, size, and spacing of type support the meaning. Typography should invite readers into the text, clarify its structure, and create energetic repose—an ideal state for reading.
+Bringhurst writes, "Typography exists to honour content. Like oratory, music, dance, calligraphy—like anything that lends its grace to language—typography is an art that can be." The designer's first duty is to read and understand the material, so the shape, size, and spacing of type support the meaning. Typography should invite readers into the text, clarify its structure, and create energetic repose—an ideal state for reading.
 
 Letters as Living Structures
 
@@ -20,9 +20,9 @@ Bringhurst considers individual letterforms as both works of art and functional 
 
 Typeface Selection and Combination
 
-Central to Bringhurst's guidance is careful typeface selection—honoring the tone and character of a text and combining typefaces to achieve harmony. Typeface choice must reveal the text's meaning and never overshadow it; well-chosen words deserve well-chosen letters: "these in turn deserve to be set with affection, intelligence, knowledge and skill."
+Central to Bringhurst's guidance is careful typeface selection—honouring the tone and character of a text and combining typefaces to achieve harmony. Typeface choice must reveal the text's meaning and never overshadow it; well-chosen words deserve well-chosen letters: "these in turn deserve to be set with affection, intelligence, knowledge and skill."
 
-Bringhurst explores historical evolution, from Renaissance modulated strokes to postmodern parodies, and discusses the effects of letterform shape, weight, and spacing on legibility and aesthetics. The design decisions for headings, footnotes, asides, and quotes must all honor and reveal relationships within the text.
+Bringhurst explores historical evolution, from Renaissance modulated strokes to postmodern parodies, and discusses the effects of letterform shape, weight, and spacing on legibility and aesthetics. The design decisions for headings, footnotes, asides, and quotes must all honour and reveal relationships within the text.
 
 Legibility, Hierarchy, and Structure
 
@@ -30,7 +30,7 @@ Guidance on typesetting includes:
 
 Optimal character count per line (around 66 per line, 45-75 acceptable) for legibility.
 
-Constructing text blocks to "honor and reveal relationships" between typographic elements.
+Constructing text blocks to "honour and reveal relationships" between typographic elements.
 
 Using margins, columns, section heads, white space, and other layout devices to shape the reading experience and clarify text structure.
 
@@ -60,7 +60,7 @@ Conclusion and Essential Values
 
 Typography, for Bringhurst, "must often draw attention to itself before it will be read. Yet in order to be read, it must relinquish the attention it has drawn. Typography with anything to say therefore aspires to a kind of statuesque transparency." Its ultimate goal is not to be immune to change but to link timelessness and time, letting language speak clearly and beautifully through type.
 
-He summarizes that typography should:
+He summarises that typography should:
 
 Invite the reader into the text.
 
