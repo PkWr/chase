@@ -165,3 +165,15 @@ body[data-step="5"] .cp-foot #downloadRow{display:block}
 .container .cp-stepsec{margin-top:12px}
 .container .start-plus,.container .start-minus{background:transparent;border-style:dashed;color:var(--cp-text);font-size:14px}
 .container .start-col:disabled{opacity:.3}
+.container .unit-toggle-wrapper{border:0;margin:0 0 8px;padding:0}
+.container .paper-size-select{width:100%;min-width:0;padding-left:10px;padding-right:24px;text-overflow:ellipsis}
+.container .form-row{gap:12px}
+.container .form-row>.form-group{min-width:0;flex:1 1 0}
+@media(max-width:900px){
+.container .step-list{flex-direction:row;flex-wrap:wrap;gap:4px;line-height:1.7}
+.container .step-list a{display:inline-block}
+.container .step-list a:not([aria-checked=true]){font-size:0}
+.container .step-list a:not([aria-checked=true]) span{font-size:12px;width:auto;padding:0 4px}
+.container .cp-show{position:static}
+.container .cp-sec{margin-top:8px;padding:10px}
+}
