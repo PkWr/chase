@@ -70,12 +70,13 @@ def main():
     note = pathlib.Path(sys.argv[1]) if len(sys.argv) > 1 else DEFAULT_NOTE
     entries = parse(note.read_text(encoding="utf-8"))
     (HERE / "changelog.html").write_text(PAGE % render(entries), encoding="utf-8")
-    index = HERE / "index.html"
-    text = index.read_text(encoding="utf-8")
-    new, n = re.subn(r"(<!--version-->).*?(<!--/version-->)", r"\g<1>%s\g<2>" % entries[0][0], text)
-    if n != 1:
-        sys.exit("index.html: expected one <!--version-->...<!--/version--> marker")
-    index.write_text(new, encoding="utf-8")
+    for name in ("index.html", "grep.html"):
+        page = HERE / name
+        text = page.read_text(encoding="utf-8")
+        new, n = re.subn(r"(<!--version-->).*?(<!--/version-->)", r"\g<1>%s\g<2>" % entries[0][0], text)
+        if n < 1:
+            sys.exit("%s: expected at least one <!--version-->...<!--/version--> marker" % name)
+        page.write_text(new, encoding="utf-8")
     print("changelog.html written; version", entries[0][0])
 
 

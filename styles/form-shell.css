@@ -16,7 +16,7 @@ body{padding:0;background:var(--paper);color:var(--ink);font:300 13px/1.5 var(--
 .btn-export{background:var(--ink);color:var(--paper);border:1px solid var(--ink);border-radius:8px}
 .scale-indicator{color:#555}
 .spec-label{color:#555}.spec-value{color:var(--ink)}
-.container{position:fixed;top:16px;right:16px;bottom:56px;width:380px;max-width:calc(100vw - 32px);margin:0;padding:0 16px 8px;overflow:auto;flex:none;background:var(--cp-bg);color:var(--cp-text);border:1px solid var(--cp-line);border-radius:14px;box-shadow:0 12px 40px rgba(0,0,0,.5);z-index:30}
+.container{position:fixed;top:16px;right:16px;bottom:16px;width:380px;max-width:calc(100vw - 32px);margin:0;padding:0 16px 8px;overflow:auto;flex:none;background:var(--cp-bg);color:var(--cp-text);border:1px solid var(--cp-line);border-radius:14px;box-shadow:0 12px 40px rgba(0,0,0,.5);z-index:30}
 .container header{border-bottom:1px solid var(--cp-line);position:sticky;top:0;background:var(--cp-bg);z-index:1}
 .container h1,.container h2,.container label{color:var(--cp-text);font-weight:400}
 .container h1{font-size:15px}
@@ -44,17 +44,12 @@ body{padding:0;background:var(--paper);color:var(--ink);font:300 13px/1.5 var(--
 .modal-content a{color:var(--yellow)}
 
 /* Footer: thin ink bar under the preview, menu in the page colours */
-.fixed-footer{background:var(--ink);right:412px}
-.fixed-footer.expanded{background:var(--paper)}
 .footer-menu-toggle{color:var(--paper);font-size:11px}
-.fixed-footer.expanded .footer-menu-toggle,.fixed-footer.expanded h1{color:var(--ink)}
-.fixed-footer h1{color:var(--paper)}
 
 /* Narrow windows: controls become a bottom sheet */
 @media(max-width:900px){
-.preview-wrapper{bottom:auto;height:calc(56vh - 40px);padding:16px 16px 0}
-.container{top:auto;left:0;right:0;bottom:40px;width:auto;max-width:none;height:44vh;border-width:1px 0 0;border-radius:20px 20px 0 0}
-.fixed-footer{right:0}
+.preview-wrapper{bottom:auto;height:56vh;padding:16px 16px 0}
+.container{top:auto;left:0;right:0;bottom:0;width:auto;max-width:none;height:44vh;border-width:1px 0 0;border-radius:20px 20px 0 0}
 }
 
 /* Start screen, as on Form: black, an open button, the About drawer under a yellow strip */
@@ -107,21 +102,14 @@ body[data-step="1"] .container [data-step]:not([data-step="1"]),
 body[data-step="2"] .container [data-step]:not([data-step="2"]),
 body[data-step="3"] .container [data-step]:not([data-step="3"]),
 body[data-step="4"] .container [data-step]:not([data-step="4"]){display:none !important}
-.step-foot{position:sticky;bottom:0;margin:0 -16px;padding:0 16px;background:var(--cp-bg);border-top:1px solid var(--cp-line);z-index:1}
 .foot-label{margin:0 0 4px;font-size:11px;color:var(--cp-muted)}
 .container .layer-controls{display:flex;flex-wrap:wrap;gap:4px 14px;margin:0 0 10px;padding:0}
-.container header .foot-label{margin-top:2px}
 .container .layer-checkbox,.container .layer-checkbox span{color:var(--cp-text);font-size:12px}
-.step-nav{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 0 10px}
-.step-now{flex:1;text-align:center;font-size:11px;color:var(--cp-muted)}
-.container .step-btn{padding:7px 14px}
-.container .step-next:not(:disabled){background:var(--yellow);border-color:var(--yellow);color:var(--ink)}
-.container .step-btn:disabled{opacity:.35;cursor:default}
 .container .step-pane .specification-section{background:transparent;color:var(--cp-text);padding:0}
 .container .step-pane .specification-section h3,.container .step-pane .spec-value{color:var(--cp-text)}
 .container .step-pane .spec-label{color:var(--cp-muted)}
 .container .step-pane .btn-export{width:100%;padding:12px;background:var(--yellow);border-color:var(--yellow);color:var(--ink)}
-.container .step-pane .btn-export,.container .step-next:not(:disabled){color:var(--ink);font-weight:400;opacity:1}
+.container .step-pane .btn-export,.cp-foot .btn-export{color:var(--ink);font-weight:400;opacity:1}
 
 /* Changelog page (generated) */
 .start-version:hover,.start-version:focus-visible{color:var(--yellow);outline:none}
@@ -142,3 +130,26 @@ body.page{padding:0}
 .start-col .n{position:absolute;left:0;right:0;bottom:3px;text-align:center}
 .container .start-col:focus-visible{outline:2px solid var(--yellow);outline-offset:2px}
 .container .start-col:disabled{opacity:.35;cursor:default}
+
+/* Form-style panel: head, cards, foot */
+.container .cp-head{padding:12px 0 10px}
+.cp-now{margin:4px 0 0;font-size:11px;color:var(--cp-muted)}
+#panel .cp-sec,.container .cp-sec{margin:12px 0 0;padding:12px;border:1px solid #24272b;border-radius:12px;background:var(--cp-surface);font-size:12px}
+.container .cp-sec h3{margin:0 0 8px;font-size:11px;font-weight:400;letter-spacing:.08em;text-transform:uppercase;color:var(--cp-muted)}
+.container .cp-show{position:sticky;top:0;z-index:1}
+.container .cp-sec .layer-controls{display:flex;flex-wrap:wrap;gap:4px 14px;margin:0;padding:0}
+.container .layer-checkbox,.container .layer-checkbox span{color:var(--cp-text);font-size:12px}
+.container .cp-foot{position:sticky;bottom:0;margin:12px -16px 0;padding:10px 16px;background:var(--cp-bg);border-top:1px solid var(--cp-line);z-index:1}
+.cp-foot .hint{margin:0;font-size:11px;color:var(--cp-muted)}
+.cp-foot .hint a{color:var(--cp-text)}
+.cp-foot #downloadRow{display:none;margin-bottom:8px}
+body[data-step="4"] .cp-foot #downloadRow{display:block}
+.cp-foot .btn-export{width:100%;padding:9px 14px;background:var(--yellow);border-color:var(--yellow);color:var(--ink)}
+.step-now{margin:0;font-size:11px;color:var(--ink)}
+.header-actions .row.nav{display:flex;gap:6px}
+.preview-wrapper .step-btn{font:inherit;font-size:12px;padding:6px 14px;border:1px solid var(--ink);border-radius:8px;background:var(--ink);color:var(--paper);cursor:pointer}
+.preview-wrapper .step-btn:disabled{opacity:.3;cursor:default}
+.container .form-section{margin:12px 0 0;padding:12px;border:1px solid #24272b;border-radius:12px;background:var(--cp-surface)}
+.container .form-section h2{margin:0 0 8px;font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+.container .step-pane .specification-section{margin:12px 0 0}
+@media(max-width:900px){.scale-indicator{display:none}.step-now{max-width:55%}}

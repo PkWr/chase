@@ -7,13 +7,16 @@
   var back = document.getElementById('stepBack');
   var next = document.getElementById('stepNext');
   var now = document.getElementById('stepNow');
+  var cpNow = document.getElementById('cpNow');
   var panel = document.querySelector('.container');
   if (!back || !next || !now || !panel) return;
 
   function show(n) {
     step = Math.min(titles.length, Math.max(1, n));
     document.body.setAttribute('data-step', String(step));
-    now.textContent = 'Step ' + step + ' of ' + titles.length + ' · ' + titles[step - 1];
+    var label = 'Step ' + step + ' of ' + titles.length + ' · ' + titles[step - 1];
+    now.textContent = label;
+    if (cpNow) cpNow.textContent = label;
     back.disabled = step === 1;
     next.disabled = step === titles.length;
     panel.scrollTop = 0;
@@ -21,7 +24,5 @@
 
   back.addEventListener('click', function () { show(step - 1); });
   next.addEventListener('click', function () { show(step + 1); });
-  // Clicking the step label jumps back to the start, a quick way round for returning users.
-  now.addEventListener('dblclick', function () { show(1); });
   show(1);
 })();

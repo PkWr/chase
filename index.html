@@ -41,7 +41,7 @@
   </div>
   <div class="app-wrapper">
     <div class="container">
-      <header>
+      <header class="cp-head">
         <div class="header-top">
           <h1>Compositor</h1>
           <div class="header-right">
@@ -49,7 +49,10 @@
             <a href="#" id="resetLink" class="read-me-link">Reset</a>
           </div>
         </div>
-        <p class="foot-label">Show</p>
+        <p class="cp-now" id="cpNow">Step 1 of 4 · Page and margins</p>
+      </header>
+      <section class="cp-sec cp-show" aria-label="Show on the page">
+        <h3>Show</h3>
         <div class="layer-controls" role="group" aria-label="Show on the page">
           <label class="layer-checkbox">
             <input type="checkbox" id="showMargins" checked>
@@ -71,8 +74,13 @@
             <input type="checkbox" id="showRaggedEdge">
             <span>Ragged edge</span>
           </label>
+                  <label class="layer-checkbox">
+            <input type="checkbox" id="sparkleToggle">
+            <span>Sparkle</span>
+          </label>
         </div>
-      </header>
+      </section>
+
 
       <form id="layoutForm">
       <section data-step="1" class="form-section">
@@ -319,24 +327,24 @@
           <h3>Specification</h3>
           <div id="specificationContent" class="specification-content"></div>
         </div>
-        <button type="button" id="exportHtmlButton" class="btn-export btn-primary">Download specification (PDF)</button>
       </section>
       </form>
-      <div class="step-foot">
-      <nav class="step-nav" aria-label="Steps">
-        <button type="button" id="stepBack" class="step-btn">Back</button>
-        <span id="stepNow" class="step-now" aria-live="polite">Step 1 of 4 · Page and margins</span>
-        <button type="button" id="stepNext" class="step-btn step-next">Next</button>
-      </nav>
+      <div class="cp-foot">
+        <div id="downloadRow"><button type="button" id="exportHtmlButton" class="btn-export btn-primary">Download specification (PDF)</button></div>
+        <p class="hint"><a href="index.html?calculator" aria-current="page">Compositor</a> · <a href="grep.html">Grep</a> · <a href="./">About</a> · <a href="changelog.html"><!--version-->v1.0<!--/version--></a></p>
       </div>
     </div>
 
     <div class="preview-wrapper">
       <section class="visualization-section">
         <div class="section-header">
-          <h2>Chase</h2>
+          <p id="stepNow" class="step-now" aria-live="polite">Step 1 of 4 · Page and margins</p>
           <div class="header-actions">
             <span id="scaleIndicator" class="scale-indicator"></span>
+            <div class="row nav" role="group" aria-label="Steps">
+              <button type="button" id="stepBack" class="step-btn">Back</button>
+              <button type="button" id="stepNext" class="step-btn">Next</button>
+            </div>
           </div>
         </div>
         <div id="visualizationContainer" class="visualization-container"></div>
@@ -397,34 +405,6 @@
     </div>
   </div>
 
-  <footer class="fixed-footer" id="footer">
-    <div class="fixed-footer-content">
-      <h1 class="footer-menu-toggle" id="footerMenuToggle">Menu</h1>
-      <div class="footer-content-wrapper">
-        <h1>This is a GD v/x AI Project. PkWr 2025. A growing typographic resource for education. <i>What you don't have to do, you won't need to know, so who will be lost</i></h1>
-        <nav class="footer-nav">
-          <div class="footer-nav-item">
-            <a href="index.html?calculator" class="footer-nav-link">Compositor</a>
-            <p class="footer-nav-description">Typography layout calculator for designing multi-column page layouts with margins, columns, and typography settings.</p>
-          </div>
-          <div class="footer-nav-item">
-            <a href="grep.html" class="footer-nav-link">Grep</a>
-            <p class="footer-nav-description">Generate InDesign GREP patterns for paragraph styles to find specific words, digits, punctuation, or enclosed content.</p>
-          </div>
-          <div class="footer-nav-item">
-            <a href="#" class="footer-nav-link">Hierarchy</a>
-            <p class="footer-nav-description">Coming soon.</p>
-          </div>
-          <div class="footer-nav-item">
-            <label class="footer-sparkle-label">
-              <input type="checkbox" id="sparkleToggle" class="checkbox-input">
-              <span class="footer-nav-link" style="text-decoration: none; margin-bottom: 0;">Sparkle</span>
-            </label>
-          </div>
-        </nav>
-      </div>
-    </div>
-  </footer>
 
   <!-- PDF Export Libraries -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
