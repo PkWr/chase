@@ -1191,6 +1191,10 @@ async function exportVisualizationAsPDF() {
           }
         `;
                 clonedDoc.head.appendChild(style);
+                // html2canvas copies the page's computed styles onto the cloned svg; the body is italic, so reset it there
+                clonedDoc.querySelectorAll('svg').forEach((s) => {
+                    s.style.setProperty('font-style', 'normal', 'important');
+                });
                 // Directly modify all elements in cloned document
                 const clonedForeignObjects = clonedDoc.querySelectorAll('foreignObject');
                 clonedForeignObjects.forEach((fo) => {
@@ -1202,6 +1206,9 @@ async function exportVisualizationAsPDF() {
                         htmlEl.style.setProperty('color', '#000000', 'important');
                         htmlEl.style.setProperty('-webkit-text-fill-color', '#000000', 'important');
                         htmlEl.style.setProperty('background-color', 'transparent', 'important');
+                        // The page's italic body style must not leak into the text; only marked italics (em) stay italic
+                        if (!htmlEl.closest('em'))
+                            htmlEl.style.setProperty('font-style', 'normal', 'important');
                     });
                 });
             }
