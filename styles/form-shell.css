@@ -465,3 +465,7 @@ body[data-step="8"] .scale-line{display:none}
 .container #layoutForm{margin-bottom:12px}
 
 .report-stage .spec-table .spec-group{padding-top:14px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#666}
+
+/* Links inside the panel text are yellow, not browser blue */
+.container .helper-text a{color:var(--yellow);text-decoration:underline;text-underline-offset:2px}
+.container .helper-text a:hover,.container .helper-text a:focus-visible{color:#fff}
