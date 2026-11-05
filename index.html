@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>chase</title>
-  <link rel="stylesheet" href="styles/main.css?v=202611051258">
-  <link rel="stylesheet" href="styles/form-shell.css?v=202611051258">
+  <link rel="stylesheet" href="styles/main.css?v=202611051302">
+  <link rel="stylesheet" href="styles/form-shell.css?v=202611051302">
   <!-- Padding handled in main.css for better control -->
 </head>
 <body>
@@ -153,11 +153,18 @@
         </div>
         <div class="form-row form-row-single-col">
           <div class="form-group">
-            <label class="checkbox-label">
-              <input type="checkbox" id="facingPages" class="checkbox-input">
-              <span>Facing pages (book layout)</span>
-            </label>
-            <span class="helper-text">Enable for book layouts with inner and outer margins</span>
+            <label id="pageModeLabel">Pages</label>
+            <div class="layer-controls" role="radiogroup" aria-labelledby="pageModeLabel">
+              <label class="layer-checkbox" title="Single pages">
+                <input type="radio" name="pageMode" id="pageSingle" checked>
+                <span class="ic"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="4" width="10" height="16" rx="1"/></svg><em class="sr">Single pages</em></span>
+              </label>
+              <label class="layer-checkbox" title="Facing pages (book layout, inner and outer margins)">
+                <input type="radio" name="pageMode" id="pageFacing">
+                <span class="ic"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="9" height="14" rx="1"/><rect x="12" y="5" width="9" height="14" rx="1"/></svg><em class="sr">Facing pages (book layout)</em></span>
+              </label>
+            </div>
+            <input type="checkbox" id="facingPages" hidden>
           </div>
         </div>
       </section>
@@ -525,15 +532,15 @@
   <!-- PDF Export Libraries -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script type="module" src="src/main.js?v=202611051258"></script>
-  <script src="src/start.js?v=202611051258"></script>
-  <script src="src/steps.js?v=202611051258"></script>
-  <script src="src/column-picker.js?v=202611051258"></script>
-  <script src="src/popout.js?v=202611051258"></script>
-  <script type="module" src="src/editor.js?v=202611051258"></script>
-  <script type="module" src="src/text-import.js?v=202611051258"></script>
-  <script src="src/margin-link.js?v=202611051258"></script>
-  <script src="src/number-steppers.js?v=202611051258"></script>
-  <script src="src/layer-cycle.js?v=202611051258"></script>
+  <script type="module" src="src/main.js?v=202611051302"></script>
+  <script src="src/start.js?v=202611051302"></script>
+  <script src="src/steps.js?v=202611051302"></script>
+  <script src="src/column-picker.js?v=202611051302"></script>
+  <script src="src/popout.js?v=202611051302"></script>
+  <script type="module" src="src/editor.js?v=202611051302"></script>
+  <script type="module" src="src/text-import.js?v=202611051302"></script>
+  <script src="src/margin-link.js?v=202611051302"></script>
+  <script src="src/number-steppers.js?v=202611051302"></script>
+  <script src="src/layer-cycle.js?v=202611051302"></script>
 </body>
 </html>

@@ -57,3 +57,18 @@
     g.setAttribute('aria-label', c ? 'Open controls' : 'Collapse controls');
   };
 })();
+
+// Page mode icons drive the hidden #facingPages checkbox that the rest of the code reads.
+(function () {
+  var f = document.getElementById('facingPages'), one = document.getElementById('pageSingle'), two = document.getElementById('pageFacing');
+  if (!f || !one || !two) return;
+  function fromF() { one.checked = !f.checked; two.checked = f.checked; }
+  function set(v) { f.checked = v; f.dispatchEvent(new Event('change', { bubbles: true })); f.dispatchEvent(new Event('input', { bubbles: true })); }
+  one.addEventListener('change', function () { if (one.checked) set(false); });
+  two.addEventListener('change', function () { if (two.checked) set(true); });
+  f.addEventListener('change', fromF);
+  var reset = document.getElementById('resetLink');
+  if (reset) reset.addEventListener('click', function () { setTimeout(fromF, 100); });
+  fromF();
+  setTimeout(fromF, 400);
+})();
