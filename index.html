@@ -337,13 +337,16 @@
           <div class="label-with-action">
             <label for="sampleText">Text preview</label>
             <div class="text-actions">
+              <button type="button" id="loadFileButton" class="btn-link">Load file</button>
+              <span class="text-action-separator">|</span>
               <button type="button" id="loadDefaultTextButton" class="btn-link">Load default text</button>
               <span class="text-action-separator">|</span>
               <button type="button" id="clearTextButton" class="btn-link">Clear</button>
             </div>
           </div>
           <textarea id="sampleText" rows="10" placeholder="Enter sample text to preview how it will look in your layout..."></textarea>
-          <span class="helper-text">Preview how your text will appear in the calculated columns</span>
+          <input type="file" id="textFileInput" class="visually-hidden-control" accept=".txt,.md,.markdown,.html,.htm,.docx,.odt,.rtf,text/plain,text/html" tabindex="-1">
+          <span class="helper-text" id="textFileStatus">Type or paste text, or load a file (txt, md, html, docx, odt, rtf). Files can also be dropped onto the box.</span>
         </div>
       </section>
 
@@ -443,5 +446,6 @@
   <script src="src/steps.js"></script>
   <script src="src/column-picker.js"></script>
   <script src="src/popout.js"></script>
+  <script src="src/text-import.js"></script>
 </body>
 </html>
