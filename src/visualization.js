@@ -223,7 +223,7 @@ function drawPage(svg, inputs, pageX, pageY, pageWidth, pageHeight, leftMargin, 
             colRect.setAttribute('width', columnWidth.toString());
             colRect.setAttribute('height', textBoxHeight.toString());
             if (layerVisibility.columnsSolid) {
-                colRect.setAttribute('fill', 'rgba(255, 225, 0, 0.3)'); // Yellow tint
+                colRect.setAttribute('fill', 'rgba(255, 225, 0, 0.14)'); // Yellow tint
                 colRect.setAttribute('stroke', 'none');
             }
             else {
