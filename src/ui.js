@@ -550,6 +550,12 @@ function applyDefaultSettings() {
             outerMarginLeftInput.value = '';
         if (outerMarginRightInput)
             outerMarginRightInput.value = '';
+        // Type is left aligned by default
+        const justifyReset = document.getElementById('justifyText');
+        if (justifyReset) {
+            justifyReset.checked = false;
+            justifyReset.dispatchEvent(new Event('change', { bubbles: true }));
+        }
         // Set columns to 1
         const numColsInput = document.getElementById('numCols');
         if (numColsInput)
@@ -1744,6 +1750,7 @@ function loadSettings() {
             const justifyTextCheckbox = document.getElementById('justifyText');
             if (justifyTextCheckbox) {
                 justifyTextCheckbox.checked = settings.justifyText;
+                justifyTextCheckbox.dispatchEvent(new Event('change', { bubbles: true })); // the alignment icons follow it
             }
         }
         // Sample text

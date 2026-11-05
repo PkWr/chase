@@ -27,6 +27,7 @@
   function set(v) { j.checked = v; j.dispatchEvent(new Event('change', { bubbles: true })); j.dispatchEvent(new Event('input', { bubbles: true })); }
   l.addEventListener('change', function () { if (l.checked) set(false); });
   r.addEventListener('change', function () { if (r.checked) set(true); });
+  j.addEventListener('change', fromJ); // saved settings and Reset set the hidden checkbox; the icons follow it
   fromJ();
   document.addEventListener('DOMContentLoaded', fromJ);
   setTimeout(fromJ, 400);

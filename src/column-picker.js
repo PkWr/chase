@@ -103,12 +103,6 @@
     var r = read();
     if (b.dataset.act === 'plus') {
       if (r.n < MAX) {
-        // Going from one column to several: type defaults to left aligned (justified text in narrow columns opens up gaps)
-        if (r.n === 1) {
-          var left = document.getElementById('alignLeft');
-          var just = document.getElementById('alignJustify');
-          if (left && just && just.checked) left.click();
-        }
         setColumns(r.n + 1);
         setTimeout(function () { last = ''; render(); }, 0);
       }
