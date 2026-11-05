@@ -25,7 +25,7 @@ export function blockMetrics(style, settings, base) {
         m.sizePx = base.sizePx * s[style];
         m.lineHeightPx = linesFor(m.sizePx, base.lineHeightPx) * base.lineHeightPx;
         m.marginTopPx = (style === 'h1' ? 2 : 1) * base.lineHeightPx;
-        m.marginBottomPx = 0;
+        // space after is the Space after paragraph setting from Type, like every other style
         m.keepWithNext = true;
     } else if (style === 'quote') {
         m.indentPx = s.quoteIndent * base.sizePx;

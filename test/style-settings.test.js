@@ -16,6 +16,7 @@ test('headings are sized by ratio and set in whole lines of the body leading', (
         assert.equal(m.marginTopPx % base.lineHeightPx, 0);
         assert.equal(m.bold, undefined); // headings differ by size, not weight
         assert.equal(m.keepWithNext, true);
+        assert.equal(m.marginBottomPx, base.spaceAfterPx); // headings keep the Type setting for space after
     }
 });
 
