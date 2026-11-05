@@ -508,7 +508,7 @@ function renderLineChecks() {
         if (!v || !g)
             continue;
         if (!lineResults) {
-            v.textContent = `${c.plural.charAt(0).toUpperCase()}${c.plural.slice(1)}: measured when the page is shown`;
+            v.textContent = `Measuring ${c.plural}…`;
             g.textContent = c.def;
             g.classList.remove('report-warning');
             continue;
@@ -533,15 +533,28 @@ function scheduleLineChecks() {
     // wait for the preview to size itself and snap its headings before measuring
     lineChecksTimer = window.setTimeout(() => {
         lineChecksTimer = null;
-        try {
-            const r = analyseLines(document.getElementById('visualizationContainer'));
-            if (r)
-                lineResults = r;
+        const measure = () => {
+            try {
+                const r = analyseLines(document.getElementById('visualizationContainer'));
+                if (r)
+                    lineResults = r;
+            }
+            catch (e) {
+                // measurement is best-effort
+            }
+            renderLineChecks();
+        };
+        // The Report hides the preview; lay it out out of sight for a moment so the checks can be measured there too
+        if (document.body.dataset.step === '8' && !document.body.classList.contains('measuring')) {
+            document.body.classList.add('measuring');
+            updateVisualizationOnInputChange();
+            window.setTimeout(() => {
+                measure();
+                document.body.classList.remove('measuring');
+            }, 700);
+            return;
         }
-        catch (e) {
-            // measurement is best-effort
-        }
-        renderLineChecks();
+        measure();
     }, 450);
 }
 function updateVisualizationOnInputChange() {
@@ -674,6 +687,16 @@ function resetToDefaults() {
         applyDefaultSettings();
         // Styles (sizes, indent, typefaces) go back to their defaults too
         resetStyles();
+        // The Report and the download area start over as well
+        lineResults = null;
+        renderLineChecks();
+        const idmlStatusReset = document.getElementById('idmlStatus');
+        if (idmlStatusReset)
+            idmlStatusReset.textContent = '';
+        document.querySelectorAll('#downloadRow button').forEach((btn) => { btn.disabled = false; });
+        const reportStage = document.getElementById('reportStage');
+        if (reportStage)
+            reportStage.scrollTop = 0;
         updateVisualizationOnInputChange();
     }
     catch (e) {

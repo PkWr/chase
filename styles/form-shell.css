@@ -469,3 +469,6 @@ body[data-step="8"] .scale-line{display:none}
 /* Links inside the panel text are yellow, not browser blue */
 .container .helper-text a{color:var(--yellow);text-decoration:underline;text-underline-offset:2px}
 .container .helper-text a:hover,.container .helper-text a:focus-visible{color:#fff}
+
+/* Measuring the preview while the Report is showing: laid out, but out of sight */
+body.measuring #visualizationContainer{display:flex!important;position:absolute;inset:0;visibility:hidden;pointer-events:none}
