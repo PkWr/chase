@@ -26,3 +26,17 @@
   next.addEventListener('click', function () { show(step + 1); });
   show(1);
 })();
+
+// Keep Back and Next centred under the page, whatever size the page is drawn at.
+(function () {
+  var box = document.getElementById('visualizationContainer');
+  var nav = document.querySelector('.page-nav');
+  if (!box || !nav || !window.ResizeObserver) return;
+  function fit() {
+    var svg = box.querySelector('svg');
+    nav.style.width = svg ? svg.getBoundingClientRect().width + 'px' : '';
+  }
+  new ResizeObserver(fit).observe(box);
+  new MutationObserver(fit).observe(box, { childList: true, subtree: true, attributes: true });
+  fit();
+})();

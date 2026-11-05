@@ -7,7 +7,7 @@ body{padding:0;background:var(--paper);color:var(--ink);font:300 13px/1.5 var(--
 .app-wrapper{display:block}
 
 /* Preview on the page, controls in the floating panel */
-.preview-wrapper{position:fixed;top:0;left:0;right:0;bottom:0;box-sizing:border-box;padding:24px 412px 56px 24px;display:flex;flex-direction:column;overflow-y:auto;color:var(--ink)}
+.preview-wrapper{position:fixed;top:0;left:0;right:0;bottom:0;box-sizing:border-box;padding:24px 412px 16px 24px;display:flex;flex-direction:column;overflow-y:auto;color:var(--ink)}
 .preview-wrapper .visualization-section{flex:1 1 0;min-height:0}
 .preview-wrapper .visualization-container{flex:1 1 0;min-height:0;overflow:visible;padding:0}
 .visualization-section,.specification-section{background:transparent;box-shadow:none;color:var(--ink);padding:0}
@@ -153,3 +153,5 @@ body[data-step="4"] .cp-foot #downloadRow{display:block}
 .container .form-section h2{margin:0 0 8px;font-size:11px;letter-spacing:.08em;text-transform:uppercase}
 .container .step-pane .specification-section{margin:12px 0 0}
 @media(max-width:900px){.scale-indicator{display:none}.step-now{max-width:55%}}
+.preview-wrapper .visualization-section{display:flex;flex-direction:column}
+.page-nav{display:flex;justify-content:center;gap:8px;padding-top:12px;flex:none}
