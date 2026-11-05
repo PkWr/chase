@@ -344,3 +344,12 @@ body.popout-window .editor-stage{right:24px}
 
 .markup-intro{display:none}
 .editor-stage .markup-intro{display:block;margin:0 0 12px;font-size:12px;line-height:1.55;color:var(--cp-muted)}
+
+/* Number fields: large − and + buttons instead of the tiny browser arrows */
+.container input[type=number]{-moz-appearance:textfield;appearance:textfield}
+.container input[type=number]::-webkit-inner-spin-button,.container input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.num-step{display:flex;align-items:stretch;gap:4px;min-width:0}
+.num-step input[type=number]{flex:1 1 auto;min-width:0;min-height:40px;text-align:center}
+.container .num-btn{flex:none;width:40px;min-height:40px;padding:0;font:inherit;font-size:18px;line-height:1;color:var(--cp-text);background:var(--cp-surface);border:1px solid var(--cp-line);border-radius:6px;cursor:pointer;touch-action:manipulation}
+.container .num-btn:hover{border-color:var(--cp-accent-line);background:var(--cp-accent-bg)}
+.container .num-btn:active{background:var(--cp-accent-bg);color:var(--yellow)}
