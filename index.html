@@ -299,22 +299,9 @@
         <button type="button" id="exportHtmlButton" class="btn-export btn-primary">Download specification (PDF)</button>
       </section>
       </form>
-      <nav class="step-nav" aria-label="Steps">
-        <button type="button" id="stepBack" class="step-btn">Back</button>
-        <span id="stepNow" class="step-now" aria-live="polite">Step 1 of 4 · Page and margins</span>
-        <button type="button" id="stepNext" class="step-btn step-next">Next</button>
-      </nav>
-    </div>
-
-    <div class="preview-wrapper">
-      <section class="visualization-section">
-        <div class="section-header">
-          <h2>Chase</h2>
-          <div class="header-actions">
-            <span id="scaleIndicator" class="scale-indicator"></span>
-          </div>
-        </div>
-        <div class="layer-controls">
+      <div class="step-foot">
+        <p class="foot-label">Show</p>
+        <div class="layer-controls" role="group" aria-label="Show on the page">
           <label class="layer-checkbox">
             <input type="checkbox" id="showMargins" checked>
             <span>Margins</span>
@@ -335,6 +322,22 @@
             <input type="checkbox" id="showRaggedEdge">
             <span>Ragged edge</span>
           </label>
+        </div>
+      <nav class="step-nav" aria-label="Steps">
+        <button type="button" id="stepBack" class="step-btn">Back</button>
+        <span id="stepNow" class="step-now" aria-live="polite">Step 1 of 4 · Page and margins</span>
+        <button type="button" id="stepNext" class="step-btn step-next">Next</button>
+      </nav>
+      </div>
+    </div>
+
+    <div class="preview-wrapper">
+      <section class="visualization-section">
+        <div class="section-header">
+          <h2>Chase</h2>
+          <div class="header-actions">
+            <span id="scaleIndicator" class="scale-indicator"></span>
+          </div>
         </div>
         <div id="visualizationContainer" class="visualization-container"></div>
       </section>

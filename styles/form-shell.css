@@ -7,7 +7,9 @@ body{padding:0;background:var(--paper);color:var(--ink);font:300 13px/1.5 var(--
 .app-wrapper{display:block}
 
 /* Preview on the page, controls in the floating panel */
-.preview-wrapper{padding:24px 412px 72px 24px;min-height:100vh;color:var(--ink)}
+.preview-wrapper{position:fixed;top:0;left:0;right:0;bottom:0;box-sizing:border-box;padding:24px 412px 56px 24px;display:flex;flex-direction:column;overflow-y:auto;color:var(--ink)}
+.preview-wrapper .visualization-section{flex:1 1 0;min-height:0}
+.preview-wrapper .visualization-container{flex:1 1 0;min-height:0;overflow:visible;padding:0}
 .visualization-section,.specification-section{background:transparent;box-shadow:none;color:var(--ink);padding:0}
 .visualization-section h2,.specification-section h3{color:var(--ink);font-weight:400;font-size:12px}
 .layer-checkbox,.layer-checkbox span{color:#555}
@@ -50,7 +52,7 @@ body{padding:0;background:var(--paper);color:var(--ink);font:300 13px/1.5 var(--
 
 /* Narrow windows: controls become a bottom sheet */
 @media(max-width:900px){
-.preview-wrapper{padding:16px 16px 52vh}
+.preview-wrapper{bottom:auto;height:calc(56vh - 40px);padding:16px 16px 0}
 .container{top:auto;left:0;right:0;bottom:40px;width:auto;max-width:none;height:44vh;border-width:1px 0 0;border-radius:20px 20px 0 0}
 .fixed-footer{right:0}
 }
@@ -105,7 +107,11 @@ body[data-step="1"] .container [data-step]:not([data-step="1"]),
 body[data-step="2"] .container [data-step]:not([data-step="2"]),
 body[data-step="3"] .container [data-step]:not([data-step="3"]),
 body[data-step="4"] .container [data-step]:not([data-step="4"]){display:none !important}
-.step-nav{position:sticky;bottom:0;display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 -16px;padding:10px 16px;background:var(--cp-bg);border-top:1px solid var(--cp-line);z-index:1}
+.step-foot{position:sticky;bottom:0;margin:0 -16px;padding:10px 16px 0;background:var(--cp-bg);border-top:1px solid var(--cp-line);z-index:1}
+.foot-label{margin:0 0 4px;font-size:11px;color:var(--cp-muted)}
+.container .layer-controls{display:flex;flex-wrap:wrap;gap:4px 14px;margin:0 0 8px;padding:0}
+.container .layer-checkbox,.container .layer-checkbox span{color:var(--cp-text);font-size:12px}
+.step-nav{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 0 10px}
 .step-now{flex:1;text-align:center;font-size:11px;color:var(--cp-muted)}
 .container .step-btn{padding:7px 14px}
 .container .step-next:not(:disabled){background:var(--yellow);border-color:var(--yellow);color:var(--ink)}

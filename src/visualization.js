@@ -516,9 +516,11 @@ export function updateVisualization(inputs) {
         const isLandscape = svgAspectRatio > 1;
         if (isLandscape) {
             // Width is longer - fit by width using percentage sizing
+            // (facing pages and landscape pages: full width, height follows, the preview scrolls if needed)
             svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
             svg.setAttribute('width', '100%');
-            svg.setAttribute('height', '100%');
+            svg.removeAttribute('height');
+            svg.style.height = 'auto';
         }
         else {
             // Height is longer - fit by height using explicit pixel dimensions
