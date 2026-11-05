@@ -59,3 +59,16 @@
   new MutationObserver(fit).observe(box, { childList: true, subtree: true, attributes: true });
   fit();
 })();
+
+// Step names in the intro text on the page are links to those steps.
+(function () {
+  var stage = document.getElementById('introStage');
+  if (!stage) return;
+  stage.addEventListener('click', function (e) {
+    var a = e.target.closest('a[data-go]');
+    if (!a) return;
+    e.preventDefault();
+    var pill = document.querySelector('#cpSteps a[data-go="' + a.dataset.go + '"]');
+    if (pill) pill.click();
+  });
+})();

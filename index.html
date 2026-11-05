@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>chase</title>
-  <link rel="stylesheet" href="styles/main.css?v=202611051758">
-  <link rel="stylesheet" href="styles/form-shell.css?v=202611051758">
+  <link rel="stylesheet" href="styles/main.css?v=202611051805">
+  <link rel="stylesheet" href="styles/form-shell.css?v=202611051805">
   <!-- Padding handled in main.css for better control -->
 </head>
 <body>
@@ -103,7 +103,6 @@
       <form id="layoutForm">
             <section data-step="1" class="form-section intro-pane">
         <h2>Intro</h2>
-        <p class="intro-big">Composition works out a page layout from the type. Add the text, then set the page, margins, columns, typography and styles. The report checks the result, and the download gives a PDF specification or an InDesign file.</p>
         <div class="intro-terms">
           <h3>Compositor</h3>
           <p>In letterpress printing, a compositor is the person who arranges type and spacing elements to create a page layout. They work at a composing stick, selecting individual pieces of type and spacing material (furniture, leads, and reglets) to build up lines and pages before locking them into a chase.</p>
@@ -435,6 +434,9 @@
         <div class="section-header">
         </div>
         <div id="visualizationContainer" class="visualization-container"></div>
+      <section id="introStage" class="intro-stage" aria-label="Introduction">
+        <p>Composition works out a page layout from the type. Add the <a href="#" data-go="2">text<sup>2</sup></a>, then set the <a href="#" data-go="3">page<sup>3</sup></a>, <a href="#" data-go="4">margins<sup>4</sup></a>, <a href="#" data-go="5">columns<sup>5</sup></a>, <a href="#" data-go="6">typography<sup>6</sup></a> and <a href="#" data-go="7">styles<sup>7</sup></a>. The <a href="#" data-go="8">report<sup>8</sup></a> checks the result, and the <a href="#" data-go="9">download<sup>9</sup></a> gives a PDF specification or an InDesign file.</p>
+      </section>
       <section id="reportStage" class="report-stage" aria-label="Report">
         <h2 class="report-title">Report</h2>
         <h3 class="report-sub">Considerations</h3>
@@ -540,17 +542,17 @@
   <!-- PDF Export Libraries -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script type="module" src="src/main.js?v=202611051758"></script>
-  <script src="src/start.js?v=202611051758"></script>
-  <script src="src/steps.js?v=202611051758"></script>
-  <script src="src/column-picker.js?v=202611051758"></script>
-  <script src="src/popout.js?v=202611051758"></script>
-  <script type="module" src="src/editor.js?v=202611051758"></script>
-  <script type="module" src="src/text-import.js?v=202611051758"></script>
-  <script src="src/margin-link.js?v=202611051758"></script>
-  <script src="src/number-steppers.js?v=202611051758"></script>
-  <script src="src/layer-cycle.js?v=202611051758"></script>
-  <script src="src/help-tips.js?v=202611051758"></script>
-  <script src="src/sheet.js?v=202611051758"></script>
+  <script type="module" src="src/main.js?v=202611051805"></script>
+  <script src="src/start.js?v=202611051805"></script>
+  <script src="src/steps.js?v=202611051805"></script>
+  <script src="src/column-picker.js?v=202611051805"></script>
+  <script src="src/popout.js?v=202611051805"></script>
+  <script type="module" src="src/editor.js?v=202611051805"></script>
+  <script type="module" src="src/text-import.js?v=202611051805"></script>
+  <script src="src/margin-link.js?v=202611051805"></script>
+  <script src="src/number-steppers.js?v=202611051805"></script>
+  <script src="src/layer-cycle.js?v=202611051805"></script>
+  <script src="src/help-tips.js?v=202611051805"></script>
+  <script src="src/sheet.js?v=202611051805"></script>
 </body>
 </html>
