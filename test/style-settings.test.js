@@ -6,15 +6,15 @@ const base = { sizePx: 12, lineHeightPx: 14, spaceAfterPx: 14 };
 
 test('headings are sized by ratio and set in whole lines of the body leading', () => {
     const h1 = blockMetrics('h1', {}, base);
-    assert.ok(Math.abs(h1.sizePx - 19.2) < 1e-9);
+    assert.ok(Math.abs(h1.sizePx - 26.4) < 1e-9);
     assert.equal(h1.lineHeightPx, 28);
-    assert.equal(blockMetrics('h2', {}, base).lineHeightPx, 28); // 15.6 px needs two 14 px lines
+    assert.equal(blockMetrics('h2', {}, base).lineHeightPx, 28); // 18 px needs two 14 px lines
     assert.equal(blockMetrics('h3', {}, base).lineHeightPx, 14); // 13.8 px fits one
     for (const h of ['h1', 'h2', 'h3']) {
         const m = blockMetrics(h, {}, base);
         assert.equal(m.lineHeightPx % base.lineHeightPx, 0);
         assert.equal(m.marginTopPx % base.lineHeightPx, 0);
-        assert.equal(m.bold, true);
+        assert.equal(m.bold, undefined); // headings differ by size, not weight
         assert.equal(m.keepWithNext, true);
     }
 });
@@ -27,7 +27,7 @@ test('a changed ratio changes the size and the line count', () => {
 
 test('body is untouched; quote indents; citation is smaller and indented', () => {
     const b = blockMetrics('body', {}, base);
-    assert.deepEqual([b.sizePx, b.lineHeightPx, b.marginBottomPx, b.indentPx, b.bold], [12, 14, 14, 0, false]);
+    assert.deepEqual([b.sizePx, b.lineHeightPx, b.marginBottomPx, b.indentPx], [12, 14, 14, 0]);
     assert.equal(blockMetrics('quote', {}, base).indentPx, STYLE_DEFAULTS.quoteIndent * 12);
     const c = blockMetrics('citation', {}, base);
     assert.ok(Math.abs(c.sizePx - 12 * STYLE_DEFAULTS.citationSize) < 1e-9);

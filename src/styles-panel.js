@@ -3,7 +3,7 @@
 import { parseStyled, stylesUsed } from './styled-text.js';
 import { STYLE_DEFAULTS } from './style-settings.js';
 
-const KEY = 'compositorStyles';
+const KEY = 'compositorStyles2'; // new key: the heading defaults changed
 // style -> [input id, settings key, readout kind]
 const ROWS = {
     h1: ['styleH1', 'h1'],

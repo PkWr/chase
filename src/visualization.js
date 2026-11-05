@@ -414,8 +414,6 @@ function drawPage(svg, inputs, pageX, pageY, pageWidth, pageHeight, leftMargin, 
                         p.style.fontSize = `${metrics.sizePx}px`;
                         p.style.lineHeight = `${metrics.lineHeightPx}px`;
                     }
-                    if (metrics.bold)
-                        p.style.fontWeight = 'bold';
                     if (metrics.keepWithNext)
                         p.style.breakAfter = 'avoid-column';
                     block.runs.forEach(run => {
