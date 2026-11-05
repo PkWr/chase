@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="styles/form-shell.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=Lora:wght@400;700&family=Merriweather:wght@400;700&family=Crimson+Text:wght@400;600&family=Playfair+Display:wght@400;700&family=Libre+Baskerville:wght@400;700&family=EB+Garamond:wght@400;600&family=PT+Serif:wght@400;700&family=Inter:wght@400;600&family=Roboto:wght@400;500&family=Open+Sans:wght@400;600&family=Lato:wght@400;700&family=Montserrat:wght@400;600&family=Source+Sans+Pro:wght@400;600&family=Poppins:wght@400;600&family=Raleway:wght@400;600&family=Work+Sans:wght@400;600&family=Roboto+Mono:wght@400&family=Source+Code+Pro:wght@400&family=Fira+Code:wght@400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=EB+Garamond:wght@400;600&family=Crimson+Text:wght@400;600&family=Libre+Baskerville:wght@400;700&family=Lora:wght@400;700&family=Merriweather:wght@400;700&family=Source+Sans+Pro:wght@400;600&family=Open+Sans:wght@400;600&family=Inter:wght@400;600&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
   <!-- Padding handled in main.css for better control -->
 </head>
 <body>
@@ -245,31 +245,35 @@
         <div class="form-group">
           <label for="fontFamily">Typeface</label>
           <select id="fontFamily" class="font-select">
+            <optgroup label="Defaults">
             <option value="serif">Serif (default)</option>
+            <option value="sans-serif">Sans-serif (default)</option>
+            </optgroup>
+            <optgroup label="Old-style serif">
+            <option value="EB Garamond">EB Garamond</option>
+            <option value="Crimson Text">Crimson Text</option>
+            </optgroup>
+            <optgroup label="Transitional serif">
+            <option value="Libre Baskerville">Libre Baskerville</option>
             <option value="Georgia">Georgia</option>
             <option value="Times New Roman">Times New Roman</option>
+            </optgroup>
+            <optgroup label="Contemporary serif">
             <option value="Lora">Lora</option>
             <option value="Merriweather">Merriweather</option>
-            <option value="Crimson Text">Crimson Text</option>
-            <option value="Playfair Display">Playfair Display</option>
-            <option value="Libre Baskerville">Libre Baskerville</option>
-            <option value="EB Garamond">EB Garamond</option>
-            <option value="PT Serif">PT Serif</option>
-            <option value="sans-serif">Sans-serif (default)</option>
-            <option value="Inter">Inter</option>
-            <option value="Roboto">Roboto</option>
-            <option value="Open Sans">Open Sans</option>
-            <option value="Lato">Lato</option>
-            <option value="Montserrat">Montserrat</option>
+            </optgroup>
+            <optgroup label="Humanist sans">
             <option value="Source Sans Pro">Source Sans Pro</option>
-            <option value="Poppins">Poppins</option>
-            <option value="Raleway">Raleway</option>
-            <option value="Work Sans">Work Sans</option>
-            <option value="monospace">Monospace (default)</option>
-            <option value="Courier New">Courier New</option>
-            <option value="Roboto Mono">Roboto Mono</option>
-            <option value="Source Code Pro">Source Code Pro</option>
-            <option value="Fira Code">Fira Code</option>
+            <option value="Open Sans">Open Sans</option>
+            </optgroup>
+            <optgroup label="Neo-grotesque and geometric sans">
+            <option value="Inter">Inter</option>
+            <option value="Arial">Arial</option>
+            <option value="Montserrat">Montserrat</option>
+            </optgroup>
+            <optgroup label="Monospace">
+            <option value="IBM Plex Mono">IBM Plex Mono</option>
+            </optgroup>
           </select>
           <span class="helper-text">Select a typeface for text preview</span>
         </div>
