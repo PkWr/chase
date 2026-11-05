@@ -59,9 +59,6 @@ html.show-start #startScreen{display:flex;position:fixed;inset:0;z-index:2000;al
 html.start-leaving #startScreen{opacity:0;pointer-events:none}
 .start-title{margin:0;font-weight:300;font-size:clamp(44px,9vw,120px);line-height:1;letter-spacing:-.03em;color:#fff}
 .start-sub{margin:0;max-width:30em;padding:0 24px;text-align:center;font-size:13px;line-height:1.6;color:rgba(255,255,255,.65)}
-#startOpen{width:92px;height:92px;padding:0;border:0;border-radius:0;transform:rotate(-8deg);background:var(--yellow);color:var(--ink);font:italic 400 17px var(--font);cursor:pointer;transition:transform .35s cubic-bezier(.2,.7,.2,1),background-color .15s ease}
-#startOpen:hover,#startOpen:focus-visible{transform:rotate(0deg);background:#fff;outline:none}
-#startOpen:active{transform:rotate(0deg) scale(.94)}
 .start-version{position:fixed;left:16px;bottom:max(12px,env(safe-area-inset-bottom));z-index:3;font-size:11px;color:rgba(255,255,255,.55);text-decoration:none}
 .start-drawer{position:fixed;top:0;right:0;bottom:0;z-index:3;display:flex;transform:translateX(var(--panel-w));transition:transform .45s cubic-bezier(.2,.7,.2,1)}
 .start-drawer.is-open{transform:translateX(0)}
@@ -79,7 +76,7 @@ html.start-leaving #startScreen{opacity:0;pointer-events:none}
 .sa-content a,.sp-foot a{color:inherit;text-underline-offset:3px}
 .sa-content a:hover,.sa-content a:focus-visible,.sp-foot a:hover,.sp-foot a:focus-visible{background:var(--yellow);outline:none}
 .sp-foot{margin-top:auto;padding:16px 28px 22px;display:flex;justify-content:space-between;gap:12px;font-size:12px;color:#6b6862}
-@media(prefers-reduced-motion:reduce){html.show-start #startScreen,#startOpen,.start-drawer,.strip-icon{transition:none}}
+@media(prefers-reduced-motion:reduce){html.show-start #startScreen,.start-drawer,.strip-icon{transition:none}}
 
 /* GREP page: output and syntax reference on the paper page */
 .grep-output,.syntax-explanation{background:transparent;color:var(--ink);padding:0;margin-top:12px;border:0;border-radius:0}
@@ -268,14 +265,12 @@ body[data-step="1"] #popOut{display:none}
 #panel.collapsed{bottom:auto;height:auto;max-height:none;min-height:0}
 /* Start screen: chase, compositor and em scroll together as one slow marquee, the title first. */
 html.show-start #startScreen{display:block}
-.start-scroll{position:absolute;inset:0;overflow:hidden;text-align:left;color:#fff;font-size:clamp(14px,1.25vw,19px);line-height:1.6;-webkit-mask-image:linear-gradient(transparent,#000 9%,#000 88%,transparent);mask-image:linear-gradient(transparent,#000 9%,#000 88%,transparent)}
+.start-scroll{position:absolute;inset:0;overflow:hidden;text-align:left;color:#fff;--sz:calc((100vw - 18vw - var(--strip-w)) / 13);font-size:var(--sz);line-height:1.2;cursor:pointer;-webkit-mask-image:linear-gradient(transparent,#000 9%,#000 88%,transparent);mask-image:linear-gradient(transparent,#000 9%,#000 88%,transparent)}
 .start-scroll-inner{animation:emScroll 120s linear infinite;will-change:transform}
 .start-scroll:hover .start-scroll-inner{animation-play-state:paused}
 .start-loop{padding:14vh calc(9vw + var(--strip-w)) 34vh 9vw}
-.start-loop>:not(.start-title){max-width:34em}
-.start-scroll p{margin:0 0 1.2em}
-.start-title{color:var(--yellow);margin:0 0 .35em -.04em;font-size:calc((100vw - 18vw - var(--strip-w)) / 2.95);line-height:.95;text-align:left}
-.start-scroll .term{margin:2.2em 0 .3em;font-size:.85em;letter-spacing:.12em;text-transform:uppercase;color:#fff}
+.start-scroll p{margin:0 0 1em;font-style:inherit}
+.start-title{color:var(--yellow);margin:0 0 .6em;font-size:inherit;line-height:1.2;text-align:left}
+.start-scroll .term{margin:1.6em 0 .2em;font-size:.36em;letter-spacing:.12em;text-transform:uppercase;color:#fff}
 @keyframes emScroll{from{transform:translateY(0)}to{transform:translateY(-50%)}}
-#startOpen{position:fixed;right:calc(9vw + var(--strip-w));bottom:8vh;z-index:3}
 @media(prefers-reduced-motion:reduce){.start-scroll{overflow:auto;-webkit-mask-image:none;mask-image:none}.start-scroll-inner{animation:none}.start-loop[aria-hidden]{display:none}}

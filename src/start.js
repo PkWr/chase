@@ -14,7 +14,7 @@
     var copy = loop.cloneNode(true);
     copy.setAttribute('aria-hidden', 'true');
     inner.appendChild(copy);
-    function speed() { inner.style.animationDuration = Math.max(60, loop.offsetHeight / 24) + 's'; }
+    function speed() { var sz = parseFloat(getComputedStyle(inner.parentNode).fontSize) || 16; inner.style.animationDuration = Math.max(120, loop.offsetHeight / (sz * 0.25)) + 's'; }
     speed();
     window.addEventListener('resize', speed);
   })();
@@ -29,7 +29,10 @@
     strip.setAttribute('aria-expanded', String(on));
   }
 
-  document.getElementById('startOpen').addEventListener('click', open);
+  // The text itself is the way in: click or press Enter.
+  var scroller = document.querySelector('.start-scroll');
+  scroller.addEventListener('click', open);
+  scroller.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
 
   // Phones fire a pretend rollover around a tap; ignore those so the tap decides.
   var lastTouch = 0;
@@ -40,7 +43,7 @@
     if (!touchy() && !drawer.classList.contains('is-open')) { openedAt = Date.now(); setAbout(true); }
   });
   drawer.addEventListener('mouseleave', function () { if (!touchy()) setAbout(false); });
-  document.getElementById('startOpen').addEventListener('mouseenter', function () { if (!touchy()) setAbout(false); });
+  scroller.addEventListener('mouseenter', function () { if (!touchy()) setAbout(false); });
   strip.addEventListener('click', function () {
     if (Date.now() - openedAt < 400) return;
     setAbout(!drawer.classList.contains('is-open'));
