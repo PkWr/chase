@@ -64,7 +64,7 @@ test('frames are linked in order and point at the story and style that exist', (
     assert.equal(f3[2][3], f3[1][1]);
     assert.equal(f3[2][4], 'n');
     assert.ok(files.has('Stories/Story_' + frames[0][2] + '.xml'));
-    assert.ok(files.get('Resources/Styles.xml').includes('Self="ParagraphStyle/Body"'));
+    assert.ok(files.get('Resources/Styles.xml').includes('Self="ParagraphStyle/Body%20Text"'));
 });
 
 test('text is escaped and split into paragraphs', () => {
@@ -121,4 +121,36 @@ test('the spec page follows the last spread in facing mode and can be switched o
     const off = new Map(buildIdmlFiles({ ...spec, specPage: false }));
     assert.equal(off.has('Spreads/Spread_u201.xml'), false);
     assert.doesNotMatch(off.get('designmap.xml'), /u1001/);
+});
+
+const styled = { ...spec, text: '# Big title\nA line with *italic* words\\\nand a soft return.\n> Quote text\n-- Source Name', styleSettings: { h1: 2, quoteIndent: 2 }, styleFonts: { h1: 'Helvetica' } };
+
+test('named styles: Body Text, headings, quote, citation and the Emphasis character style', () => {
+    const files = new Map(buildIdmlFiles(styled));
+    const st = files.get('Resources/Styles.xml');
+    for (const n of ['Body Text', 'Heading 1', 'Heading 2', 'Heading 3', 'Block Quote', 'Citation'])
+        assert.ok(st.includes(`Name="${n}"`), n);
+    assert.ok(st.includes('Self="CharacterStyle/Emphasis"') && st.includes('FontStyle="Italic"'));
+    const h1 = /<ParagraphStyle Self="ParagraphStyle\/Heading%201"[^>]*>[\s\S]*?<\/ParagraphStyle>/.exec(st)[0];
+    assert.ok(h1.includes('PointSize="24"'), 'h1 is 2 x 12 pt');
+    assert.ok(h1.includes('AlignToBaseline="true"') && h1.includes('KeepWithNext="1"'));
+    assert.ok(h1.includes('<AppliedFont type="string">Helvetica</AppliedFont>'));
+    assert.ok(/Self="ParagraphStyle\/Block%20Quote"[^>]*LeftIndent="24"/.test(st));
+});
+
+test('story uses the styles, marks are stripped and soft returns are forced line breaks', () => {
+    const story = new Map(buildIdmlFiles(styled)).get('Stories/Story_u1000.xml');
+    assert.ok(story.includes('AppliedParagraphStyle="ParagraphStyle/Heading%201"'));
+    assert.ok(story.includes('AppliedParagraphStyle="ParagraphStyle/Block%20Quote"'));
+    assert.ok(story.includes('AppliedParagraphStyle="ParagraphStyle/Citation"'));
+    assert.ok(story.includes('AppliedCharacterStyle="CharacterStyle/Emphasis"><Content>italic</Content>'));
+    assert.ok(story.includes('\u2028'));
+    assert.ok(!story.includes('# Big') && !story.includes('*italic*') && !story.includes('-- Source'));
+    assert.ok(story.includes('<Content>\u2014 Source Name</Content>'));
+});
+
+test('specification page lists the styles in use', () => {
+    const spec2 = new Map(buildIdmlFiles(styled)).get('Stories/Story_u1001.xml');
+    assert.ok(spec2.includes('Heading 1') && spec2.includes('Block Quote') && spec2.includes('Emphasis'));
+    assert.ok(!spec2.includes('Heading 2'));
 });

@@ -2,11 +2,12 @@
 // Pure functions only (no DOM), so the output can be checked in tests. ui.js zips and downloads it.
 //
 // What is written: page size, facing pages, margins, columns and gutter on the document pages and the
-// master, a baseline grid at the leading, one paragraph style ("Body"), and the text in frames placed
+// master, a baseline grid at the leading, named styles (Body Text, Heading 1-3, Block Quote, Citation, Emphasis, see idml-styles.js), and the text in frames placed
 // where the text starts and spans, linked in order. Text that does not fit stays overset (red plus).
 // A last page (idml-spec.js) lists every setting with where to change it in InDesign; spec.specPage=false omits it.
 
 import { specPage } from './idml-spec.js';
+import { fontName, styleDefs, paragraphStylesXml, characterStylesXml, storyBodyXml, paraRef } from './idml-styles.js';
 
 const PT_PER_MM = 72 / 25.4;
 const DOM = '8.0';
@@ -27,17 +28,6 @@ export function xmlText(s) {
         .replace(/>/g, '&gt;');
 }
 const attr = (s) => xmlText(s).replace(/"/g, '&quot;');
-
-/** The font style name InDesign expects for the regular weight of each typeface offered. */
-function fontName(family) {
-    if (family === 'serif')
-        return 'Times New Roman';
-    if (family === 'sans-serif')
-        return 'Arial';
-    if (family === 'monospace')
-        return 'Courier New';
-    return family || 'Times New Roman';
-}
 
 /**
  * Works out the pages, margins, columns and text frames. Everything is in points.
@@ -116,7 +106,6 @@ export function buildIdmlFiles(spec) {
     const inputs = spec.inputs;
     const facing = !!spec.facing;
     const lay = layoutFor(inputs, facing);
-    const paras = String(spec.text || '').split(/\n+/).map((s) => s.trim()).filter(Boolean);
     const leading = inputs.leading || inputs.typeSize + 2;
     const spaceAfter = spec.paraSpacePt === undefined || isNaN(spec.paraSpacePt) ? leading : spec.paraSpacePt;
     const family = fontName(inputs.fontFamily);
@@ -171,11 +160,11 @@ export function buildIdmlFiles(spec) {
         + `<idPkg:Styles ${NS} DOMVersion="${DOM}">\n`
         + '<RootCharacterStyleGroup Self="u70">\n'
         + '<CharacterStyle Self="CharacterStyle/$ID/[No character style]" Imported="false" KeyboardShortcut="0 0" Name="$ID/[No character style]"/>\n'
+        + characterStylesXml()
         + '</RootCharacterStyleGroup>\n'
         + '<RootParagraphStyleGroup Self="u71">\n'
         + '<ParagraphStyle Self="ParagraphStyle/$ID/[No paragraph style]" Name="$ID/[No paragraph style]" Imported="false" NextStyle="ParagraphStyle/$ID/[No paragraph style]" KeyboardShortcut="0 0"/>\n'
-        + `<ParagraphStyle Self="ParagraphStyle/Body" Name="Body" Imported="false" NextStyle="ParagraphStyle/Body" KeyboardShortcut="0 0" FontStyle="Regular" PointSize="${num(inputs.typeSize)}" Justification="${inputs.justifyText ? 'LeftJustified' : 'LeftAlign'}" Hyphenation="${inputs.hyphenation ? 'true' : 'false'}" SpaceBefore="0" SpaceAfter="${num(spaceAfter)}" FillColor="Color/Black">`
-        + `<Properties><Leading type="unit">${num(leading)}</Leading><AppliedFont type="string">${attr(family)}</AppliedFont></Properties></ParagraphStyle>\n`
+        + paragraphStylesXml(styleDefs(spec, fontName), inputs)
         + (sp ? sp.styles : '')
         + '</RootParagraphStyleGroup>\n'
         + '<RootCellStyleGroup Self="u73"><CellStyle Self="CellStyle/$ID/[None]" Name="$ID/[None]" Imported="false" KeyboardShortcut="0 0"/></RootCellStyleGroup>\n'
@@ -215,15 +204,11 @@ export function buildIdmlFiles(spec) {
             + `<idPkg:Story ${NS} DOMVersion="${DOM}">\n` + sp.story + '\n</idPkg:Story>\n');
     }
 
-    const body = paras.map((t, i) =>
-        '<ParagraphStyleRange AppliedParagraphStyle="ParagraphStyle/Body">'
-        + '<CharacterStyleRange AppliedCharacterStyle="CharacterStyle/$ID/[No character style]">'
-        + `<Content>${xmlText(t)}</Content>${i < paras.length - 1 ? '<Br/>' : ''}`
-        + '</CharacterStyleRange></ParagraphStyleRange>').join('\n');
+    const body = storyBodyXml(String(spec.text || ''), xmlText);
     add('Stories/Story_u1000.xml', HEAD
         + `<idPkg:Story ${NS} DOMVersion="${DOM}">\n`
         + '<Story Self="u1000" AppliedTOCStyle="n" TrackChanges="false" StoryTitle="$ID/" AppliedNamedGrid="n">\n'
-        + (body || '<ParagraphStyleRange AppliedParagraphStyle="ParagraphStyle/Body"><CharacterStyleRange AppliedCharacterStyle="CharacterStyle/$ID/[No character style]"><Content></Content></CharacterStyleRange></ParagraphStyleRange>') + '\n'
+        + (body || `<ParagraphStyleRange AppliedParagraphStyle="${paraRef('body')}"><CharacterStyleRange AppliedCharacterStyle="CharacterStyle/$ID/[No character style]"><Content></Content></CharacterStyleRange></ParagraphStyleRange>`) + '\n'
         + '</Story>\n</idPkg:Story>\n');
 
     return files;

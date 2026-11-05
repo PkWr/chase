@@ -1,3 +1,5 @@
+import { styleDefs, fontName, EMPHASIS, usedStyles } from './idml-styles.js';
+
 // Specification page for the IDML export: a last page holding a table of every setting, its value, and
 // where to change it in InDesign (menu path and Mac / Windows shortcut). Pure functions, no DOM.
 
@@ -12,7 +14,9 @@ const esc = (s) => String(s)
 const DOC_SETUP = 'File > Document Setup… (Opt+Cmd+P / Ctrl+Alt+P)';
 const MARGINS = 'Layout > Margins and Columns… (no default shortcut). Select the pages in the Pages panel first (Window > Pages, Cmd+F12 / F12). To change every page, double-click A-Master in the Pages panel instead.';
 const GRID = 'InDesign > Settings > Grids… on Mac (Edit > Preferences > Grids… on Windows), Cmd+K / Ctrl+K then choose Grids. Show it with View > Grids & Guides > Show Baseline Grid (Opt+Cmd+\' / Ctrl+Alt+\').';
-const BODY = 'Window > Styles > Paragraph Styles (Cmd+F11 / F11), then double-click Body.';
+const BODY = 'Window > Styles > Paragraph Styles (Cmd+F11 / F11), then double-click Body Text.';
+const STYLE_PATH = 'Window > Styles > Paragraph Styles (Cmd+F11 / F11), then double-click ';
+const CHAR_PATH = 'Window > Styles > Character Styles (Shift+F11 on Mac and Windows), then double-click ';
 
 /** Rows of [setting, value, where to change it]. Pure; lay comes from layoutFor. */
 export function specRows(spec, lay, facing, family) {
@@ -43,6 +47,17 @@ export function specRows(spec, lay, facing, family) {
     rows.push(['Alignment', i.justifyText ? 'Justified' : 'Left aligned', BODY + ' Or the alignment buttons in the Paragraph panel (Window > Type & Tables > Paragraph, Opt+Cmd+T / Ctrl+Alt+T).']);
     rows.push(['Hyphenation', i.hyphenation ? 'On' : 'Off', BODY + ' Hyphenation is in the style options.']);
     rows.push(['Space after paragraph', `${num(after)} pt`, BODY + ' Indents and Spacing.']);
+    // The other styles in use, with their sizes and where to find them
+    const { used, emphasis } = usedStyles(spec.text);
+    for (const d of styleDefs(spec, fontName)) {
+        if (d.key === 'body' || !used[d.key])
+            continue;
+        const m = d.metrics;
+        const indent = m.indentPx ? `, indent ${num(m.indentPx)} pt` : '';
+        rows.push([d.name, `${num(m.sizePx)} pt on ${num(m.lineHeightPx)} pt leading, ${d.font}, space before ${num(m.marginTopPx)} pt, after ${num(m.marginBottomPx)} pt${indent}`, STYLE_PATH + d.name + '.']);
+    }
+    if (emphasis)
+        rows.push([EMPHASIS, 'Italic', CHAR_PATH + EMPHASIS + '.']);
     rows.push(['Text frames', `${lay.spans * lay.pages.length} linked, starting in column ${lay.startIndex + 1}, each ${lay.spanCols} column${lay.spanCols > 1 ? 's' : ''} wide`, 'Object > Text Frame Options… (Cmd+B / Ctrl+B). Show the links with View > Extras > Show Text Threads (Opt+Cmd+Y / Ctrl+Alt+Y). Text that does not fit shows a red plus (overset).']);
     return rows;
 }

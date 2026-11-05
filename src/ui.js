@@ -8,7 +8,7 @@ import { updateVisualization } from './visualization.js';
 import { convertFromMM, convertToMM, formatValue } from './units.js';
 import { DEFAULT_SAMPLE_TEXT } from './defaultText.js';
 import { buildIdmlBlob } from './idml.js';
-import { initStylesPanel } from './styles-panel.js';
+import { initStylesPanel, getStyleSettings, getStyleFonts } from './styles-panel.js';
 // Page dimensions are always in mm, gutter is always in em
 const PAGE_UNIT = 'mm';
 const GUTTER_UNIT = 'em';
@@ -2409,7 +2409,7 @@ export function initializeCalculator() {
                 const inputs = getFormInputs();
                 const text = document.getElementById('sampleText')?.value || '';
                 const spaceField = document.getElementById('paraSpace')?.value ?? '';
-                const spec = { inputs, text, paraSpacePt: spaceField === '' ? undefined : parseFloat(spaceField), facing: isFacingPages(), name: 'chase.indd' };
+                const spec = { inputs, text, styleSettings: getStyleSettings(), styleFonts: getStyleFonts(), paraSpacePt: spaceField === '' ? undefined : parseFloat(spaceField), facing: isFacingPages(), name: 'chase.indd' };
                 const blob = await buildIdmlBlob(JSZipClass, spec);
                 const link = document.createElement('a');
                 link.href = URL.createObjectURL(blob);
