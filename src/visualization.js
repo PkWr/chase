@@ -1,4 +1,7 @@
 import { DEFAULT_SAMPLE_TEXT } from './defaultText.js';
+import { parseStyled } from './styled-text.js';
+import { blockMetrics } from './style-settings.js';
+import { getStyleSettings } from './styles-panel.js';
 /**
  * Gets sample text from textarea. The intro step always shows the Bringhurst essay,
  * whatever has been typed into the Text step.
@@ -390,34 +393,58 @@ function drawPage(svg, inputs, pageX, pageY, pageWidth, pageHeight, leftMargin, 
                 const spacePt = parseFloat(document.getElementById('paraSpace')?.value ?? '');
                 const leadingPt = inputs.leading || (inputs.typeSize + 2);
                 const spaceAfter = (isNaN(spacePt) || spacePt < 0 ? leadingPt : spacePt) * (lineHeight / leadingPt);
-                const paragraphs = sampleText.split(/\n+/).map(s => s.replace(/[ \t]+$/, '')).filter(s => s.trim().length > 0);
+                // Styled blocks: marks in the text (headings, quote, citation, emphasis) set each block's style
+                const blocks = parseStyled(sampleText);
+                const styleSettings = getStyleSettings();
+                const styleBase = { sizePx: fontSizeSVG, lineHeightPx: lineHeight, spaceAfterPx: spaceAfter };
+                const XHTML = 'http://www.w3.org/1999/xhtml';
                 const wrapWords = showRivers || showRaggedEdge;
                 if (!wrapWords) {
                     textDiv.style.color = '#000000';
                 }
-                paragraphs.forEach((para, i) => {
-                    const p = document.createElementNS('http://www.w3.org/1999/xhtml', 'p');
-                    p.style.margin = i < paragraphs.length - 1 ? `0 0 ${spaceAfter}px` : '0';
+                blocks.forEach((block, i) => {
+                    const metrics = blockMetrics(block.style, styleSettings, styleBase);
+                    const p = document.createElementNS(XHTML, 'p');
+                    const before = i === 0 ? 0 : metrics.marginTopPx;
+                    const after = i < blocks.length - 1 ? metrics.marginBottomPx : 0;
+                    p.style.margin = `${before}px 0 ${after}px ${metrics.indentPx}px`;
                     p.style.padding = '0';
                     p.style.whiteSpace = 'pre-wrap';
-                    if (wrapWords) {
-                        // Ragged edge and rivers: each word on a white background over black, so the gaps show
-                        para.split(/(\s+)/).forEach(word => {
-                            if (word.trim().length > 0) {
-                                const span = document.createElementNS('http://www.w3.org/1999/xhtml', 'span');
-                                span.style.backgroundColor = '#ffffff';
-                                span.style.color = '#000000';
-                                span.textContent = word;
-                                p.appendChild(span);
-                            }
-                            else {
-                                p.appendChild(document.createTextNode(word));
-                            }
-                        });
+                    if (block.style !== 'body') {
+                        p.style.fontSize = `${metrics.sizePx}px`;
+                        p.style.lineHeight = `${metrics.lineHeightPx}px`;
                     }
-                    else {
-                        p.textContent = para;
-                    }
+                    if (metrics.bold)
+                        p.style.fontWeight = 'bold';
+                    if (metrics.keepWithNext)
+                        p.style.breakAfter = 'avoid-column';
+                    block.runs.forEach(run => {
+                        let holder = p;
+                        if (run.em) {
+                            holder = document.createElementNS(XHTML, 'em');
+                            holder.style.fontStyle = 'italic';
+                        }
+                        if (wrapWords) {
+                            // Ragged edge and rivers: each word on a white background over black, so the gaps show
+                            run.text.split(/(\s+)/).forEach(word => {
+                                if (word.trim().length > 0) {
+                                    const span = document.createElementNS(XHTML, 'span');
+                                    span.style.backgroundColor = '#ffffff';
+                                    span.style.color = '#000000';
+                                    span.textContent = word;
+                                    holder.appendChild(span);
+                                }
+                                else {
+                                    holder.appendChild(document.createTextNode(word));
+                                }
+                            });
+                        }
+                        else {
+                            holder.appendChild(document.createTextNode(run.text));
+                        }
+                        if (holder !== p)
+                            p.appendChild(holder);
+                    });
                     textDiv.appendChild(p);
                 });
                 textGroup.appendChild(textDiv);

@@ -8,6 +8,7 @@ import { updateVisualization } from './visualization.js';
 import { convertFromMM, convertToMM, formatValue } from './units.js';
 import { DEFAULT_SAMPLE_TEXT } from './defaultText.js';
 import { buildIdmlBlob } from './idml.js';
+import { initStylesPanel } from './styles-panel.js';
 // Page dimensions are always in mm, gutter is always in em
 const PAGE_UNIT = 'mm';
 const GUTTER_UNIT = 'em';
@@ -2168,6 +2169,7 @@ export function initializeCalculator() {
     // Initialize margin inputs visibility
     updateMarginInputs();
     // Handle margin unit toggle
+    initStylesPanel(() => updateVisualizationOnInputChange());
     // em / mm text choice in the panel header: clicking a word sets the (hidden) checkbox that holds the unit
     document.querySelectorAll('.unit-pick .unit-opt').forEach((opt) => {
         opt.addEventListener('click', () => {

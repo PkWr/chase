@@ -287,3 +287,10 @@ html.show-start #startScreen{display:block}
 .start-loop .start-title:not(:first-child){margin-top:1.4em}
 .cp-foot #downloadRow .btn-export{width:100%;margin:0 0 6px}
 .cp-foot #downloadRow #idmlStatus{margin:0 0 4px}
+
+/* Styles block: one row per style in use */
+#stylesSection[hidden],.style-row[hidden]{display:none!important}
+.container .style-row{display:grid;grid-template-columns:1fr 72px auto;align-items:center;gap:2px 10px;margin:0 0 10px}
+.container .style-row label{margin:0}
+.container .style-row .helper-text{grid-column:1 / -1;margin:0}
+.container .style-row .style-pt{font-size:11px;color:var(--cp-muted);min-width:4.5em;text-align:right}
