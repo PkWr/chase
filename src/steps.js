@@ -20,6 +20,14 @@
     next.textContent = step < titles.length ? 'Next / ' + titles[step] : 'Next';
     back.hidden = step === 1;
     next.hidden = step === titles.length;
+    // Each layer switches on when its step is reached (and stays on until turned off).
+    var layerFor = { 2: 'showText', 4: 'showMargins', 5: 'showColumns' }[step];
+    var box = layerFor && document.getElementById(layerFor);
+    if (box && !box.checked) {
+      box.checked = true;
+      box.dispatchEvent(new Event('change', { bubbles: true }));
+      box.dispatchEvent(new Event('input', { bubbles: true }));
+    }
     panel.scrollTop = 0;
   }
 
