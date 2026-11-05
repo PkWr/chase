@@ -28,7 +28,7 @@
   }
 
   function tidy(text) {
-    return text.replace(/\r\n?/g, '\n').replace(/[ \t]+\n/g, '\n').replace(/\n{3,}/g, '\n\n').trim();
+    return text.replace(/\r\n?/g, '\n').replace(/[ \t]+\n/g, '\n').replace(/\n{2,}/g, '\n').trim();
   }
 
   function fromHtml(html) {
@@ -36,7 +36,7 @@
     Array.prototype.forEach.call(doc.querySelectorAll('script,style,noscript,template,head'), function (n) { n.remove(); });
     Array.prototype.forEach.call(doc.querySelectorAll('br'), function (n) { n.replaceWith('\n'); });
     Array.prototype.forEach.call(doc.querySelectorAll('p,div,h1,h2,h3,h4,h5,h6,li,tr,blockquote,pre,section,article,header,footer'), function (n) {
-      n.appendChild(doc.createTextNode('\n\n'));
+      n.appendChild(doc.createTextNode('\n'));
     });
     return tidy(doc.body ? doc.body.textContent : '');
   }
@@ -66,7 +66,7 @@
       var f = zip.file('word/document.xml');
       if (!f) throw new Error('This does not look like a Word (.docx) file.');
       return f.async('string');
-    }).then(function (xml) { return tidy(xmlParagraphs(xml, 'w:p', ['w:t']).join('\n\n')); });
+    }).then(function (xml) { return tidy(xmlParagraphs(xml, 'w:p', ['w:t']).join('\n')); });
   }
 
   function fromOdt(buffer) {
@@ -81,12 +81,12 @@
         if (el.nodeName !== 'text:p' && el.nodeName !== 'text:h') return;
         out.push(el.textContent);
       });
-      return tidy(out.join('\n\n'));
+      return tidy(out.join('\n'));
     });
   }
 
   function fromRtf(rtf) {
-    var t = rtf.replace(/\\par[d]?/g, '\n\n').replace(/\\'([0-9a-f]{2})/gi, function (m, h) { return String.fromCharCode(parseInt(h, 16)); })
+    var t = rtf.replace(/\\par[d]?/g, '\n').replace(/\\'([0-9a-f]{2})/gi, function (m, h) { return String.fromCharCode(parseInt(h, 16)); })
       .replace(/\\u(-?\d+)\??/g, function (m, n) { return String.fromCharCode(n < 0 ? Number(n) + 65536 : Number(n)); })
       .replace(/\{\\\*[^{}]*\}/g, '').replace(/\{\\(fonttbl|colortbl|stylesheet|info)[^]*?\}\}/g, '')
       .replace(/\\[a-z]+-?\d* ?/gi, '').replace(/[{}]/g, '');
@@ -133,6 +133,25 @@
     var f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
     if (f) { e.preventDefault(); load(f); }
   });
+  // Pasted text: runs of line breaks become one paragraph break, so no forced empty lines come in.
+  area.addEventListener('paste', function (e) {
+    var data = e.clipboardData && e.clipboardData.getData('text/plain');
+    if (!data) return;
+    e.preventDefault();
+    var clean = data.replace(/\r\n?/g, '\n').replace(/[ \t]+\n/g, '\n').replace(/\n{2,}/g, '\n');
+    area.setRangeText(clean, area.selectionStart, area.selectionEnd, 'end');
+    area.dispatchEvent(new Event('input', { bubbles: true }));
+  });
+  // Space after paragraph: remembered between visits and redraws the page when changed.
+  var space = document.getElementById('paraSpace');
+  if (space) {
+    try { var saved = localStorage.getItem('compositorParaSpace'); if (saved !== null) space.value = saved; } catch (e) {}
+    space.addEventListener('input', function () {
+      try { localStorage.setItem('compositorParaSpace', space.value); } catch (e) {}
+      window.dispatchEvent(new Event('resize'));
+    });
+    window.setTimeout(function () { window.dispatchEvent(new Event('resize')); }, 0);
+  }
   var clear = document.getElementById('clearTextButton');
   var dflt = document.getElementById('loadDefaultTextButton');
   [clear, dflt].forEach(function (b) { if (b) b.addEventListener('click', function () { say(idle); }); });

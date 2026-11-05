@@ -336,50 +336,40 @@ function drawPage(svg, inputs, pageX, pageY, pageWidth, pageHeight, leftMargin, 
                 textBgRect.setAttribute('height', textBoxHeight.toString());
                 textBgRect.setAttribute('fill', textBgColor);
                 textGroup.appendChild(textBgRect);
-                if (showRivers) {
-                    // Rivers visualization: wrap each word in a span with white background
-                    // This matches ragged edge style - white text on black background
-                    // Spaces show as black gaps (rivers) between words
-                    const words = sampleText.split(/(\s+)/); // Split on spaces but keep them
-                    words.forEach(word => {
-                        if (word.trim().length > 0) {
-                            // It's a word - wrap in span with white background
-                            const span = document.createElementNS('http://www.w3.org/1999/xhtml', 'span');
-                            span.style.backgroundColor = '#ffffff';
-                            span.style.color = '#000000';
-                            span.textContent = word;
-                            textDiv.appendChild(span);
-                        }
-                        else {
-                            // It's whitespace - add as text node (will show as black gap/river)
-                            textDiv.appendChild(document.createTextNode(word));
-                        }
-                    });
-                }
-                else if (showRaggedEdge) {
-                    // Ragged edge visualization: wrap each word in a span with white background
-                    // This creates black gaps (ragged edge) where text doesn't reach
-                    const words = sampleText.split(/(\s+)/); // Split on spaces but keep them
-                    words.forEach(word => {
-                        if (word.trim().length > 0) {
-                            // It's a word - wrap in span with white background
-                            const span = document.createElementNS('http://www.w3.org/1999/xhtml', 'span');
-                            span.style.backgroundColor = '#ffffff';
-                            span.style.color = '#000000';
-                            span.textContent = word;
-                            textDiv.appendChild(span);
-                        }
-                        else {
-                            // It's whitespace - add as text node (will show as black gap)
-                            textDiv.appendChild(document.createTextNode(word));
-                        }
-                    });
-                }
-                else {
-                    // Normal text - no wrapping needed
+                // Paragraphs: every run of line breaks is one paragraph break, with the space after set in Type
+                // (blank lines in the text are not drawn as empty lines)
+                const spaceLines = parseFloat(document.getElementById('paraSpace')?.value ?? '1');
+                const spaceAfter = (isNaN(spaceLines) || spaceLines < 0 ? 1 : spaceLines) * lineHeight;
+                const paragraphs = sampleText.split(/\n+/).map(s => s.replace(/[ \t]+$/, '')).filter(s => s.trim().length > 0);
+                const wrapWords = showRivers || showRaggedEdge;
+                if (!wrapWords) {
                     textDiv.style.color = '#000000';
-                    textDiv.textContent = sampleText;
                 }
+                paragraphs.forEach((para, i) => {
+                    const p = document.createElementNS('http://www.w3.org/1999/xhtml', 'p');
+                    p.style.margin = i < paragraphs.length - 1 ? `0 0 ${spaceAfter}px` : '0';
+                    p.style.padding = '0';
+                    p.style.whiteSpace = 'pre-wrap';
+                    if (wrapWords) {
+                        // Ragged edge and rivers: each word on a white background over black, so the gaps show
+                        para.split(/(\s+)/).forEach(word => {
+                            if (word.trim().length > 0) {
+                                const span = document.createElementNS('http://www.w3.org/1999/xhtml', 'span');
+                                span.style.backgroundColor = '#ffffff';
+                                span.style.color = '#000000';
+                                span.textContent = word;
+                                p.appendChild(span);
+                            }
+                            else {
+                                p.appendChild(document.createTextNode(word));
+                            }
+                        });
+                    }
+                    else {
+                        p.textContent = para;
+                    }
+                    textDiv.appendChild(p);
+                });
                 textGroup.appendChild(textDiv);
                 parentSvg.appendChild(textGroup);
                 // Draw ragged edge highlight if enabled
