@@ -367,3 +367,12 @@ body.popout-window .editor-stage{right:24px}
 .container .step-list a,.container .step-list a:not([aria-checked=true]){display:flex;flex:0 0 33.333%;align-items:center;justify-content:center;gap:5px;box-sizing:border-box;min-height:40px;padding:0 4px;font-size:13px;white-space:nowrap;scroll-snap-align:center;border-radius:8px;overflow:hidden;text-overflow:ellipsis}
 .container .step-list a span,.container .step-list a:not([aria-checked=true]) span{width:auto;padding:0;font-size:inherit}
 .container .step-list a:not([aria-checked=true]){opacity:.7}
+
+/* Steps as one continuous line of text; the current step is highlighted. Scrolls sideways when it does not fit. */
+.container .cp-stepsec{padding:6px 12px}
+.container .step-list{scroll-snap-type:none;gap:14px;align-items:center}
+.container .step-list::before,.container .step-list::after{display:none}
+.container .step-list a,.container .step-list a:not([aria-checked=true]){flex:none;display:inline-flex;min-height:36px;padding:0 0 2px;border-radius:0;background:transparent;opacity:1;scroll-snap-align:none;overflow:visible;border-bottom:2px solid transparent;color:var(--cp-muted)}
+.container .step-list a:hover{background:transparent;color:var(--cp-text)}
+.container .step-list a[aria-checked=true]{background:transparent;color:var(--yellow);border-bottom-color:var(--yellow)}
+.container .step-list a span{color:inherit;opacity:.7}
