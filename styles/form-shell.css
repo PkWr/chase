@@ -484,7 +484,7 @@ body.help-on .container [title]:not(#helpLink),body.help-on .preview-wrapper [ti
 
 .intro-stage{display:none}
 body[data-step="1"] #visualizationContainer{display:none}
-body[data-step="1"] .intro-stage{display:flex;flex:1 1 0;min-height:0;overflow-y:auto;box-sizing:border-box;padding:6vw 5vw;background:#fff;color:#111;border:1px solid #d9d9d4;border-radius:14px}
+body[data-step="1"] .intro-stage{display:flex;flex:1 1 0;min-height:0;overflow-y:auto;box-sizing:border-box;padding:6vw 5vw;background:none;color:#111;border:0;border-radius:0}
 .intro-stage p{margin:0;font-weight:300;font-style:italic;font-size:clamp(18px,2.2vw,32px);line-height:1.25;letter-spacing:-.01em}
 .intro-stage a{color:#111;text-decoration:none;background:var(--yellow);padding:0 .12em;border-radius:3px}
 .intro-stage a:hover,.intro-stage a:focus-visible{outline:2px solid #111;outline-offset:1px}
