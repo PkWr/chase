@@ -163,3 +163,5 @@ body[data-step="5"] .cp-foot #downloadRow{display:block}
 .container .step-list a[aria-checked=true]{color:var(--yellow);background:var(--cp-accent-bg)}
 .container .step-list a[aria-checked=true] span{color:var(--yellow)}
 .container .cp-stepsec{margin-top:12px}
+.container .start-plus,.container .start-minus{background:transparent;border-style:dashed;color:var(--cp-text);font-size:14px}
+.container .start-col:disabled{opacity:.3}

@@ -204,36 +204,33 @@
 
       <section data-step="2" class="form-section">
         <h2>Columns</h2>
-        <div class="form-row">
-          <div class="form-group">
-            <label for="numCols">Number of columns</label>
-            <input type="number" id="numCols" value="2" min="1" class="input-small" required>
-          </div>
-          <div class="form-group">
-            <label for="gutterWidth" id="gutterWidthLabel">Gutter width (em)</label>
-            <input type="number" id="gutterWidth" value="" step="0.001" class="input-small" required>
-            <span class="helper-text" id="gutterWidthConversion"></span>
-          </div>
+        <div class="form-group" id="numColsGroup">
+          <label for="numCols">Number of columns</label>
+          <input type="number" id="numCols" value="2" min="1" class="input-small" required>
+        </div>
+        <div class="form-group">
+          <label for="gutterWidth" id="gutterWidthLabel">Gutter width (em)</label>
+          <input type="number" id="gutterWidth" value="" step="0.001" class="input-small" required>
+          <span class="helper-text" id="gutterWidthConversion"></span>
         </div>
         <div class="form-group">
           <span id="columnWidthDisplay" class="helper-text"></span>
           <span id="autoGutterNote" class="helper-text"></span>
         </div>
-        <div class="form-group">
+        <div class="form-group" id="spanGroup">
           <label for="columnSpanSlider">Text box spans columns</label>
           <div class="slider-container">
             <input type="range" id="columnSpanSlider" min="1" max="2" value="2" class="slider-input">
             <span id="columnSpanValue" class="slider-value">2</span>
           </div>
-          <span class="helper-text">Number of columns the text box should span</span>
         </div>
-        <div class="form-group">
-          <label id="startPickerLabel">Text starts in column <span id="startPickerValue"></span></label>
+        <div class="form-group" id="startGroup">
+          <label id="startPickerLabel">Columns and text box</label>
           <div class="slider-container">
             <input type="range" id="textStartSlider" min="1" max="2" value="1" class="slider-input">
             <span id="textStartValue" class="slider-value">1</span>
           </div>
-          <span class="helper-text">Column where text begins</span>
+          <span class="helper-text" id="startPickerHelp"></span>
         </div>
       </section>
 
