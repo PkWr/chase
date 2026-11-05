@@ -1,6 +1,6 @@
-# Typography Layout Calculator
+# chase
 
-A web-based calculator for typographic layouts based on Robert Bringhurst's principles from "The Elements of Typographic Style".
+chase is a set of tools for typographic layout, built for teaching graphic design. Its calculator (the Compositor) works out page layouts from Robert Bringhurst's principles in "The Elements of Typographic Style".
 
 ## Features
 
@@ -20,8 +20,8 @@ A web-based calculator for typographic layouts based on Robert Bringhurst's prin
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/PkWr/type-setting.git
-cd type-setting
+git clone https://github.com/PkWr/chase.git
+cd chase
 ```
 
 2. Start a local web server (required for ES modules):
@@ -48,7 +48,7 @@ The site is served by GitHub Pages from the repository root. `.nojekyll` disable
 ## Project Structure
 
 ```
-type-setting/
+chase/
 ├── src/           # Plain JavaScript ES modules
 │   ├── calculator.js, units.js, paperSizes.js, types.js
 │   ├── ui.js, visualization.js, defaultText.js, main.js

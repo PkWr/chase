@@ -51,13 +51,13 @@ PAGE = """<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Changelog</title>
+<title>Changelog · chase</title>
 <link rel="stylesheet" href="styles/main.css">
 <link rel="stylesheet" href="styles/form-shell.css">
 </head>
 <body class="page">
 <main class="about">
-  <p><a href="./">← Type Setting</a></p>
+  <p><a href="./">← chase</a></p>
   <h1>Changelog</h1>
 
 %s</main>

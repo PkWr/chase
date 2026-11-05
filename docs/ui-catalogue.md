@@ -11,12 +11,12 @@ Status: match (same markup and CSS as Form), adapted (same pattern, changed on p
 
 ## Shell
 
-| Asset | Class or id | Form source | Type-setting | Status |
+| Asset | Class or id | Form source | chase | Status |
 |---|---|---|---|---|
-| Control panel | `#panel` (`.container` in type-setting) | style.css 14, 65 | `styles/form-shell.css` | adapted: fixed 380px, floating at every width, not a bottom sheet |
+| Control panel | `#panel` (`.container` in chase) | style.css 14, 65 | `styles/form-shell.css` | adapted: fixed 380px, floating at every width, not a bottom sheet |
 | Panel head | `.cp-head`, `.cp-now` | 69, 405, 482 | index.html, grep.html | match |
 | Fold handle | `.cp-grab` | style.css 41, 67; app.js 748 | `src/layer-cycle.js` | adapted: shown at every width (Form: phones only); folds everything except head and foot |
-| Panel body | `.cp-body` | 70 | not used; type-setting scrolls `.container` | check |
+| Panel body | `.cp-body` | 70 | not used; chase scrolls `.container` | check |
 | Panel foot | `.cp-foot` | 71, 78 | index.html | match |
 | Card | `.cp-sec` with `h3` | 483, 484 | all cards | match |
 | Hint text | `.hint` | 39 | scale line, helper lines | match |
@@ -25,7 +25,7 @@ Status: match (same markup and CSS as Form), adapted (same pattern, changed on p
 
 ## Controls
 
-| Asset | Class or id | Form source | Type-setting | Status |
+| Asset | Class or id | Form source | chase | Status |
 |---|---|---|---|---|
 | Button | `button` | 34 | Back, Next, Download | match |
 | Step pager | `.row.nav`, `.next`, `.back` | 170 to 172 | `.page-nav` under the page; Next is full-width yellow | adapted: yellow, named "Next / step" |
