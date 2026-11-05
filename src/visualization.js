@@ -30,7 +30,7 @@ function isFacingPages() {
 /**
  * Draws ragged edge highlight - black rectangles showing where each line ends
  */
-function drawRaggedEdge(textDiv, textGroup, spanWidth, lineHeight, padding, justifyText = false) {
+function drawRaggedEdge(textDiv, textGroup, spanWidth, lineHeight, padding, justifyText = false, columnStep = spanWidth) {
     // Get the computed style to measure text properly
     const computedStyle = window.getComputedStyle(textDiv);
     const lineHeightValue = parseFloat(computedStyle.lineHeight);
@@ -89,16 +89,20 @@ function drawRaggedEdge(textDiv, textGroup, spanWidth, lineHeight, padding, just
         const lineEndX = textGroupX + paddingValue + (lineRightRelative * scaleX);
         const lineY = textGroupY + paddingValue + (lineTopRelative * scaleY);
         const lineWidth = (lineRightRelative - lineLeftRelative) * scaleX;
+        // Which column of flowing text this line is in, and so where that column's right edge is
+        const lineStartX = (lineLeftRelative * scaleX);
+        const colIndex = Math.max(0, Math.floor((lineStartX + 0.5) / columnStep));
         lineEnds.push({
+            colIndex,
             x: lineEndX,
             y: lineY,
             width: lineWidth
         });
     }
-    // Calculate the right edge of the text box in SVG coordinates
-    const textBoxRightEdge = textGroupX + spanWidth - paddingValue;
     // Draw rectangles for each line - from end of text to right edge
     lineEnds.forEach((lineInfo) => {
+        // Right edge of this line's column in SVG coordinates
+        const textBoxRightEdge = textGroupX + (lineInfo.colIndex * columnStep) + spanWidth - paddingValue;
         const x = lineInfo.x; // End of text line in SVG coordinates
         const y = lineInfo.y; // Y position of line in SVG coordinates
         const width = textBoxRightEdge - x; // Width from end of text to right edge
@@ -263,15 +267,19 @@ function drawPage(svg, inputs, pageX, pageY, pageWidth, pageHeight, leftMargin, 
             const padding = 0; // Remove padding so text matches margins exactly
             // Store reference to the parent SVG for RAF callbacks (needed for facing pages)
             const parentSvg = svg;
-            // Create text boxes for each span repetition
-            for (let spanIndex = 0; spanIndex < numberOfSpans; spanIndex++) {
+            // One text box across all the spans, set in CSS columns so the text flows from one span to the next
+            // (each span is spanCols columns wide; the gap between spans is one gutter)
+            if (numberOfSpans > 0) {
+                const spanIndex = 0;
+                const boxWidth = (numberOfSpans * spanWidth) + ((numberOfSpans - 1) * scaledGutterWidth);
+                const columnStep = spanWidth + scaledGutterWidth;
                 const spanStartIndex = textStartIndex + (spanIndex * spanCols);
                 const spanStartX = textBoxX + (spanStartIndex * (columnWidth + scaledGutterWidth));
                 // Create text group for this span
                 const textGroup = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject');
                 textGroup.setAttribute('x', spanStartX.toString());
                 textGroup.setAttribute('y', textBoxY.toString());
-                textGroup.setAttribute('width', spanWidth.toString());
+                textGroup.setAttribute('width', boxWidth.toString());
                 textGroup.setAttribute('height', textBoxHeight.toString());
                 // Determine visualization mode
                 const showRivers = layerVisibility.raggedEdge && inputs.justifyText;
@@ -290,6 +298,10 @@ function drawPage(svg, inputs, pageX, pageY, pageWidth, pageHeight, leftMargin, 
                 textDiv.style.fontFamily = fontFamily === 'serif' ? 'serif' : fontFamily === 'sans-serif' ? 'sans-serif' : fontFamily === 'monospace' ? 'monospace' : `'${fontFamily}', serif`;
                 textDiv.style.width = '100%';
                 textDiv.style.height = '100%';
+                // Flow: fill each span to the bottom of the text box, then continue in the next
+                textDiv.style.columnCount = String(numberOfSpans);
+                textDiv.style.columnGap = `${scaledGutterWidth}px`;
+                textDiv.style.columnFill = 'auto';
                 textDiv.style.padding = `${padding}px`;
                 textDiv.style.boxSizing = 'border-box';
                 textDiv.style.overflow = 'hidden';
@@ -379,7 +391,7 @@ function drawPage(svg, inputs, pageX, pageY, pageWidth, pageHeight, leftMargin, 
                             const currentSvg = textGroup.ownerSVGElement;
                             // Check if SVG exists and is in container, and matches the parent SVG
                             if (container && currentSvg && currentSvg === parentSvg && container.contains(currentSvg) && currentSvg.contains(textGroup) && textGroup.contains(textDiv)) {
-                                drawRaggedEdge(textDiv, textGroup, spanWidth, lineHeight, padding, inputs.justifyText || false);
+                                drawRaggedEdge(textDiv, textGroup, spanWidth, lineHeight, padding, inputs.justifyText || false, columnStep);
                             }
                         });
                         rafIds.push(rafId2);
