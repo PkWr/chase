@@ -182,3 +182,4 @@ body[data-step="6"] .cp-foot #downloadRow{display:block}
 .page-nav .step-btn{flex:1 1 0;padding:10px 14px}
 .page-nav .step-btn[hidden]{display:none}
 .preview-wrapper .page-nav .step-next,.preview-wrapper .page-nav #stepNext{background:var(--yellow);border-color:var(--yellow);color:var(--ink)}
+#visualizationContainer svg{box-shadow:0 6px 30px rgba(0,0,0,.5)}
