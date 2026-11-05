@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>chase</title>
-  <link rel="stylesheet" href="styles/main.css?v=202611051206">
-  <link rel="stylesheet" href="styles/form-shell.css?v=202611051206">
+  <link rel="stylesheet" href="styles/main.css?v=202611051209">
+  <link rel="stylesheet" href="styles/form-shell.css?v=202611051209">
   <!-- Padding handled in main.css for better control -->
 </head>
 <body>
@@ -383,6 +383,7 @@
           <div class="editor-head">
             <label for="sampleText">Text</label>
           </div>
+          <p class="markup-intro">Start a line with a mark and a space to set its style (see the table below), or use the buttons: they apply to the line at the cursor, or to every selected line. Italic works on selected words. Shift+Enter, or a backslash at the end of a line, keeps the next line in the same paragraph. Marks are not drawn on the page or in the InDesign file.</p>
           <div class="mark-tools" role="toolbar" aria-label="Styles for the text">
             <button type="button" class="mark-btn" data-mark="h1" title="Heading 1 (Cmd/Ctrl+Alt+1)">H1</button>
             <button type="button" class="mark-btn" data-mark="h2" title="Heading 2 (Cmd/Ctrl+Alt+2)">H2</button>
@@ -415,9 +416,6 @@
                 <tr><td><code>\</code> at the end of a line</td><td>Soft return: the next line joins the same paragraph after a line break</td></tr>
               </tbody>
             </table>
-            <p>Put the mark at the very start of the line, then a space. Each line is one paragraph, and blank lines are ignored. The marks are not drawn on the page or in the InDesign file. A backslash before an asterisk (<code>\*</code>) keeps it as a plain asterisk. Up to three heading levels are used, and only the styles in the text appear under Styles in the Type step.</p>
-            <p>Open the text editor for the style buttons. They set the style of the line the cursor is on, or of every selected line; pressing the same button again takes it off. Italic works on the selected words, or on the word at the cursor. The shortcuts work in the small box too: Cmd/Ctrl+I for italic, Cmd/Ctrl+Alt+1, 2 and 3 for the headings, and Shift+Enter for a soft return (a line break that stays in the same paragraph). Write two backslashes at the end of a line to keep one.</p>
-            <p>Word (.docx), OpenDocument (.odt) and html files keep Heading 1 to 3, quotes and italics when loaded. Markdown (.md) files already use these marks.</p>
           </details>
         </div>
       </section>
@@ -517,13 +515,13 @@
   <!-- PDF Export Libraries -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script type="module" src="src/main.js?v=202611051206"></script>
-  <script src="src/start.js?v=202611051206"></script>
-  <script src="src/steps.js?v=202611051206"></script>
-  <script src="src/column-picker.js?v=202611051206"></script>
-  <script src="src/popout.js?v=202611051206"></script>
-  <script type="module" src="src/editor.js?v=202611051206"></script>
-  <script type="module" src="src/text-import.js?v=202611051206"></script>
-  <script src="src/layer-cycle.js?v=202611051206"></script>
+  <script type="module" src="src/main.js?v=202611051209"></script>
+  <script src="src/start.js?v=202611051209"></script>
+  <script src="src/steps.js?v=202611051209"></script>
+  <script src="src/column-picker.js?v=202611051209"></script>
+  <script src="src/popout.js?v=202611051209"></script>
+  <script type="module" src="src/editor.js?v=202611051209"></script>
+  <script type="module" src="src/text-import.js?v=202611051209"></script>
+  <script src="src/layer-cycle.js?v=202611051209"></script>
 </body>
 </html>
