@@ -7,6 +7,7 @@ import { PAPER_SIZES, getPaperSize, getDefaultPaperSize } from './paperSizes.js'
 import { updateVisualization } from './visualization.js';
 import { convertFromMM, convertToMM, formatValue } from './units.js';
 import { DEFAULT_SAMPLE_TEXT } from './defaultText.js';
+import { buildIdmlBlob } from './idml.js';
 // Page dimensions are always in mm, gutter is always in em
 const PAGE_UNIT = 'mm';
 const GUTTER_UNIT = 'em';
@@ -2384,6 +2385,35 @@ export function initializeCalculator() {
                 console.error('PDF export error:', error);
                 alert('Error exporting PDF. Please try again.');
             });
+        });
+    }
+    // Export to InDesign (IDML) button
+    const exportIdmlButton = document.getElementById('exportIdmlButton');
+    if (exportIdmlButton) {
+        const idmlStatus = document.getElementById('idmlStatus');
+        exportIdmlButton.addEventListener('click', async () => {
+            const say = (msg) => { if (idmlStatus) idmlStatus.textContent = msg; };
+            try {
+                say('Building the InDesign file…');
+                const JSZipClass = await window.loadJSZip();
+                const inputs = getFormInputs();
+                const text = document.getElementById('sampleText')?.value || '';
+                const spaceField = document.getElementById('paraSpace')?.value ?? '';
+                const spec = { inputs, text, paraSpacePt: spaceField === '' ? undefined : parseFloat(spaceField), facing: isFacingPages(), name: 'chase.indd' };
+                const blob = await buildIdmlBlob(JSZipClass, spec);
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = 'chase-layout.idml';
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
+                setTimeout(() => URL.revokeObjectURL(link.href), 5000);
+                say('Downloaded chase-layout.idml. Open it in InDesign; text that does not fit shows as overset.');
+            }
+            catch (error) {
+                console.error('IDML export error:', error);
+                say('The InDesign file could not be made. Check the connection and try again.');
+            }
         });
     }
     // Handle paper size selection

@@ -27,6 +27,8 @@
     return jszipPromise;
   }
 
+  window.loadJSZip = loadJSZip; // shared with the IDML download
+
   function tidy(text) {
     return text.replace(/\r\n?/g, '\n').replace(/[ \t]+\n/g, '\n').replace(/\n{2,}/g, '\n').trim();
   }

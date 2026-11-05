@@ -278,3 +278,5 @@ html.show-start #startScreen{display:block}
 .start-scroll p:hover,.start-scroll .start-title:hover{text-decoration:underline wavy var(--yellow);text-decoration-thickness:.04em;text-underline-offset:.14em;text-decoration-skip-ink:none}
 .start-scroll h2.start-title{font-weight:300}
 .start-loop .start-title:not(:first-child){margin-top:1.4em}
+.cp-foot #downloadRow .btn-export{width:100%;margin:0 0 6px}
+.cp-foot #downloadRow #idmlStatus{margin:0 0 4px}
