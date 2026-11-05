@@ -31,3 +31,18 @@
   document.addEventListener('DOMContentLoaded', fromJ);
   setTimeout(fromJ, 400);
 })();
+
+// The baseline grid icon only matters when there is more than one column.
+(function () {
+  var n = document.getElementById('numCols'), t = document.getElementById('baselineToggle'), box = document.getElementById('showBaseline');
+  if (!n || !t || !box) return;
+  function sync() {
+    var multi = (parseInt(n.value, 10) || 1) > 1;
+    t.hidden = !multi;
+    if (!multi && box.checked) { box.checked = false; box.dispatchEvent(new Event('change', { bubbles: true })); }
+  }
+  document.addEventListener('input', sync);
+  document.addEventListener('change', sync);
+  document.addEventListener('click', function () { setTimeout(sync, 50); });
+  setTimeout(sync, 400);
+})();

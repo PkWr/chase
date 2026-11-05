@@ -285,7 +285,13 @@
         </div>
         <div class="form-group">
           <label for="paraSpace">Space after paragraph (pt)</label>
-          <input type="number" id="paraSpace" value="14" min="0" step="0.5" class="input-small">
+          <div class="para-row">
+            <input type="number" id="paraSpace" value="14" min="0" step="0.5" class="input-small">
+            <label class="layer-checkbox" id="baselineToggle" hidden title="Baseline grid: lines across the page at the leading">
+            <input type="checkbox" id="showBaseline">
+            <span class="ic"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 6h20M2 11h20M2 16h20M2 21h20"/></svg><em class="sr">Baseline grid</em></span>
+          </label>
+          </div>
           <span class="helper-text">Paragraphs are separated by this space, not by empty lines. Blank lines in the text are ignored.</span>
         </div>
         <div class="form-group">
@@ -305,13 +311,9 @@
               <input type="radio" name="alignMode" id="alignJustify">
               <span class="ic"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg><em class="sr">Justified</em></span>
             </label>
-          <label class="layer-checkbox" title="Baseline grid: lines across the page at the leading">
-            <input type="checkbox" id="showBaseline">
-            <span class="ic"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 6h20M2 11h20M2 16h20M2 21h20"/></svg><em class="sr">Baseline grid</em></span>
-          </label>
           </div>
           <input type="checkbox" id="justifyText" hidden>
-          <span class="helper-text">Left aligned or justified; the grid lines mark the leading</span>
+          <span class="helper-text">Left aligned or justified</span>
         </div>
         <div class="form-group">
           <div class="layer-controls" role="group" aria-label="Show ragged edge and rivers">

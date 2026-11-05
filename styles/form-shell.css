@@ -254,3 +254,6 @@ body[data-step="1"] #popOut{display:none}
 .container .layer-checkbox.is-solid .ic svg rect:first-child{fill:var(--yellow);}
 .container .start-cols{align-items:center}
 .container .start-cols>.start-ctrl{display:flex;flex:none;flex-wrap:nowrap;gap:6px;margin:0 8px 0 0;padding-right:8px;border-right:1px solid var(--cp-line)}
+.container .para-row{display:flex;align-items:center;gap:14px}
+.container .para-row .input-small{flex:1 1 auto;min-width:0}
+.container .para-row .layer-checkbox[hidden]{display:none}
