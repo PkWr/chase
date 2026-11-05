@@ -155,3 +155,7 @@ body[data-step="4"] .cp-foot #downloadRow{display:block}
 @media(max-width:900px){.scale-indicator{display:none}.step-now{max-width:55%}}
 .preview-wrapper .visualization-section{display:flex;flex-direction:column}
 .page-nav{display:flex;justify-content:center;gap:8px;padding-top:12px;flex:none}
+.cp-steps{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 0;font-size:12px}
+.container .cp-steps a{padding:3px 10px;border-radius:999px;color:var(--cp-muted);text-decoration:none}
+.container .cp-steps a:hover{color:var(--cp-text)}
+.container .cp-steps a[aria-checked=true]{background:var(--cp-accent-bg);color:var(--yellow)}

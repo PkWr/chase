@@ -7,7 +7,7 @@
   var back = document.getElementById('stepBack');
   var next = document.getElementById('stepNext');
   var now = document.getElementById('stepNow');
-  var cpNow = document.getElementById('cpNow');
+  var pills = document.querySelectorAll('#cpSteps a');
   var panel = document.querySelector('.container');
   if (!back || !next || !now || !panel) return;
 
@@ -16,7 +16,7 @@
     document.body.setAttribute('data-step', String(step));
     var label = 'Step ' + step + ' of ' + titles.length + ' · ' + titles[step - 1];
     now.textContent = label;
-    if (cpNow) cpNow.textContent = label;
+    pills.forEach(function (a) { a.setAttribute('aria-checked', String(Number(a.dataset.go) === step)); });
     back.disabled = step === 1;
     next.disabled = step === titles.length;
     panel.scrollTop = 0;
@@ -24,6 +24,9 @@
 
   back.addEventListener('click', function () { show(step - 1); });
   next.addEventListener('click', function () { show(step + 1); });
+  pills.forEach(function (a) {
+    a.addEventListener('click', function (e) { e.preventDefault(); show(Number(a.dataset.go)); });
+  });
   show(1);
 })();
 
