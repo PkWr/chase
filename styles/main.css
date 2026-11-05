@@ -324,9 +324,9 @@ h1 {
   justify-content: center;
 }
 
-.unit-option-portrait .material-icons,
-.unit-option-landscape .material-icons {
-  font-size: 1.2rem;
+.unit-option-portrait .orient-icon,
+.unit-option-landscape .orient-icon {
+  display: block;
 }
 
 .unit-toggle-container {

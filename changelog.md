@@ -18,6 +18,7 @@ This file tracks all changes made to the type-setting project.
 - Calculator restyled to the Form shell: paper page, dark floating control panel (bottom sheet on narrow windows), yellow accent, IBM Plex Mono italic.
 - Start screen with an About drawer, as on Form. It shows when the address has no query; index.html?calculator opens the calculator directly. The Read me modal no longer opens by itself.
 - GREP page restyled to the same shell.
+- Orientation icons are inline SVG; the Material Icons font from Google is no longer loaded.
 - Footer typo fixed ("This is a GD v/x AI Project").
 
 ## 2025-01-27
