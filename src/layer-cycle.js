@@ -46,3 +46,18 @@
   document.addEventListener('click', function () { setTimeout(sync, 50); });
   setTimeout(sync, 400);
 })();
+
+// Fold the Steps list down to the current step.
+(function () {
+  var b = document.getElementById('foldSteps'), sec = b && b.closest('.cp-stepsec');
+  if (!b || !sec) return;
+  function set(f) {
+    sec.classList.toggle('folded', f);
+    b.setAttribute('aria-expanded', String(!f));
+    b.title = f ? 'Unfold the steps' : 'Fold the steps';
+    try { localStorage.setItem('compositorStepsFolded', f ? '1' : '0'); } catch (e) {}
+  }
+  var saved = false; try { saved = localStorage.getItem('compositorStepsFolded') === '1'; } catch (e) {}
+  set(saved);
+  b.addEventListener('click', function () { set(!sec.classList.contains('folded')); });
+})();

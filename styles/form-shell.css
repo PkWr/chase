@@ -260,3 +260,8 @@ body[data-step="1"] #popOut{display:none}
 /* The page preview takes its typeface from the Typeface select, not the panel's mono italic */
 #visualizationContainer foreignObject div *{font-family:inherit;font-style:normal}
 #visualizationContainer foreignObject div{font-style:normal}
+.container .cp-sechead{display:flex;align-items:center;justify-content:space-between}
+.container .cp-sechead h3{margin:0}
+.container .fold-btn svg{transition:transform .15s}
+.container .cp-stepsec.folded .fold-btn svg{transform:rotate(-90deg)}
+.container .cp-stepsec.folded .step-list a:not([aria-checked=true]){display:none}
