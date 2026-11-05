@@ -178,3 +178,7 @@ body[data-step="6"] .cp-foot #downloadRow{display:block}
 .container .cp-show{position:static}
 .container .cp-sec{margin-top:8px;padding:10px}
 }
+.page-nav{gap:8px}
+.page-nav .step-btn{flex:1 1 0;padding:10px 14px}
+.page-nav .step-btn[hidden]{display:none}
+.preview-wrapper .page-nav .step-next,.preview-wrapper .page-nav #stepNext{background:var(--yellow);border-color:var(--yellow);color:var(--ink)}

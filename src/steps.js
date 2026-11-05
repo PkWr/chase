@@ -17,8 +17,8 @@
     var label = 'Step ' + step + ' of ' + titles.length + ' · ' + titles[step - 1];
     now.textContent = label;
     pills.forEach(function (a) { a.setAttribute('aria-checked', String(Number(a.dataset.go) === step)); });
-    back.disabled = step === 1;
-    next.disabled = step === titles.length;
+    back.hidden = step === 1;
+    next.hidden = step === titles.length;
     panel.scrollTop = 0;
   }
 
