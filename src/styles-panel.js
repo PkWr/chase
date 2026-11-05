@@ -1,5 +1,5 @@
 // The Styles block in the panel: size ratios for the heading levels, the quote indent and the citation
-// size. The rows show once the text uses any marks. Values are remembered between visits.
+// size. Only the styles the text uses are listed. Values are remembered between visits.
 import { parseStyled, stylesUsed } from './styled-text.js';
 import { STYLE_DEFAULTS } from './style-settings.js';
 
@@ -61,13 +61,26 @@ function refresh() {
         }
     }
     // No marks in the text: show only the prompt back to the Text step. With marks, every style is listed.
-    document.querySelectorAll('.style-row').forEach((row) => { row.hidden = !any; });
+    // Only the styles the text uses are listed. The prompt back to the Text step stays until all are in use.
+    let usedCount = 0;
+    for (const style of Object.keys(ROWS)) {
+        const row = document.querySelector(`.style-row[data-style="${style}"]`);
+        if (row)
+            row.hidden = !used[style];
+        if (used[style])
+            usedCount++;
+    }
     const none = document.getElementById('stylesNone');
-    if (none)
-        none.hidden = any;
+    if (none) {
+        const link = '<a href="#" id="stylesToText">Text step</a>';
+        none.hidden = usedCount === Object.keys(ROWS).length;
+        none.innerHTML = usedCount === 0
+            ? 'No styles in use yet. Add marks in the ' + link + ' (# for headings, > for a quote, -- for a source) and the styles appear here.'
+            : 'More styles are available. Add marks in the ' + link + ' (# for headings, > for a quote, -- for a source).';
+    }
     const note = document.getElementById('stylesNote');
     if (note)
-        note.hidden = !any;
+        note.hidden = usedCount === 0;
 }
 
 /** Puts every style back to its default size, indent and typeface, and forgets the saved values. */
@@ -123,7 +136,9 @@ export function initStylesPanel(onChange) {
         });
         row.insertBefore(sel, anchor.closest('.num-step') || anchor);
     }
-    document.getElementById('stylesToText')?.addEventListener('click', (e) => {
+    document.getElementById('stylesNone')?.addEventListener('click', (e) => {
+        if (!e.target.closest('#stylesToText'))
+            return;
         e.preventDefault();
         document.querySelector('[role="radio"][data-go="2"]')?.click();
     });
