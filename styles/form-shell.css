@@ -48,11 +48,12 @@ body{padding:0;background:var(--paper);color:var(--ink);font:300 13px/1.5 var(--
 
 /* Narrow windows: controls become a bottom sheet */
 @media(max-width:900px){
-.preview-wrapper{top:0;bottom:44vh;height:auto;padding:16px 16px 0}
+.preview-wrapper{top:0;bottom:50vh;height:auto;padding:16px 16px 0}
 body.cp-folded .preview-wrapper{bottom:140px}
 .preview-wrapper #popOut{display:none!important}
 #panel.collapsed{top:auto!important;bottom:0!important}
-.container{top:auto;left:0;right:0;bottom:0;width:auto;max-width:none;height:44vh;border-width:1px 0 0;border-radius:20px 20px 0 0}
+.container{top:auto;left:0;right:0;bottom:0;width:auto;max-width:none;height:50vh;border-width:1px 0 0;border-radius:20px 20px 0 0;overflow:hidden;transition:height .2s ease;touch-action:none}
+body.sheet-full .container{height:90vh;overflow:auto;touch-action:pan-y;overscroll-behavior:contain}
 }
 
 /* Start screen, as on Form: black, an open button, the About drawer under a yellow strip */
