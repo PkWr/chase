@@ -3,9 +3,10 @@
 //
 // Marks, one paragraph per line:
 //   "# " Heading 1    "## " Heading 2    "### " Heading 3    (up to three levels, all optional)
-//   "> " Block Quote  "-- " Citation (the source line under a quote)
+//   "> " Block Quote  "— " Citation (a real em dash and a space; the source line under a quote)
 //   *text* Emphasis (italic) inside any paragraph; a backslash before * keeps it literal
-// Anything else is Body Text. The marks are removed from the blocks.
+// Anything else is Body Text. The marks are removed from the blocks, except the Citation's em dash,
+// which is part of the set text.
 
 export const STYLE_NAMES = {
     body: 'Body Text',
@@ -19,7 +20,7 @@ export const STYLE_NAMES = {
 
 const HEADING = /^(#{1,3})[ \t]+(\S.*)$/;
 const QUOTE = /^>[ \t]+(\S.*)$/;
-const CITATION = /^--[ \t]+(\S.*)$/;
+const CITATION = /^—[ \t]+(\S.*)$/;
 // *text*: not next to another *, no space just inside the asterisks, so "2 * 3 * 4" and **x** stay literal.
 const EM = /(?<!\*)\*(?!\*)(\S(?:[^*]*?\S)?)(?<!\*)\*(?!\*)/g;
 const ESC = '';
@@ -60,7 +61,7 @@ export function parseStyled(text) {
             body = m[1];
         } else if ((m = CITATION.exec(line))) {
             style = 'citation';
-            body = m[1];
+            body = '— ' + m[1]; // the em dash is set text, not a mark to strip
         }
         blocks.push({ style, runs: parseRuns(body.trim()) });
     }

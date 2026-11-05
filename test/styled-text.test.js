@@ -3,15 +3,15 @@ import assert from 'node:assert/strict';
 import { parseStyled, parseRuns, plainText, stylesUsed, STYLE_NAMES } from '../src/styled-text.js';
 
 test('headings, quote and citation marks set the style and are stripped', () => {
-    const b = parseStyled('# One\n## Two\n### Three\n> Quoted\n-- Bringhurst, 2004\nPlain');
+    const b = parseStyled('# One\n## Two\n### Three\n> Quoted\n— Bringhurst, 2004\nPlain');
     assert.deepEqual(b.map((x) => x.style), ['h1', 'h2', 'h3', 'quote', 'citation', 'body']);
-    assert.equal(plainText(b), 'One\nTwo\nThree\nQuoted\nBringhurst, 2004\nPlain');
+    assert.equal(plainText(b), 'One\nTwo\nThree\nQuoted\n— Bringhurst, 2004\nPlain');
 });
 
 test('only three levels; more # and marks without a space stay literal body text', () => {
-    const b = parseStyled('#### Four\n#nospace\n>nospace\n--nospace\n#\n-- ');
+    const b = parseStyled('#### Four\n#nospace\n>nospace\n—nospace\n#\n— \n-- Not a mark');
     assert.ok(b.every((x) => x.style === 'body'));
-    assert.equal(plainText(b), '#### Four\n#nospace\n>nospace\n--nospace\n#\n--');
+    assert.equal(plainText(b), '#### Four\n#nospace\n>nospace\n—nospace\n#\n—\n-- Not a mark');
 });
 
 test('emphasis in *asterisks* becomes an italic run, in any style', () => {
