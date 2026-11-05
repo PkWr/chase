@@ -31,7 +31,10 @@
 
   // The text itself is the way in: click or press Enter.
   var scroller = document.querySelector('.start-scroll');
-  scroller.addEventListener('click', open);
+  // A click that only dismisses the open About drawer must not also enter the app.
+  var drawerWasOpen = false;
+  scroller.addEventListener('pointerdown', function () { drawerWasOpen = drawer.classList.contains('is-open'); }, true);
+  scroller.addEventListener('click', function () { if (drawerWasOpen) { drawerWasOpen = false; return; } open(); });
   scroller.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
 
   // Phones fire a pretend rollover around a tap; ignore those so the tap decides.
