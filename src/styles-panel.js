@@ -1,5 +1,5 @@
 // The Styles block in the panel: size ratios for the heading levels, the quote indent and the citation
-// size. Rows show only for the styles the text uses. Values are remembered between visits.
+// size. The rows show once the text uses any marks. Values are remembered between visits.
 import { parseStyled, stylesUsed } from './styled-text.js';
 import { STYLE_DEFAULTS } from './style-settings.js';
 
@@ -43,8 +43,6 @@ function refresh() {
     let any = false;
     for (const [style, [id, key]] of Object.entries(ROWS)) {
         const row = document.querySelector(`.style-row[data-style="${style}"]`);
-        if (row)
-            row.hidden = false; // every style is always listed, used or not
         any = any || used[style];
         const readout = document.getElementById(id + 'Pt');
         const v = parseFloat(document.getElementById(id)?.value);
@@ -62,12 +60,14 @@ function refresh() {
             readout.textContent = `${Math.round(v * typeSize * 10) / 10} pt`;
         }
     }
+    // No marks in the text: show only the prompt back to the Text step. With marks, every style is listed.
+    document.querySelectorAll('.style-row').forEach((row) => { row.hidden = !any; });
     const none = document.getElementById('stylesNone');
     if (none)
-        none.hidden = true;
+        none.hidden = any;
     const note = document.getElementById('stylesNote');
     if (note)
-        note.hidden = false;
+        note.hidden = !any;
 }
 
 /** Puts every style back to its default size, indent and typeface, and forgets the saved values. */
@@ -123,6 +123,10 @@ export function initStylesPanel(onChange) {
         });
         row.insertBefore(sel, anchor.closest('.num-step') || anchor);
     }
+    document.getElementById('stylesToText')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        document.querySelector('[role="radio"][data-go="2"]')?.click();
+    });
     document.getElementById('sampleText')?.addEventListener('input', refresh);
     document.getElementById('typeSize')?.addEventListener('input', refresh);
     document.getElementById('fontFamily')?.addEventListener('change', refresh);
