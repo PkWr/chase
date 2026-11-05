@@ -431,3 +431,5 @@ body[data-step="8"] .scale-line{display:none}
 .container .margins-head{display:flex;align-items:center;justify-content:space-between}
 .container .margin-link{width:34px;height:34px}
 .container .margin-link[aria-pressed=true]{background:var(--yellow);border-color:var(--yellow);color:var(--ink)}
+.editor-stage #textEditor textarea{background:rgba(255,225,0,.14);border-color:#ffe100}
+.editor-stage #textEditor textarea::placeholder{color:rgba(0,0,0,.45)}
