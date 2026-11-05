@@ -445,24 +445,34 @@ export function updateVisualization(inputs) {
     }
     const facingPages = isFacingPages();
     const layerVisibility = getLayerVisibility();
-    // Calculate scale to fit visualization
+    // Calculate scale to fit visualization. The drawing is made in real screen pixels (one drawing
+    // unit = one CSS pixel), so Safari has no viewBox scaling to apply to the text inside foreignObject.
     const aspectRatio = inputs.pageHeight / inputs.pageWidth;
-    let singlePageWidth;
-    let singlePageHeight;
-    if (aspectRatio > 1) {
-        // Portrait orientation
-        singlePageHeight = VISUALIZATION_SIZE;
-        singlePageWidth = VISUALIZATION_SIZE / aspectRatio;
+    const facingPagesNow = facingPages;
+    const sizeFor = (size) => {
+        const portrait = aspectRatio > 1;
+        const w = portrait ? size / aspectRatio : size;
+        const h = portrait ? size : size * aspectRatio;
+        return { w, h, visW: facingPagesNow ? w * 2 : w, visH: h + (facingPagesNow ? 20 : 0) };
+    };
+    let dims = sizeFor(VISUALIZATION_SIZE);
+    {
+        const cr = container.getBoundingClientRect();
+        const cs = getComputedStyle(container);
+        const cw = cr.width - (parseFloat(cs.paddingLeft) || 0) - (parseFloat(cs.paddingRight) || 0);
+        const ch = cr.height - (parseFloat(cs.paddingTop) || 0) - (parseFloat(cs.paddingBottom) || 0);
+        if (cw > 50 && ch > 50) {
+            const landscapeFit = dims.visW / dims.visH > 1;
+            let k = landscapeFit ? cw / dims.visW : Math.min(ch / dims.visH, cw / dims.visW);
+            if (isFinite(k) && k > 0)
+                dims = sizeFor(VISUALIZATION_SIZE * k);
+        }
     }
-    else {
-        // Landscape orientation
-        singlePageWidth = VISUALIZATION_SIZE;
-        singlePageHeight = VISUALIZATION_SIZE * aspectRatio;
-    }
-    // For facing pages, show two pages side by side (flush, no gap)
-    const visWidth = facingPages ? singlePageWidth * 2 : singlePageWidth;
+    const singlePageWidth = dims.w;
+    const singlePageHeight = dims.h;
+    const visWidth = dims.visW;
     const headingHeight = facingPages ? 20 : 0; // Space for headings above pages
-    const visHeight = singlePageHeight + headingHeight;
+    const visHeight = dims.visH;
     // SVG dimensions
     const svgWidth = visWidth;
     const svgHeight = visHeight;
