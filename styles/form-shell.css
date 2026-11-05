@@ -459,3 +459,7 @@ body[data-step="8"] .scale-line{display:none}
 .container .start-picker .start-cols .start-col.has-text{background:var(--yellow);border:1px solid var(--yellow);color:var(--ink)}
 .container .start-picker .start-cols .start-col .n{bottom:5px}
 .container #startPickerHelp{display:block;margin-top:8px}
+
+/* Footer (scale and links) always sits at the bottom of the panel, even when the step is short */
+.container .cp-foot{margin-top:auto}
+.container #layoutForm{margin-bottom:12px}
