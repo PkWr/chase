@@ -47,17 +47,13 @@
   setTimeout(sync, 400);
 })();
 
-// Fold the Steps list down to the current step.
+// Fold: Form's grab handle (.cp-grab). Same markup, labels and behaviour as Form's app.js.
 (function () {
-  var b = document.getElementById('foldSteps'), sec = b && b.closest('.cp-stepsec');
-  if (!b || !sec) return;
-  function set(f) {
-    sec.classList.toggle('folded', f);
-    b.setAttribute('aria-expanded', String(!f));
-    b.title = f ? 'Unfold the steps' : 'Fold the steps';
-    try { localStorage.setItem('compositorStepsFolded', f ? '1' : '0'); } catch (e) {}
-  }
-  var saved = false; try { saved = localStorage.getItem('compositorStepsFolded') === '1'; } catch (e) {}
-  set(saved);
-  b.addEventListener('click', function () { set(!sec.classList.contains('folded')); });
+  var g = document.getElementById('grab'), p = document.getElementById('panel');
+  if (!g || !p) return;
+  g.onclick = function () {
+    var c = p.classList.toggle('collapsed');
+    g.setAttribute('aria-expanded', String(!c));
+    g.setAttribute('aria-label', c ? 'Open controls' : 'Collapse controls');
+  };
 })();
