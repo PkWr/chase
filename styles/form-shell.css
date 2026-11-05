@@ -155,7 +155,10 @@ body[data-step="4"] .cp-foot #downloadRow{display:block}
 @media(max-width:900px){.scale-indicator{display:none}.step-now{max-width:55%}}
 .preview-wrapper .visualization-section{display:flex;flex-direction:column}
 .page-nav{display:flex;justify-content:center;gap:8px;padding-top:12px;flex:none}
-.cp-steps{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 0;font-size:12px}
-.container .cp-steps a{padding:3px 10px;border-radius:999px;color:var(--cp-muted);text-decoration:none}
-.container .cp-steps a:hover{color:var(--cp-text)}
-.container .cp-steps a[aria-checked=true]{background:var(--cp-accent-bg);color:var(--yellow)}
+.container .step-list{display:flex;flex-direction:column;gap:2px;font-size:13px;line-height:1.9}
+.container .step-list a{display:block;padding:0 6px;border-radius:6px;color:var(--cp-muted);text-decoration:none}
+.container .step-list a span{display:inline-block;width:1.4em;color:var(--cp-muted)}
+.container .step-list a:hover{color:var(--cp-text);background:var(--cp-accent-bg)}
+.container .step-list a[aria-checked=true]{color:var(--yellow);background:var(--cp-accent-bg)}
+.container .step-list a[aria-checked=true] span{color:var(--yellow)}
+.container .cp-stepsec{margin-top:12px}
