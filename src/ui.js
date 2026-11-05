@@ -357,7 +357,7 @@ function updateSpecification() {
         // Typography
         html += `<tr><td class="spec-label">Type size:</td><td class="spec-value">${inputs.typeSize} pt</td></tr>`;
         html += `<tr><td class="spec-label">Leading:</td><td class="spec-value">${inputs.leading || inputs.typeSize + 2} pt</td></tr>`;
-        html += `<tr><td class="spec-label">Space after paragraph:</td><td class="spec-value">${document.getElementById('paraSpace')?.value || '1'} line${(parseFloat(document.getElementById('paraSpace')?.value || '1') === 1) ? '' : 's'}</td></tr>`;
+        html += `<tr><td class="spec-label">Space after paragraph:</td><td class="spec-value">${document.getElementById('paraSpace')?.value || '0'} pt</td></tr>`;
         html += `<tr><td class="spec-label">Font family:</td><td class="spec-value">${inputs.fontFamily || 'serif'}</td></tr>`;
         html += `<tr><td class="spec-label">Hyphenation:</td><td class="spec-value">${inputs.hyphenation !== false ? 'Enabled' : 'Disabled'}</td></tr>`;
         const justifyText = document.getElementById('justifyText')?.checked ?? false;

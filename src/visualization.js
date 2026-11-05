@@ -338,8 +338,9 @@ function drawPage(svg, inputs, pageX, pageY, pageWidth, pageHeight, leftMargin, 
                 textGroup.appendChild(textBgRect);
                 // Paragraphs: every run of line breaks is one paragraph break, with the space after set in Type
                 // (blank lines in the text are not drawn as empty lines)
-                const spaceLines = parseFloat(document.getElementById('paraSpace')?.value ?? '1');
-                const spaceAfter = (isNaN(spaceLines) || spaceLines < 0 ? 1 : spaceLines) * lineHeight;
+                const spacePt = parseFloat(document.getElementById('paraSpace')?.value ?? '');
+                const leadingPt = inputs.leading || (inputs.typeSize + 2);
+                const spaceAfter = (isNaN(spacePt) || spacePt < 0 ? leadingPt : spacePt) * (lineHeight / leadingPt);
                 const paragraphs = sampleText.split(/\n+/).map(s => s.replace(/[ \t]+$/, '')).filter(s => s.trim().length > 0);
                 const wrapWords = showRivers || showRaggedEdge;
                 if (!wrapWords) {

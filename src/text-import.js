@@ -145,9 +145,9 @@
   // Space after paragraph: remembered between visits and redraws the page when changed.
   var space = document.getElementById('paraSpace');
   if (space) {
-    try { var saved = localStorage.getItem('compositorParaSpace'); if (saved !== null) space.value = saved; } catch (e) {}
+    try { var saved = localStorage.getItem('compositorParaSpacePt'); if (saved !== null) space.value = saved; } catch (e) {}
     space.addEventListener('input', function () {
-      try { localStorage.setItem('compositorParaSpace', space.value); } catch (e) {}
+      try { localStorage.setItem('compositorParaSpacePt', space.value); } catch (e) {}
       window.dispatchEvent(new Event('resize'));
     });
     window.setTimeout(function () { window.dispatchEvent(new Event('resize')); }, 0);
