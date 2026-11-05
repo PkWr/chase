@@ -433,3 +433,7 @@ body[data-step="8"] .scale-line{display:none}
 .container .margin-link[aria-pressed=true]{background:var(--yellow);border-color:var(--yellow);color:var(--ink)}
 .editor-stage #textEditor textarea{background:rgba(255,225,0,.14);border-color:#ffe100}
 .editor-stage #textEditor textarea::placeholder{color:rgba(0,0,0,.45)}
+
+/* - + fields: narrower buttons and tighter padding so values are never clipped */
+.container .num-btn{width:34px}
+.num-step input[type=number]{padding-left:2px;padding-right:2px;text-overflow:clip}
