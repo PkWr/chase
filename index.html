@@ -45,7 +45,6 @@
         <div class="header-top">
           <h1>Compositor</h1>
           <div class="header-right">
-            <a href="#" id="readMeLinkFixed" class="read-me-link">Read me</a>
             <a href="#" id="resetLink" class="read-me-link">Reset</a>
           </div>
         </div>
@@ -53,12 +52,13 @@
       <section class="cp-sec cp-stepsec" aria-label="Steps">
         <h3>Steps</h3>
         <div id="cpSteps" class="step-list" role="radiogroup" aria-label="Steps">
-          <a href="#" role="radio" data-go="1" aria-checked="true"><span>1</span> Page</a>
-          <a href="#" role="radio" data-go="2" aria-checked="false"><span>2</span> Margins</a>
-          <a href="#" role="radio" data-go="3" aria-checked="false"><span>3</span> Columns</a>
-          <a href="#" role="radio" data-go="4" aria-checked="false"><span>4</span> Type</a>
-          <a href="#" role="radio" data-go="5" aria-checked="false"><span>5</span> Text</a>
-          <a href="#" role="radio" data-go="6" aria-checked="false"><span>6</span> Specification and download</a>
+          <a href="#" role="radio" data-go="1" aria-checked="true"><span>1</span> Intro</a>
+          <a href="#" role="radio" data-go="2" aria-checked="false"><span>2</span> Page</a>
+          <a href="#" role="radio" data-go="3" aria-checked="false"><span>3</span> Margins</a>
+          <a href="#" role="radio" data-go="4" aria-checked="false"><span>4</span> Columns</a>
+          <a href="#" role="radio" data-go="5" aria-checked="false"><span>5</span> Type</a>
+          <a href="#" role="radio" data-go="6" aria-checked="false"><span>6</span> Text</a>
+          <a href="#" role="radio" data-go="7" aria-checked="false"><span>7</span> Specification and download</a>
         </div>
       </section>
       <section class="cp-sec cp-show" aria-label="Show on the page">
@@ -93,7 +93,23 @@
 
 
       <form id="layoutForm">
-      <section data-step="1" class="form-section">
+            <section data-step="1" class="form-section intro-pane">
+        <h2>Intro</h2>
+        <p class="intro-lead">A typographic layout calculator for designing multi-column page layouts. Set page dimensions, margins, columns, and typography settings to visualize and calculate optimal column widths, text box spans, and line lengths based on Bringhurst's principles of typography.</p>
+        <div class="intro-terms">
+          <h3>Compositor</h3>
+          <p>In letterpress printing, a compositor is the person who arranges type and spacing elements to create a page layout. They work at a composing stick, selecting individual pieces of type and spacing material (furniture, leads, and reglets) to build up lines and pages before locking them into a chase.</p>
+          <p class="hint"><a href="https://en.wikipedia.org/wiki/Compositor_(typesetting)" target="_blank" rel="noopener noreferrer">Wikipedia: Compositor</a> · <a href="https://www.flickr.com/search/?text=compositor%20letterpress" target="_blank" rel="noopener noreferrer">Images</a></p>
+          <h3>Chase</h3>
+          <p>A chase is a rectangular metal frame used in letterpress printing to hold the composed type and spacing material securely in place. Once the compositor has arranged all the elements, they are locked into the chase using quoins (wedges) and keys, creating a stable form ready for printing.</p>
+          <p class="hint"><a href="https://en.wikipedia.org/wiki/Chase_(printing)" target="_blank" rel="noopener noreferrer">Wikipedia: Chase</a> · <a href="https://www.flickr.com/search/?text=chase%20letterpress" target="_blank" rel="noopener noreferrer">Images</a></p>
+          <h3>Em</h3>
+          <p>An em is a typographic unit equal to the current font size. For example, if your type size is 12pt, then 1em = 12pt. Ems are relative units that scale with the font size, making them ideal for spacing elements like gutters and margins in typography.</p>
+          <p class="hint"><a href="https://en.wikipedia.org/wiki/Em_(typography)" target="_blank" rel="noopener noreferrer">Wikipedia: Em</a> · <a href="https://practicaltypography.com/em-and-en-dashes.html" target="_blank" rel="noopener noreferrer">Practical Typography</a></p>
+        </div>
+      </section>
+
+      <section data-step="2" class="form-section">
         <div class="unit-toggle-wrapper">
           <label class="unit-toggle-label">
             <span class="unit-option unit-option-mm">mm</span>
@@ -151,7 +167,7 @@
         </div>
       </section>
 
-      <section data-step="2" class="form-section">
+      <section data-step="3" class="form-section">
         <h2>Margins</h2>
         <div class="form-row">
           <div class="form-group">
@@ -203,7 +219,7 @@
         </div>
       </section>
 
-      <section data-step="3" class="form-section">
+      <section data-step="4" class="form-section">
         <h2>Columns</h2>
         <div class="form-group" id="numColsGroup">
           <label for="numCols">Number of columns</label>
@@ -235,7 +251,7 @@
         </div>
       </section>
 
-      <section data-step="4" class="form-section">
+      <section data-step="5" class="form-section">
         <h2>Typography Settings</h2>
         <div class="form-group">
           <label for="fontFamily">Typeface</label>
@@ -294,7 +310,7 @@
         </div>
       </section>
 
-      <section data-step="5" class="form-section">
+      <section data-step="6" class="form-section">
         <h2>Sample Text</h2>
         <div class="form-group">
           <div class="label-with-action">
@@ -310,7 +326,7 @@
         </div>
       </section>
 
-      <section data-step="5" class="form-section bringhurst-section">
+      <section data-step="6" class="form-section bringhurst-section">
         <h2>Bringhurst says</h2>
         <div class="form-group">
           <p><span class="bringhurst-label">Words per line:</span> <span id="wordsPerLine" class="bringhurst-value">—</span></p>
@@ -322,14 +338,14 @@
         </div>
       </section>
 
-      <section data-step="5" class="form-section bringhurst-section">
+      <section data-step="6" class="form-section bringhurst-section">
         <h2>Patrick says</h2>
         <div class="form-group">
           <p><span class="bringhurst-label">Words per line:</span> <span id="patrickWordsPerLine" class="bringhurst-value">—</span></p>
           <p class="helper-text" id="patrickGuidance">Estimated based on column width and type size</p>
         </div>
       </section>
-      <section data-step="6" class="form-section step-pane">
+      <section data-step="7" class="form-section step-pane">
         <div class="specification-section">
           <h3>Specification</h3>
           <div id="specificationContent" class="specification-content"></div>
@@ -345,7 +361,7 @@
     <div class="preview-wrapper">
       <section class="visualization-section">
         <div class="section-header">
-          <p id="stepNow" class="step-now" aria-live="polite">Step 1 of 6 · Page</p>
+          <p id="stepNow" class="step-now" aria-live="polite">Step 1 of 7 · Intro</p>
           <div class="header-actions">
             <span id="scaleIndicator" class="scale-indicator"></span>          </div>
         </div>
