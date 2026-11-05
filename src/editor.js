@@ -76,7 +76,7 @@ if (area && editor) {
 
 let slot = null;
 function expand() {
-    if (!stage || !stage.hidden || document.body.classList.contains('popped'))
+    if (!stage || !stage.hidden)
         return;
     slot = document.createComment('text editor');
     editor.parentNode.insertBefore(slot, editor);

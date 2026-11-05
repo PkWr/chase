@@ -312,8 +312,7 @@ html.show-start #startScreen{display:block}
 .text-btn{display:inline-flex;align-items:center;gap:8px;height:34px;margin-left:auto;padding:0 12px;font:inherit;font-size:12px;border:1px solid var(--cp-line);border-radius:8px;background:transparent;color:var(--cp-text);cursor:pointer}
 .text-btn:hover{background:var(--cp-accent-bg);border-color:var(--cp-accent-line)}
 .text-btn:focus-visible{outline:2px solid var(--yellow);outline-offset:2px}
-body.popped #expandEditor{display:none}
-.markup-help{margin:10px 0 0;font-size:12px;color:var(--cp-muted)}
+.markup-help{display:none;margin:10px 0 0;font-size:12px;color:var(--cp-muted)}
 .markup-help summary{cursor:pointer;color:var(--cp-text)}
 .markup-help p{margin:8px 0 0;line-height:1.5}
 .markup-help code{color:var(--yellow);font:inherit}
@@ -335,7 +334,8 @@ body.popped #expandEditor{display:none}
 .editor-stage .icon-btn:hover{background:var(--cp-accent-bg)}
 .editor-stage .text-tools{display:flex;gap:8px;margin:8px 0 0}
 .editor-stage .helper-text{display:block;margin-top:8px;color:var(--cp-muted);font-size:12px}
-.editor-stage .markup-help{max-height:40%;overflow:auto}
+.editor-stage .markup-help{display:block;max-height:40%;overflow:auto}
+body.popout-window .editor-stage{right:24px}
 @media(max-width:900px){.editor-stage{left:8px;right:8px;top:8px;bottom:8px}}
 
 .markup-intro{display:none}
