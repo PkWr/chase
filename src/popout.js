@@ -17,6 +17,25 @@ window.previewEl = function (id) {
   if (!wrapper || !out) return;
   var win = null;
 
+  // The pop-out button sits in the bottom left corner of the page drawing.
+  wrapper.appendChild(out);
+  var box = wrapper.querySelector('.visualization-container');
+  function placeOut() {
+    var svg = box && box.querySelector('svg');
+    if (!svg) return;
+    var w = wrapper.getBoundingClientRect(), s = svg.getBoundingClientRect(), b = box.getBoundingClientRect();
+    var bottom = Math.min(s.bottom, b.bottom);
+    out.style.left = (s.left - w.left + wrapper.scrollLeft + 10) + 'px';
+    out.style.top = (bottom - w.top + wrapper.scrollTop - out.offsetHeight - 10) + 'px';
+  }
+  if (box) {
+    new MutationObserver(function () { requestAnimationFrame(placeOut); }).observe(box, { childList: true });
+    window.addEventListener('resize', function () { requestAnimationFrame(placeOut); });
+    if (window.ResizeObserver) new ResizeObserver(function () { requestAnimationFrame(placeOut); }).observe(box);
+    requestAnimationFrame(placeOut);
+  }
+  window.placePopOut = placeOut;
+
   function setState(popped) {
     document.body.classList.toggle('popped', popped);
     out.hidden = popped;

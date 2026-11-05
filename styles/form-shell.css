@@ -236,6 +236,8 @@ body.popped .app-wrapper{display:block}
 .preview-wrapper .visualization-container.stack{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;overflow-y:auto;gap:24px;padding:0 32px 24px}
 .visualization-container.stack>svg{flex:none}
 body[data-step="1"] #popOut{display:none}
+.preview-wrapper #popOut{position:absolute;z-index:4;width:28px;height:28px;border:0;border-radius:8px;background:#fff;color:#9a9a9a;box-shadow:0 1px 5px rgba(0,0,0,.18)}
+.preview-wrapper #popOut:hover{background:#fff;color:#333;box-shadow:0 2px 8px rgba(0,0,0,.28)}
 .container #startPickerHelp{display:block;margin-top:6px}
 .container #startPickerHelp>span{display:block;margin:0 0 6px;font-size:11px;line-height:1.5;color:var(--cp-muted)}
 .container #startPickerHelp .pk-now{color:var(--cp-text)}
