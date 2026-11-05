@@ -554,6 +554,17 @@ function applyDefaultSettings() {
         const numColsInput = document.getElementById('numCols');
         if (numColsInput)
             numColsInput.value = '1';
+        // The text box covers that single column (a leftover span of 3 columns would leave the page empty)
+        const spanSliderReset = document.getElementById('columnSpanSlider');
+        const startSliderReset = document.getElementById('textStartSlider');
+        if (spanSliderReset) {
+            spanSliderReset.max = '1';
+            spanSliderReset.value = '1';
+        }
+        if (startSliderReset) {
+            startSliderReset.max = '1';
+            startSliderReset.value = '1';
+        }
         // Set type size to 12pt
         const typeSizeInput = document.getElementById('typeSize');
         if (typeSizeInput)
