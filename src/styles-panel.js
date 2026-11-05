@@ -28,6 +28,7 @@ function refresh() {
     const text = document.getElementById('sampleText')?.value || '';
     const used = stylesUsed(parseStyled(text));
     const typeSize = parseFloat(document.getElementById('typeSize')?.value) || 12;
+    const family = document.getElementById('fontFamily')?.value || 'serif';
     let any = false;
     for (const [style, [id, key]] of Object.entries(ROWS)) {
         const row = document.querySelector(`.style-row[data-style="${style}"]`);
@@ -36,6 +37,16 @@ function refresh() {
         any = any || used[style];
         const readout = document.getElementById(id + 'Pt');
         const v = parseFloat(document.getElementById(id)?.value);
+        // The label is a preview of the style: set at the style's size (1 pt = 4/3 px) in the body typeface
+        const label = row?.querySelector('label');
+        if (label && isFinite(v)) {
+            const bodyPx = typeSize * 4 / 3;
+            label.style.fontFamily = family;
+            label.style.fontStyle = 'normal';
+            label.style.fontSize = (style === 'quote' ? bodyPx : bodyPx * v) + 'px';
+            label.style.lineHeight = '1.15';
+            label.style.paddingLeft = style === 'quote' || style === 'citation' ? (style === 'quote' ? v : STYLE_DEFAULTS.quoteIndent) * bodyPx + 'px' : '0';
+        }
         if (readout && isFinite(v)) {
             readout.textContent = `${Math.round(v * typeSize * 10) / 10} pt`;
         }
@@ -66,5 +77,6 @@ export function initStylesPanel(onChange) {
     }
     document.getElementById('sampleText')?.addEventListener('input', refresh);
     document.getElementById('typeSize')?.addEventListener('input', refresh);
+    document.getElementById('fontFamily')?.addEventListener('change', refresh);
     refresh();
 }

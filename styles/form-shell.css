@@ -387,3 +387,9 @@ body.popout-window .editor-stage{right:24px}
 .container .step-list .step-sep{font-style:normal;color:var(--cp-text)}
 
 #stylesNone[hidden],#stylesNote[hidden]{display:none !important}
+
+/* Style rows: the name is a preview of the style, then the control underneath */
+.container .style-row{grid-template-columns:auto 1fr;gap:6px 10px;margin:0 0 16px}
+.container .style-row label{grid-column:1 / -1;color:var(--cp-text);overflow-wrap:anywhere}
+.container .style-row .num-step{grid-column:1;width:184px}
+.container .style-row .style-pt{grid-column:2;text-align:left}
