@@ -272,17 +272,12 @@ function updateWordsPerLine() {
         const results = calculateLayout(inputs);
         // Use textBoxWidth (which accounts for column span) instead of columnWidth
         // This gives accurate words per line for the actual text box width
-        updateBringhurstSection(results.textBoxWidth, inputs.typeSize);
-        updatePatrickSection(results.textBoxWidth, inputs.typeSize);
+        updateBringhurstSection(results.textBoxWidth, inputs.typeSize, inputs.leading);
     }
     catch (e) {
         const wordsPerLineElement = document.getElementById('wordsPerLine');
         if (wordsPerLineElement) {
             wordsPerLineElement.textContent = '—';
-        }
-        const patrickWordsPerLineElement = document.getElementById('patrickWordsPerLine');
-        if (patrickWordsPerLineElement) {
-            patrickWordsPerLineElement.textContent = '—';
         }
     }
 }
@@ -401,104 +396,71 @@ function updateSpecification() {
         html += '</table>';
         specContent.innerHTML = html;
         // Update Bringhurst says section in compositor side
-        updateBringhurstSection(results.textBoxWidth, inputs.typeSize);
-        // Update Patrick says section
-        updatePatrickSection(results.textBoxWidth, inputs.typeSize);
+        updateBringhurstSection(results.textBoxWidth, inputs.typeSize, inputs.leading);
     }
     catch (e) {
         // Silently fail if inputs are invalid
     }
 }
 /**
- * Updates the Bringhurst says section in the compositor side
+ * Report checks: words per line, type size and leading.
+ * Within range is a plain note; out of range is a warning with the reason.
  */
-function updateBringhurstSection(textBoxWidth, typeSize) {
-    try {
-        const wordsPerLine = calculateWordsPerLine(textBoxWidth, typeSize);
-        // Bringhurst's ideal line length: ~66 characters per line
-        // Average word length is ~5 characters (including space), so ideal is ~13 words
-        const BRINGHURST_IDEAL_WORDS = 13;
-        const BRINGHURST_MIN_WORDS = 9; // ~45 characters (acceptable minimum)
-        const BRINGHURST_MAX_WORDS = 17; // ~85 characters (acceptable maximum)
-        const wordsPerLineElement = document.getElementById('wordsPerLine');
-        const guidanceElement = document.getElementById('bringhurstGuidance');
-        if (wordsPerLineElement) {
-            wordsPerLineElement.textContent = wordsPerLine.toString();
-        }
-        // Update guidance text with Bringhurst's guidance
-        if (guidanceElement) {
-            let guidance = '';
-            if (wordsPerLine >= BRINGHURST_MIN_WORDS && wordsPerLine <= BRINGHURST_MAX_WORDS) {
-                guidance = `Ideal range: ${BRINGHURST_MIN_WORDS}-${BRINGHURST_MAX_WORDS} words (Bringhurst: ~66 characters)`;
-            }
-            else if (wordsPerLine < BRINGHURST_MIN_WORDS) {
-                guidance = `Below ideal (${BRINGHURST_MIN_WORDS}-${BRINGHURST_MAX_WORDS} words). Bringhurst recommends ~66 characters (~${BRINGHURST_IDEAL_WORDS} words)`;
-            }
-            else {
-                guidance = `Above ideal (${BRINGHURST_MIN_WORDS}-${BRINGHURST_MAX_WORDS} words). Bringhurst recommends ~66 characters (~${BRINGHURST_IDEAL_WORDS} words)`;
-            }
-            guidanceElement.textContent = guidance;
-        }
-        // Bringhurst's leading recommendations
-        // For body text: typically 1-2 points more than type size, or around 120% of type size
-        // Minimum: typeSize + 1pt, Optimal: typeSize + 2pt, Maximum: typeSize * 1.2
-        const leadingMin = typeSize + 1;
-        const leadingOptimal = typeSize + 2;
-        const leadingMax = Math.round(typeSize * 1.2 * 10) / 10; // Round to 1 decimal
-        const leadingElement = document.getElementById('bringhurstLeading');
-        const leadingGuidanceElement = document.getElementById('bringhurstLeadingGuidance');
-        if (leadingElement) {
-            leadingElement.textContent = `${leadingOptimal.toFixed(1)} pt`;
-        }
-        if (leadingGuidanceElement) {
-            leadingGuidanceElement.textContent = `Recommended: ${leadingMin.toFixed(1)}–${leadingMax.toFixed(1)} pt (optimal: ${leadingOptimal.toFixed(1)} pt, ~120% of type size)`;
-        }
-    }
-    catch (e) {
-        const wordsPerLineElement = document.getElementById('wordsPerLine');
-        if (wordsPerLineElement) {
-            wordsPerLineElement.textContent = '—';
-        }
-        const leadingElement = document.getElementById('bringhurstLeading');
-        if (leadingElement) {
-            leadingElement.textContent = '—';
-        }
+function setCheck(valueId, guideId, valueText, state) {
+    const v = document.getElementById(valueId);
+    const g = document.getElementById(guideId);
+    if (v) v.textContent = valueText;
+    if (g) {
+        g.textContent = state.warn ? `Warning: ${state.text}` : state.text;
+        g.classList.toggle('report-warning', !!state.warn);
     }
 }
-/**
- * Updates the Patrick says section
- */
-function updatePatrickSection(textBoxWidth, typeSize) {
+function updateBringhurstSection(textBoxWidth, typeSize, leading) {
     try {
-        const wordsPerLine = calculateWordsPerLine(textBoxWidth, typeSize);
-        // Patrick's ideal range: 7-13 words per line
-        const PATRICK_MIN_WORDS = 7;
-        const PATRICK_MAX_WORDS = 13;
-        const wordsPerLineElement = document.getElementById('patrickWordsPerLine');
-        const guidanceElement = document.getElementById('patrickGuidance');
-        if (wordsPerLineElement) {
-            wordsPerLineElement.textContent = wordsPerLine.toString();
+        // Bringhurst: about 66 characters per line (~13 words); 45-75 characters is comfortable
+        const MIN_WORDS = 9, MAX_WORDS = 15;
+        const words = calculateWordsPerLine(textBoxWidth, typeSize);
+        let line;
+        if (words < MIN_WORDS) {
+            line = { warn: true, text: `short line (${MIN_WORDS}-${MAX_WORDS} words suggested). Short lines break the reading rhythm: the eye returns to the left edge too often, justified text opens up rivers and gaps, and hyphenation increases. This is hardest on readers with dyslexia or tracking difficulties, and on people reading in a second language.` };
+        } else if (words > MAX_WORDS) {
+            line = { warn: true, text: `long line (${MIN_WORDS}-${MAX_WORDS} words suggested). Long lines make it easy to lose your place when moving to the next line, and tire the eye. This is hardest on readers with dyslexia, low vision or a visual tracking difficulty, and on younger or less confident readers.` };
+        } else {
+            line = { text: `Within the suggested range of ${MIN_WORDS}-${MAX_WORDS} words (about 45-75 characters).` };
         }
-        // Update guidance text with Patrick's guidance
-        if (guidanceElement) {
-            let guidance = '';
-            if (wordsPerLine >= PATRICK_MIN_WORDS && wordsPerLine <= PATRICK_MAX_WORDS) {
-                guidance = `Ideal range: ${PATRICK_MIN_WORDS}-${PATRICK_MAX_WORDS} words`;
-            }
-            else if (wordsPerLine < PATRICK_MIN_WORDS) {
-                guidance = `Below ideal (${PATRICK_MIN_WORDS}-${PATRICK_MAX_WORDS} words). Patrick recommends ${PATRICK_MIN_WORDS}-${PATRICK_MAX_WORDS} words per line`;
-            }
-            else {
-                guidance = `Above ideal (${PATRICK_MIN_WORDS}-${PATRICK_MAX_WORDS} words). Patrick recommends ${PATRICK_MIN_WORDS}-${PATRICK_MAX_WORDS} words per line`;
-            }
-            guidanceElement.textContent = guidance;
+        setCheck('wordsPerLine', 'bringhurstGuidance', String(words), line);
+
+        // Type size for body text in print: roughly 9-12 pt
+        const MIN_SIZE = 9, MAX_SIZE = 12;
+        let size;
+        if (typeSize < MIN_SIZE) {
+            size = { warn: true, text: `small for body text (${MIN_SIZE}-${MAX_SIZE} pt suggested). Small type is harder to read for older readers, readers with low vision, and anyone reading in poor light or on a worn printing surface. Accessibility guidance for print often starts at 12 pt.` };
+        } else if (typeSize > MAX_SIZE) {
+            size = { warn: true, text: `large for continuous body text (${MIN_SIZE}-${MAX_SIZE} pt suggested). Fewer words fit on each line, so the line length and spacing need rechecking. Large print is helpful for low-vision readers and early readers, so this may be intended for that audience.` };
+        } else {
+            size = { text: `Within the suggested range of ${MIN_SIZE}-${MAX_SIZE} pt for printed body text.` };
         }
+        setCheck('typeSizeValue', 'typeSizeGuidance', `${typeSize} pt`, size);
+
+        // Leading as a ratio of type size: about 120-150%
+        const lead = leading || typeSize * 1.2;
+        const ratio = lead / typeSize;
+        const MIN_R = 1.15, MAX_R = 1.5;
+        let lh;
+        if (ratio < MIN_R - 0.005) {
+            lh = { warn: true, text: `tight (${Math.round(MIN_R * 100)}-${Math.round(MAX_R * 100)}% of type size suggested). Lines sit too close, so ascenders and descenders crowd each other and the eye can slip to the wrong line. Hardest on readers with dyslexia or low vision, and on long lines.` };
+        } else if (ratio > MAX_R + 0.005) {
+            lh = { warn: true, text: `loose (${Math.round(MIN_R * 100)}-${Math.round(MAX_R * 100)}% of type size suggested). Lines drift apart and stop reading as one block of text, which breaks the flow from one line to the next. Hardest on readers who scan or track with difficulty.` };
+        } else {
+            lh = { text: `Within the suggested range of ${Math.round(MIN_R * 100)}-${Math.round(MAX_R * 100)}% of type size.` };
+        }
+        setCheck('bringhurstLeading', 'bringhurstLeadingGuidance', `${(Math.round(lead * 10) / 10)} pt (${Math.round(ratio * 100)}%)`, lh);
     }
     catch (e) {
-        const wordsPerLineElement = document.getElementById('patrickWordsPerLine');
-        if (wordsPerLineElement) {
-            wordsPerLineElement.textContent = '—';
-        }
+        ['wordsPerLine', 'typeSizeValue', 'bringhurstLeading'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.textContent = '—';
+        });
     }
 }
 function updateVisualizationOnInputChange() {
