@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>chase</title>
-  <link rel="stylesheet" href="styles/main.css?v=202611051828">
-  <link rel="stylesheet" href="styles/form-shell.css?v=202611051828">
+  <link rel="stylesheet" href="styles/main.css?v=202611051830">
+  <link rel="stylesheet" href="styles/form-shell.css?v=202611051830">
   <!-- Padding handled in main.css for better control -->
 </head>
 <body>
@@ -87,15 +87,15 @@
       <section class="cp-sec cp-stepsec" aria-label="Steps">
         <h3>Steps</h3>
         <div id="cpSteps" class="step-list" role="radiogroup" aria-label="Steps">
-                    <a href="#" role="radio" data-go="1" aria-checked="true"><span>1</span> Intro</a><i class="step-sep" aria-hidden="true">,</i>
-          <a href="#" role="radio" data-go="2" aria-checked="false"><span>2</span> Text</a><i class="step-sep" aria-hidden="true">,</i>
-          <a href="#" role="radio" data-go="3" aria-checked="false"><span>3</span> Page</a><i class="step-sep" aria-hidden="true">,</i>
-          <a href="#" role="radio" data-go="4" aria-checked="false"><span>4</span> Margins</a><i class="step-sep" aria-hidden="true">,</i>
-          <a href="#" role="radio" data-go="5" aria-checked="false"><span>5</span> Columns</a><i class="step-sep" aria-hidden="true">,</i>
-          <a href="#" role="radio" data-go="6" aria-checked="false"><span>6</span> Typography</a><i class="step-sep" aria-hidden="true">,</i>
-          <a href="#" role="radio" data-go="7" aria-checked="false"><span>7</span> Styles</a><i class="step-sep" aria-hidden="true">,</i>
-          <a href="#" role="radio" data-go="8" aria-checked="false"><span>8</span> Report</a><i class="step-sep" aria-hidden="true"> and</i>
-          <a href="#" role="radio" data-go="9" aria-checked="false"><span>9</span> Download</a>
+                    <a href="#" role="radio" data-go="1" aria-checked="true">Intro<span>1</span></a><i class="step-sep" aria-hidden="true">,</i>
+          <a href="#" role="radio" data-go="2" aria-checked="false">Text<span>2</span></a><i class="step-sep" aria-hidden="true">,</i>
+          <a href="#" role="radio" data-go="3" aria-checked="false">Page<span>3</span></a><i class="step-sep" aria-hidden="true">,</i>
+          <a href="#" role="radio" data-go="4" aria-checked="false">Margins<span>4</span></a><i class="step-sep" aria-hidden="true">,</i>
+          <a href="#" role="radio" data-go="5" aria-checked="false">Columns<span>5</span></a><i class="step-sep" aria-hidden="true">,</i>
+          <a href="#" role="radio" data-go="6" aria-checked="false">Typography<span>6</span></a><i class="step-sep" aria-hidden="true">,</i>
+          <a href="#" role="radio" data-go="7" aria-checked="false">Styles<span>7</span></a><i class="step-sep" aria-hidden="true">,</i>
+          <a href="#" role="radio" data-go="8" aria-checked="false">Report<span>8</span></a><i class="step-sep" aria-hidden="true"> and</i>
+          <a href="#" role="radio" data-go="9" aria-checked="false">Download<span>9</span></a>
         </div>
       </section>
 
@@ -161,7 +161,7 @@
                 <input type="radio" name="pageMode" id="pageSingle" checked>
                 <span class="ic"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="4" width="10" height="16" rx="1"/></svg><em class="sr">Single pages</em></span>
               </label>
-              <label class="layer-checkbox" title="Facing pages (book layout, inner and outer margins)">
+              <label class="layer-checkbox" title="Facing pages: two pages side by side, like a book">
                 <input type="radio" name="pageMode" id="pageFacing">
                 <span class="ic"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="9" height="14" rx="1"/><rect x="12" y="5" width="9" height="14" rx="1"/></svg><em class="sr">Facing pages (book layout)</em></span>
               </label>
@@ -297,7 +297,7 @@
           <label for="paraSpace">Space after paragraph (pt)</label>
           <div class="para-row">
             <input type="number" id="paraSpace" value="14" min="0" step="0.5" class="input-small">
-            <label class="layer-checkbox" id="baselineToggle" hidden title="Baseline grid: lines across the page at the leading">
+            <label class="layer-checkbox" id="baselineToggle" hidden title="Baseline grid: shows the lines the text sits on">
             <input type="checkbox" id="showBaseline">
             <span class="ic"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 6h20M2 11h20M2 16h20M2 21h20"/></svg><em class="sr">Baseline grid</em></span>
           </label>
@@ -318,13 +318,13 @@
             </label>
           </div>
           <div class="layer-controls hyph-toggle" role="group" aria-label="Hyphenation">
-            <label class="layer-checkbox" title="Hyphenation: break words at line ends">
+            <label class="layer-checkbox" title="Hyphenation: lets long words break at the end of a line">
               <input type="checkbox" id="hyphenation">
               <span class="ic"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h12M18 6h3M3 12h18M3 18h8"/></svg><em class="sr">Hyphenation</em></span>
             </label>
           </div>
           <div class="layer-controls ragged-toggle" role="group" aria-label="Show ragged edge and rivers">
-            <label class="layer-checkbox" title="Marks the ragged right edge, and the rivers of white space when the text is justified">
+            <label class="layer-checkbox" title="Shows the uneven right edge of the text, and gaps in justified text">
               <input type="checkbox" id="showRaggedEdge">
               <span>Show ragged edge</span>
             </label>
@@ -384,15 +384,15 @@
             <button type="button" class="mark-btn" data-mark="h1" title="Heading 1 (Cmd/Ctrl+Alt+1)">H1</button>
             <button type="button" class="mark-btn" data-mark="h2" title="Heading 2 (Cmd/Ctrl+Alt+2)">H2</button>
             <button type="button" class="mark-btn" data-mark="h3" title="Heading 3 (Cmd/Ctrl+Alt+3)">H3</button>
-            <button type="button" class="mark-btn" data-mark="quote" title="Block Quote">Quote</button>
-            <button type="button" class="mark-btn" data-mark="citation" title="Citation: the source line under a quote">Source</button>
-            <button type="button" class="mark-btn" data-mark="break" title="Soft return: a line break inside a paragraph (Shift+Enter)">Break</button>
+            <button type="button" class="mark-btn" data-mark="quote" title="Quote: marks the line as a quote">Quote</button>
+            <button type="button" class="mark-btn" data-mark="citation" title="Source: the line that names where a quote comes from">Source</button>
+            <button type="button" class="mark-btn" data-mark="break" title="New line: starts a new line without starting a new paragraph (Shift+Enter)">Break</button>
             <button type="button" class="mark-btn mark-italic" data-mark="italic" title="Italic (Cmd/Ctrl+I)"><em>Italic</em></button>
           </div>
           <textarea id="sampleText" rows="10" placeholder="Enter sample text to preview how it will look in your layout..."></textarea>
           <div class="text-tools" role="group" aria-label="Text actions">
             <button type="button" id="loadFileButton" class="icon-btn" title="Load text from a file" aria-label="Load text from a file"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4"/><path d="M7 9l5-5 5 5"/><path d="M5 20h14"/></svg></button>
-            <button type="button" id="loadDefaultTextButton" class="icon-btn" title="Load the Bringhurst sample text" aria-label="Load the Bringhurst sample text"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h9a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3z"/><path d="M8 9h5M8 13h5"/><path d="M19 9v10"/></svg></button>
+            <button type="button" id="loadDefaultTextButton" class="icon-btn" title="Load the sample text" aria-label="Load the sample text"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h9a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3z"/><path d="M8 9h5M8 13h5"/><path d="M19 9v10"/></svg></button>
             <button type="button" id="clearTextButton" class="icon-btn" title="Clear the text" aria-label="Clear the text"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16"/><path d="M9 7V4h6v3"/><path d="M6 7l1 13h10l1-13"/><path d="M10 11v6M14 11v6"/></svg></button>
             <button type="button" id="expandEditor" class="text-btn" aria-expanded="false" title="Open the text editor in the page area"><svg class="ic-expand" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6"/><path d="M20 4l-7 7"/><path d="M10 20H4v-6"/><path d="M4 20l7-7"/></svg><svg class="ic-collapse" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10h-6V4"/><path d="M14 10l7-7"/><path d="M4 14h6v6"/><path d="M10 14l-7 7"/></svg><span class="lbl-open">Open text editor</span><span class="lbl-close">Close text editor</span></button>
           </div>
@@ -419,7 +419,7 @@
 
       </form>
       <div class="cp-foot">
-        <div id="downloadRow"><button type="button" id="exportHtmlButton" class="btn-export btn-primary">Download specification (PDF)</button><button type="button" id="exportIdmlButton" class="btn-export btn-primary" title="A layout that opens in Adobe InDesign: page, margins, columns, baseline grid, paragraph style and text frames">Download for InDesign (IDML)</button><p class="hint" id="idmlStatus" role="status"></p></div>
+        <div id="downloadRow"><button type="button" id="exportHtmlButton" class="btn-export btn-primary">Download specification (PDF)</button><button type="button" id="exportIdmlButton" class="btn-export btn-primary" title="Saves an InDesign file with this page, margins, columns, baseline grid and styles">Download for InDesign (IDML)</button><p class="hint" id="idmlStatus" role="status"></p></div>
         <p class="hint scale-line"><span id="scaleIndicator" class="scale-indicator"></span></p>
         <p class="hint"><a href="index.html?calculator" aria-current="page">Composition</a> · <a href="grep.html">Grep</a> · <a href="./">About</a> · <a href="changelog.html"><!--version-->v1.0<!--/version--></a></p>
       </div>
@@ -542,17 +542,17 @@
   <!-- PDF Export Libraries -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script type="module" src="src/main.js?v=202611051828"></script>
-  <script src="src/start.js?v=202611051828"></script>
-  <script src="src/steps.js?v=202611051828"></script>
-  <script src="src/column-picker.js?v=202611051828"></script>
-  <script src="src/popout.js?v=202611051828"></script>
-  <script type="module" src="src/editor.js?v=202611051828"></script>
-  <script type="module" src="src/text-import.js?v=202611051828"></script>
-  <script src="src/margin-link.js?v=202611051828"></script>
-  <script src="src/number-steppers.js?v=202611051828"></script>
-  <script src="src/layer-cycle.js?v=202611051828"></script>
-  <script src="src/help-tips.js?v=202611051828"></script>
-  <script src="src/sheet.js?v=202611051828"></script>
+  <script type="module" src="src/main.js?v=202611051830"></script>
+  <script src="src/start.js?v=202611051830"></script>
+  <script src="src/steps.js?v=202611051830"></script>
+  <script src="src/column-picker.js?v=202611051830"></script>
+  <script src="src/popout.js?v=202611051830"></script>
+  <script type="module" src="src/editor.js?v=202611051830"></script>
+  <script type="module" src="src/text-import.js?v=202611051830"></script>
+  <script src="src/margin-link.js?v=202611051830"></script>
+  <script src="src/number-steppers.js?v=202611051830"></script>
+  <script src="src/layer-cycle.js?v=202611051830"></script>
+  <script src="src/help-tips.js?v=202611051830"></script>
+  <script src="src/sheet.js?v=202611051830"></script>
 </body>
 </html>
