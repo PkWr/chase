@@ -125,7 +125,9 @@ body.page{padding:0}
 
 /* Text starts: one icon per column */
 .visually-hidden-control{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
-.start-picker{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0}
+.start-picker{display:block;margin:4px 0}
+.start-cols,.start-ctrl{display:flex;flex-wrap:wrap;gap:6px}
+.start-ctrl{margin-top:8px}
 .container .start-col{position:relative;width:26px;height:44px;padding:0;border:1px solid var(--cp-line);border-radius:4px;background:var(--cp-surface);color:var(--cp-muted);font-size:10px;cursor:pointer}
 .container .start-col.in-span{border-color:#4a4d52}
 .container .start-col.has-text{background:var(--cp-accent-bg);border-color:var(--cp-accent-line);color:var(--cp-text)}
@@ -241,3 +243,8 @@ body[data-step="1"] #popOut{display:none}
 .container .text-tools{display:flex;gap:8px;margin:8px 0 0}
 .container .text-tools .icon-btn{width:34px;height:34px}
 .container #textFileStatus{display:block;margin-top:8px}
+.container .start-ctrl .start-col{width:34px;height:34px;font-size:18px;line-height:1;border-style:solid}
+.container .start-ctrl .start-plus{background:#fff;border-color:#fff;color:var(--ink)}
+.container .start-ctrl .start-plus:hover{background:var(--yellow);border-color:var(--yellow)}
+.container .start-ctrl .start-minus{background:transparent;border-color:var(--cp-line);color:var(--cp-text)}
+.container .start-ctrl .start-col:disabled{opacity:.3}

@@ -48,6 +48,12 @@
         '<span class="pk-key"><i class="k-start"></i>text starts here <i class="k-text"></i>text spans <i class="k-empty"></i>empty column</span>';
     }
     host.innerHTML = '';
+    var colsRow = document.createElement('div');
+    colsRow.className = 'start-cols';
+    var ctrlRow = document.createElement('div');
+    ctrlRow.className = 'start-ctrl';
+    host.appendChild(colsRow);
+    host.appendChild(ctrlRow);
     for (var k = 1; k <= r.n; k++) {
       var b = document.createElement('button');
       b.type = 'button';
@@ -57,7 +63,7 @@
       b.dataset.col = String(k);
       b.className = 'start-col' + (k >= r.start && k < r.start + r.span ? ' has-text' : '') + (k === r.start ? ' is-start' : '');
       b.innerHTML = '<span class="n">' + k + '</span>';
-      host.appendChild(b);
+      colsRow.appendChild(b);
     }
     [['minus', '−', 'Remove a column', r.n <= 1], ['plus', '+', 'Add a column', r.n >= MAX]].forEach(function (d) {
       var c = document.createElement('button');
@@ -68,7 +74,7 @@
       c.setAttribute('aria-label', d[2]);
       c.disabled = d[3];
       c.textContent = d[1];
-      host.appendChild(c);
+      ctrlRow.appendChild(c);
     });
   }
 
