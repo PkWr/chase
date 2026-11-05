@@ -13,7 +13,7 @@ const esc = (s) => String(s)
 
 const DOC_SETUP = 'File > Document Setup… (Opt+Cmd+P / Ctrl+Alt+P)';
 const MARGINS = 'Layout > Margins and Columns… (no default shortcut). Select the pages in the Pages panel first (Window > Pages, Cmd+F12 / F12). To change every page, double-click A-Master in the Pages panel instead.';
-const GRID = 'InDesign > Settings > Grids… on Mac (Edit > Preferences > Grids… on Windows), Cmd+K / Ctrl+K then choose Grids. Show it with View > Grids & Guides > Show Baseline Grid (Opt+Cmd+\' / Ctrl+Alt+\').';
+const GRID = 'InDesign > Settings > Grids… on Mac (Edit > Preferences > Grids… on Windows), Cmd+K / Ctrl+K then choose Grids.';
 const BODY = 'Window > Styles > Paragraph Styles (Cmd+F11 / F11), then double-click Body Text.';
 const STYLE_PATH = 'Window > Styles > Paragraph Styles (Cmd+F11 / F11), then double-click ';
 const CHAR_PATH = 'Window > Styles > Character Styles (Shift+F11 on Mac and Windows), then double-click ';
