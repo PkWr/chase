@@ -294,3 +294,39 @@ html.show-start #startScreen{display:block}
 .container .style-row label{margin:0}
 .container .style-row .helper-text{grid-column:1 / -1;margin:0}
 .container .style-row .style-pt{font-size:11px;color:var(--cp-muted);min-width:4.5em;text-align:right}
+
+/* Text editor: style buttons, how-to guide, and the expanded editor in the page area */
+.editor-head{display:flex;align-items:center;justify-content:space-between;margin:0 0 6px}
+.editor-head label{margin:0}
+.mark-tools{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 8px}
+.mark-btn{font:inherit;font-size:12px;min-width:36px;padding:5px 9px;border:1px solid var(--cp-line);border-radius:8px;background:transparent;color:var(--cp-text);cursor:pointer}
+.mark-btn:hover{background:var(--cp-accent-bg);border-color:var(--cp-accent-line)}
+.mark-btn:focus-visible{outline:2px solid var(--yellow);outline-offset:2px}
+.mark-btn em{font-style:italic}
+#expandEditor .ic-collapse,#expandEditor[aria-expanded=true] .ic-expand{display:none}
+#expandEditor[aria-expanded=true] .ic-collapse{display:block}
+body.popped #expandEditor{display:none}
+.markup-help{margin:10px 0 0;font-size:12px;color:var(--cp-muted)}
+.markup-help summary{cursor:pointer;color:var(--cp-text)}
+.markup-help p{margin:8px 0 0;line-height:1.5}
+.markup-help code{color:var(--yellow);font:inherit}
+.mark-guide{border-collapse:collapse;margin:8px 0 0;width:100%}
+.mark-guide th,.mark-guide td{padding:3px 12px 3px 0;text-align:left;font-weight:400;border-bottom:1px solid var(--cp-line)}
+.mark-guide th{color:var(--cp-muted);font-size:11px}
+.prompt-btn{font:inherit;font-size:12px;margin-left:8px;padding:2px 10px;border:1px solid var(--cp-line);border-radius:6px;background:transparent;color:var(--cp-text);cursor:pointer}
+.prompt-btn:hover{border-color:var(--yellow)}
+.editor-stage{position:absolute;top:24px;left:24px;right:412px;bottom:16px;z-index:5;display:flex;flex-direction:column;padding:16px 20px;background:var(--cp-bg);color:var(--cp-text);border:1px solid var(--cp-line);border-radius:14px;box-shadow:0 12px 40px rgba(0,0,0,.35)}
+.editor-stage[hidden]{display:none}
+.editor-stage-head{display:flex;align-items:center;justify-content:space-between;margin:0 0 12px}
+.editor-stage-head h2{margin:0;font-size:11px;font-weight:400;letter-spacing:.08em;text-transform:uppercase;color:var(--cp-muted)}
+.editor-stage .step-btn{font:inherit;font-size:12px;padding:6px 16px;border:1px solid var(--yellow);border-radius:8px;background:var(--yellow);color:var(--ink);cursor:pointer}
+#editorStageBody{flex:1;min-height:0;display:flex;flex-direction:column;overflow:auto}
+.editor-stage #textEditor{display:flex;flex-direction:column;flex:1;min-height:0}
+.editor-stage #textEditor textarea{flex:1;min-height:240px;width:100%;box-sizing:border-box;padding:14px;font:inherit;font-size:15px;line-height:1.6;color:var(--cp-text);background:var(--cp-surface);border:1px solid var(--cp-line);border-radius:8px;resize:none}
+.editor-stage #textEditor textarea:focus{outline:none;border-color:var(--cp-accent-line)}
+.editor-stage .icon-btn{border-color:var(--cp-line);color:var(--cp-text)}
+.editor-stage .icon-btn:hover{background:var(--cp-accent-bg)}
+.editor-stage .text-tools{display:flex;gap:8px;margin:8px 0 0}
+.editor-stage .helper-text{display:block;margin-top:8px;color:var(--cp-muted);font-size:12px}
+.editor-stage .markup-help{max-height:40%;overflow:auto}
+@media(max-width:900px){.editor-stage{left:8px;right:8px;top:8px;bottom:8px}}

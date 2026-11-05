@@ -1,6 +1,8 @@
 // Load text into the sample text box from a file: plain text and markdown, html, Word (docx),
 // OpenDocument (odt) and rtf. Files are read in the browser and never uploaded. Word and OpenDocument
 // files are zip archives, so JSZip is fetched the first time one is opened.
+import { emphasisMarks, escapeAsterisks, styleNameMark, htmlTagMark } from './editor-marks.js';
+
 (function () {
   var area = document.getElementById('sampleText');
   var button = document.getElementById('loadFileButton');
@@ -35,9 +37,32 @@
 
   function fromHtml(html) {
     var doc = new DOMParser().parseFromString(html, 'text/html');
-    Array.prototype.forEach.call(doc.querySelectorAll('script,style,noscript,template,head'), function (n) { n.remove(); });
-    Array.prototype.forEach.call(doc.querySelectorAll('br'), function (n) { n.replaceWith('\n'); });
-    Array.prototype.forEach.call(doc.querySelectorAll('p,div,h1,h2,h3,h4,h5,h6,li,tr,blockquote,pre,section,article,header,footer'), function (n) {
+    var qsa = function (sel) { return Array.prototype.slice.call(doc.querySelectorAll(sel)); };
+    qsa('script,style,noscript,template,head').forEach(function (n) { n.remove(); });
+    qsa('br').forEach(function (n) { n.replaceWith('\n'); });
+    // Asterisks in the text are plain text: escape them before the emphasis marks are added
+    if (doc.body) {
+      var walker = doc.createTreeWalker(doc.body, NodeFilter.SHOW_TEXT);
+      var nodes = [];
+      while (walker.nextNode()) nodes.push(walker.currentNode);
+      nodes.forEach(function (n) { n.nodeValue = escapeAsterisks(n.nodeValue); });
+    }
+    // Italics: outermost <em> and <i> become *words*, with edge spaces kept outside the asterisks
+    qsa('em,i').forEach(function (n) {
+      if (n.parentElement && n.parentElement.closest('em,i')) return;
+      var m = /^(\s*)([\s\S]*?)(\s*)$/.exec(n.textContent);
+      if (m[2]) n.textContent = m[1] + '*' + m[2] + '*' + m[3];
+    });
+    // Headings 1 to 3 and block quotes become marks; deeper headings stay body text
+    ['h1', 'h2', 'h3'].forEach(function (tag) {
+      qsa(tag).forEach(function (n) { n.insertBefore(doc.createTextNode(htmlTagMark(tag)), n.firstChild); });
+    });
+    qsa('blockquote').forEach(function (bq) {
+      var ps = bq.querySelectorAll('p');
+      var targets = ps.length ? Array.prototype.slice.call(ps) : [bq];
+      targets.forEach(function (n) { n.insertBefore(doc.createTextNode(htmlTagMark('blockquote')), n.firstChild); });
+    });
+    qsa('p,div,h1,h2,h3,h4,h5,h6,li,tr,blockquote,pre,section,article,header,footer').forEach(function (n) {
       n.appendChild(doc.createTextNode('\n'));
     });
     return tidy(doc.body ? doc.body.textContent : '');
@@ -63,12 +88,63 @@
     return out;
   }
 
+  function docxLines(xml, stylesXml) {
+    var parse = function (x) { return new DOMParser().parseFromString(x, 'application/xml'); };
+    var names = {};
+    var basedOn = {};
+    if (stylesXml) {
+      Array.prototype.forEach.call(parse(stylesXml).getElementsByTagName('w:style'), function (st) {
+        var id = st.getAttribute('w:styleId');
+        var nm = st.getElementsByTagName('w:name')[0];
+        var bo = st.getElementsByTagName('w:basedOn')[0];
+        if (id) { names[id] = nm ? nm.getAttribute('w:val') : id; if (bo) basedOn[id] = bo.getAttribute('w:val'); }
+      });
+    }
+    // A paragraph style gives a mark directly or through the style it is based on (Heading 1, Quote, Title)
+    function markFor(id) {
+      for (var hops = 0; id && hops < 6; hops++) {
+        var m = styleNameMark(names[id] || id);
+        if (m) return m;
+        id = basedOn[id];
+      }
+      return '';
+    }
+    var out = [];
+    Array.prototype.forEach.call(parse(xml).getElementsByTagName('w:p'), function (p) {
+      var ps = p.getElementsByTagName('w:pStyle')[0];
+      var mark = markFor(ps ? ps.getAttribute('w:val') : '');
+      var segs = [];
+      Array.prototype.forEach.call(p.getElementsByTagName('w:r'), function (r) {
+        var rpr = r.getElementsByTagName('w:rPr')[0];
+        var em = false;
+        if (rpr) {
+          var i = rpr.getElementsByTagName('w:i')[0];
+          if (i) { var v = (i.getAttribute('w:val') || '').toLowerCase(); em = v !== '0' && v !== 'false' && v !== 'off'; }
+          var rs = rpr.getElementsByTagName('w:rStyle')[0];
+          if (rs && /^emphasis$/i.test(names[rs.getAttribute('w:val')] || rs.getAttribute('w:val'))) em = true;
+        }
+        Array.prototype.forEach.call(r.childNodes, function (c) {
+          var text = '';
+          if (c.nodeName === 'w:t') text = c.textContent;
+          else if (c.nodeName === 'w:tab') text = '\t';
+          else if (c.nodeName === 'w:br') text = '\n';
+          else return;
+          text.split(/(\n)/).forEach(function (piece) { if (piece) segs.push({ text: piece, em: em && piece !== '\n' }); });
+        });
+      });
+      var line = emphasisMarks(segs);
+      out.push(mark && line.trim() ? mark + line.trimStart() : line);
+    });
+    return out;
+  }
+
   function fromDocx(buffer) {
     return loadJSZip().then(function (JSZip) { return JSZip.loadAsync(buffer); }).then(function (zip) {
       var f = zip.file('word/document.xml');
       if (!f) throw new Error('This does not look like a Word (.docx) file.');
-      return f.async('string');
-    }).then(function (xml) { return tidy(xmlParagraphs(xml, 'w:p', ['w:t']).join('\n')); });
+      var s = zip.file('word/styles.xml');
+      return Promise.all([f.async('string'), s ? s.async('string') : Promise.resolve('')]);
+    }).then(function (parts) { return tidy(docxLines(parts[0], parts[1]).join('\n')); });
   }
 
   function fromOdt(buffer) {
@@ -78,10 +154,30 @@
       return f.async('string');
     }).then(function (xml) {
       var doc = new DOMParser().parseFromString(xml, 'application/xml');
+      var italic = {};
+      Array.prototype.forEach.call(doc.getElementsByTagName('style:style'), function (st) {
+        var tp = st.getElementsByTagName('style:text-properties')[0];
+        if (tp && tp.getAttribute('fo:font-style') === 'italic') italic[st.getAttribute('style:name')] = true;
+      });
+      function collect(node, em, segs) {
+        Array.prototype.forEach.call(node.childNodes, function (c) {
+          if (c.nodeType === 3) { segs.push({ text: c.nodeValue, em: em }); return; }
+          if (c.nodeName === 'text:tab') { segs.push({ text: '\t', em: false }); return; }
+          if (c.nodeName === 'text:s') { segs.push({ text: ' ', em: false }); return; }
+          if (c.nodeName === 'text:line-break') { segs.push({ text: '\n', em: false }); return; }
+          collect(c, em || (c.nodeName === 'text:span' && !!italic[c.getAttribute('text:style-name')]), segs);
+        });
+      }
       var out = [];
       Array.prototype.forEach.call(doc.getElementsByTagName('*'), function (el) {
         if (el.nodeName !== 'text:p' && el.nodeName !== 'text:h') return;
-        out.push(el.textContent);
+        var mark = '';
+        if (el.nodeName === 'text:h') mark = styleNameMark('Heading ' + (el.getAttribute('text:outline-level') || '1'));
+        else mark = styleNameMark((el.getAttribute('text:style-name') || '').replace(/_20_/g, ' '));
+        var segs = [];
+        collect(el, !!italic[el.getAttribute('text:style-name')], segs);
+        var line = emphasisMarks(segs);
+        out.push(mark && line.trim() ? mark + line.trimStart() : line);
       });
       return tidy(out.join('\n'));
     });
@@ -109,19 +205,41 @@
     });
   }
 
+  function apply(name, text) {
+    var cut = text.length > MAX;
+    area.value = cut ? text.slice(0, MAX) : text;
+    delete area.dataset.edited;
+    area.dispatchEvent(new Event('input', { bubbles: true }));
+    say('Loaded ' + name + ' (' + (cut ? 'first ' + MAX.toLocaleString('en-GB') : text.length.toLocaleString('en-GB')) + ' characters' + (cut ? ', the rest was left out to keep the preview quick' : '') + ').');
+  }
+
+  // Text that has been typed or edited is not replaced without asking
+  function askReplace(name, text) {
+    if (!status) { apply(name, text); return; }
+    status.textContent = 'Replace the text in the box with ' + name + '?';
+    var yes = document.createElement('button');
+    yes.type = 'button'; yes.className = 'prompt-btn'; yes.textContent = 'Replace';
+    var no = document.createElement('button');
+    no.type = 'button'; no.className = 'prompt-btn'; no.textContent = 'Cancel';
+    yes.addEventListener('click', function () { apply(name, text); });
+    no.addEventListener('click', function () { say(idle); });
+    status.appendChild(yes);
+    status.appendChild(no);
+  }
+
   function load(file) {
     if (!file) return;
     say('Reading ' + file.name + '...');
     read(file).then(function (text) {
       if (!text) { say('No text was found in ' + file.name + '.'); return; }
-      var cut = text.length > MAX;
-      area.value = cut ? text.slice(0, MAX) : text;
-      area.dispatchEvent(new Event('input', { bubbles: true }));
-      say('Loaded ' + file.name + ' (' + (cut ? 'first ' + MAX.toLocaleString('en-GB') : text.length.toLocaleString('en-GB')) + ' characters' + (cut ? ', the rest was left out to keep the preview quick' : '') + ').');
+      if (area.value.trim() && area.dataset.edited) askReplace(file.name, text);
+      else apply(file.name, text);
     }).catch(function (err) {
       say(err && err.message ? err.message : 'That file could not be read.');
     });
   }
+
+  area.addEventListener('input', function (e) { if (e.isTrusted) area.dataset.edited = '1'; });
 
   button.addEventListener('click', function () { input.click(); });
   input.addEventListener('change', function () { load(input.files && input.files[0]); input.value = ''; });
@@ -142,6 +260,7 @@
     e.preventDefault();
     var clean = data.replace(/\r\n?/g, '\n').replace(/[ \t]+\n/g, '\n').replace(/\n{2,}/g, '\n');
     area.setRangeText(clean, area.selectionStart, area.selectionEnd, 'end');
+    area.dataset.edited = '1';
     area.dispatchEvent(new Event('input', { bubbles: true }));
   });
   // Space after paragraph: remembered between visits and redraws the page when changed.

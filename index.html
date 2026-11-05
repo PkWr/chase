@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>chase</title>
-  <link rel="stylesheet" href="styles/main.css?v=202611051138">
-  <link rel="stylesheet" href="styles/form-shell.css?v=202611051138">
+  <link rel="stylesheet" href="styles/main.css?v=202611051148">
+  <link rel="stylesheet" href="styles/form-shell.css?v=202611051148">
   <!-- Padding handled in main.css for better control -->
 </head>
 <body>
@@ -379,8 +379,19 @@
 
       <section data-step="2" class="form-section">
         <h2>Sample Text</h2>
-        <div class="form-group">
-          <label for="sampleText">Text preview</label>
+        <div class="form-group" id="textEditor">
+          <div class="editor-head">
+            <label for="sampleText">Text</label>
+            <button type="button" id="expandEditor" class="icon-btn" title="Open the editor in the page area" aria-label="Open the editor in the page area" aria-expanded="false"><svg class="ic-expand" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6"/><path d="M20 4l-7 7"/><path d="M10 20H4v-6"/><path d="M4 20l7-7"/></svg><svg class="ic-collapse" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10h-6V4"/><path d="M14 10l7-7"/><path d="M4 14h6v6"/><path d="M10 14l-7 7"/></svg></button>
+          </div>
+          <div class="mark-tools" role="toolbar" aria-label="Styles for the text">
+            <button type="button" class="mark-btn" data-mark="h1" title="Heading 1 (Cmd/Ctrl+Alt+1)">H1</button>
+            <button type="button" class="mark-btn" data-mark="h2" title="Heading 2 (Cmd/Ctrl+Alt+2)">H2</button>
+            <button type="button" class="mark-btn" data-mark="h3" title="Heading 3 (Cmd/Ctrl+Alt+3)">H3</button>
+            <button type="button" class="mark-btn" data-mark="quote" title="Block Quote">Quote</button>
+            <button type="button" class="mark-btn" data-mark="citation" title="Citation: the source line under a quote">Source</button>
+            <button type="button" class="mark-btn mark-italic" data-mark="italic" title="Italic (Cmd/Ctrl+I)"><em>Italic</em></button>
+          </div>
           <textarea id="sampleText" rows="10" placeholder="Enter sample text to preview how it will look in your layout..."></textarea>
           <div class="text-tools" role="group" aria-label="Text actions">
             <button type="button" id="loadFileButton" class="icon-btn" title="Load text from a file" aria-label="Load text from a file"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4"/><path d="M7 9l5-5 5 5"/><path d="M5 20h14"/></svg></button>
@@ -389,6 +400,23 @@
           </div>
           <input type="file" id="textFileInput" class="visually-hidden-control" accept=".txt,.md,.markdown,.html,.htm,.docx,.odt,.rtf,text/plain,text/html" tabindex="-1">
           <span class="helper-text" id="textFileStatus">Type or paste text, or load a file (txt, md, html, docx, odt, rtf). Files can also be dropped onto the box.</span>
+          <details id="markupHelp" class="markup-help">
+            <summary>How to mark up the text</summary>
+            <table class="mark-guide">
+              <thead><tr><th>Start the line with</th><th>Style</th></tr></thead>
+              <tbody>
+                <tr><td><code># </code></td><td>Heading 1</td></tr>
+                <tr><td><code>## </code></td><td>Heading 2</td></tr>
+                <tr><td><code>### </code></td><td>Heading 3</td></tr>
+                <tr><td><code>&gt; </code></td><td>Block Quote</td></tr>
+                <tr><td><code>-- </code></td><td>Citation, set with an em dash</td></tr>
+                <tr><td><code>*words*</code></td><td>Emphasis (italic), anywhere in a line</td></tr>
+              </tbody>
+            </table>
+            <p>Put the mark at the very start of the line, then a space. Each line is one paragraph, and blank lines are ignored. The marks are not drawn on the page or in the InDesign file. A backslash before an asterisk (<code>\*</code>) keeps it as a plain asterisk. Up to three heading levels are used, and only the styles in the text appear under Styles in the Type step.</p>
+            <p>The buttons set the style of the line the cursor is on, or of every selected line; pressing the same button again takes it off. Italic works on the selected words, or on the word at the cursor. Shortcuts: Cmd/Ctrl+I for italic, Cmd/Ctrl+Alt+1, 2 and 3 for the headings.</p>
+            <p>Word (.docx), OpenDocument (.odt) and html files keep Heading 1 to 3, quotes and italics when loaded. Markdown (.md) files already use these marks.</p>
+          </details>
         </div>
       </section>
 
@@ -408,6 +436,10 @@
     </div>
 
     <div class="preview-wrapper">
+      <section id="editorStage" class="editor-stage" aria-label="Text editor" hidden>
+        <div class="editor-stage-head"><h2>Text editor</h2><button type="button" id="collapseEditor" class="step-btn">Done</button></div>
+        <div id="editorStageBody"></div>
+      </section>
       <section class="visualization-section">
         <div class="section-header">
         </div>
@@ -483,12 +515,13 @@
   <!-- PDF Export Libraries -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script type="module" src="src/main.js?v=202611051138"></script>
-  <script src="src/start.js?v=202611051138"></script>
-  <script src="src/steps.js?v=202611051138"></script>
-  <script src="src/column-picker.js?v=202611051138"></script>
-  <script src="src/popout.js?v=202611051138"></script>
-  <script src="src/text-import.js?v=202611051138"></script>
-  <script src="src/layer-cycle.js?v=202611051138"></script>
+  <script type="module" src="src/main.js?v=202611051148"></script>
+  <script src="src/start.js?v=202611051148"></script>
+  <script src="src/steps.js?v=202611051148"></script>
+  <script src="src/column-picker.js?v=202611051148"></script>
+  <script src="src/popout.js?v=202611051148"></script>
+  <script type="module" src="src/editor.js?v=202611051148"></script>
+  <script type="module" src="src/text-import.js?v=202611051148"></script>
+  <script src="src/layer-cycle.js?v=202611051148"></script>
 </body>
 </html>
