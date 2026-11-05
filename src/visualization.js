@@ -347,6 +347,7 @@ function drawPage(svg, inputs, pageX, pageY, pageWidth, pageHeight, leftMargin, 
                 }
                 // Create text div first
                 const textDiv = document.createElementNS('http://www.w3.org/1999/xhtml', 'div');
+                textDiv.dataset.flow = '1'; // the text flow the line checks read
                 textDiv.style.fontSize = `${fontSizeSVG}px`;
                 textDiv.style.lineHeight = `${lineHeight}px`;
                 // Use selected font family or default to serif
@@ -411,6 +412,7 @@ function drawPage(svg, inputs, pageX, pageY, pageWidth, pageHeight, leftMargin, 
                     p.style.margin = `${before}px 0 ${after}px ${metrics.indentPx}px`;
                     p.style.padding = '0';
                     p.style.whiteSpace = 'pre-wrap';
+                    p.dataset.style = block.style;
                     if (block.style !== 'body') {
                         p.style.fontSize = `${metrics.sizePx}px`;
                         p.style.lineHeight = `${metrics.lineHeightPx}px`;

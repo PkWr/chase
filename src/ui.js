@@ -11,6 +11,7 @@ import { buildIdmlBlob } from './idml.js';
 import { initStylesPanel, getStyleSettings, getStyleFonts, resetStyles } from './styles-panel.js';
 import { styleDefs, fontName, EMPHASIS } from './idml-styles.js';
 import { drawGridPage } from './pdf-grid.js';
+import { analyseLines } from './line-checks.js';
 // Page dimensions are always in mm, gutter is always in em
 const PAGE_UNIT = 'mm';
 const GUTTER_UNIT = 'em';
@@ -482,6 +483,67 @@ function updateBringhurstSection(textBoxWidth, typeSize, leading) {
         });
     }
 }
+/**
+ * Orphan, widow and runt counts from the rendered preview. Always shown as text, with the definition;
+ * out of range it becomes a warning with examples and the reason. The preview is hidden while the Report
+ * is open, so the last measurement is kept and shown there.
+ */
+let lineResults = null;
+let lineChecksTimer = null;
+const LINE_CHECKS = [
+    { key: 'orphans', value: 'orphanValue', guide: 'orphanGuidance', noun: 'orphan', plural: 'orphans',
+        def: 'An orphan is the first line of a paragraph left alone at the bottom of a column.',
+        why: 'It breaks the flow into the next column and reads as a mistake. Readers who rely on the shape of the text block to keep their place are most affected. Change the text box height or leading, or edit the text so the paragraph breaks differently.' },
+    { key: 'widows', value: 'widowValue', guide: 'widowGuidance', noun: 'widow', plural: 'widows',
+        def: 'A widow is the last line of a paragraph left alone at the top of the next column.',
+        why: 'It leaves a stray line separated from its paragraph, which interrupts the reading flow and looks like an error. Change the text box height or leading, or edit the text so the paragraph breaks differently.' },
+    { key: 'runts', value: 'runtValue', guide: 'runtGuidance', noun: 'runt', plural: 'runts',
+        def: 'A runt is a very short last line, a word or two, at the end of a paragraph.',
+        why: 'It leaves a hole in the text block and draws the eye to a fragment. In narrow columns it is often a single hyphenated piece of a word. Adjust the column width, the tracking or the wording of the paragraph.' },
+];
+function renderLineChecks() {
+    for (const c of LINE_CHECKS) {
+        const v = document.getElementById(c.value);
+        const g = document.getElementById(c.guide);
+        if (!v || !g)
+            continue;
+        if (!lineResults) {
+            v.textContent = `${c.plural.charAt(0).toUpperCase()}${c.plural.slice(1)}: measured when the page is shown`;
+            g.textContent = c.def;
+            g.classList.remove('report-warning');
+            continue;
+        }
+        const found = lineResults[c.key];
+        const n = found.length;
+        v.textContent = `${n} ${n === 1 ? c.noun : c.plural} found`;
+        if (n === 0) {
+            g.textContent = c.def;
+            g.classList.remove('report-warning');
+        }
+        else {
+            const eg = found.slice(0, 2).map((f) => `“${f.text}” at ${f.where}`).join('; ');
+            g.textContent = `Warning: in this preview, for example ${eg}. ${c.def} ${c.why}`;
+            g.classList.add('report-warning');
+        }
+    }
+}
+function scheduleLineChecks() {
+    if (lineChecksTimer !== null)
+        clearTimeout(lineChecksTimer);
+    // wait for the preview to size itself and snap its headings before measuring
+    lineChecksTimer = window.setTimeout(() => {
+        lineChecksTimer = null;
+        try {
+            const r = analyseLines(document.getElementById('visualizationContainer'));
+            if (r)
+                lineResults = r;
+        }
+        catch (e) {
+            // measurement is best-effort
+        }
+        renderLineChecks();
+    }, 450);
+}
 function updateVisualizationOnInputChange() {
     try {
         const inputs = getFormInputs();
@@ -490,6 +552,7 @@ function updateVisualizationOnInputChange() {
         updateWordsPerLine();
         updateColumnWidthDisplay();
         updateSpecification();
+        scheduleLineChecks();
     }
     catch (e) {
         // Log error for debugging
