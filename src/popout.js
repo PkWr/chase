@@ -18,15 +18,20 @@ window.previewEl = function (id) {
   var win = null;
 
   // The pop-out button sits in the bottom left corner of the page drawing.
+  // The pop-in button takes the same place when the page is in its own window.
   wrapper.appendChild(out);
+  if (inBtn) wrapper.appendChild(inBtn);
   var box = wrapper.querySelector('.visualization-container');
   function placeOut() {
     var svg = box && box.querySelector('svg');
     if (!svg) return;
     var w = wrapper.getBoundingClientRect(), s = svg.getBoundingClientRect(), b = box.getBoundingClientRect();
     var bottom = Math.min(s.bottom, b.bottom);
-    out.style.left = (s.left - w.left + wrapper.scrollLeft + 10) + 'px';
-    out.style.top = (bottom - w.top + wrapper.scrollTop - out.offsetHeight - 10) + 'px';
+    [out, inBtn].forEach(function (btn) {
+      if (!btn) return;
+      btn.style.left = (s.left - w.left + wrapper.scrollLeft + 10) + 'px';
+      btn.style.top = (bottom - w.top + wrapper.scrollTop - 28 - 10) + 'px';
+    });
   }
   if (box) {
     new MutationObserver(function () { requestAnimationFrame(placeOut); }).observe(box, { childList: true });
@@ -41,6 +46,7 @@ window.previewEl = function (id) {
     out.hidden = popped;
     inBtn.hidden = !popped;
     inPanel.hidden = !popped;
+    requestAnimationFrame(placeOut);
   }
 
   function bringIn() {

@@ -240,8 +240,8 @@ body.popped .app-wrapper{display:block}
 .preview-wrapper .visualization-container.stack{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;overflow-y:auto;gap:24px;padding:0 32px 24px}
 .visualization-container.stack>svg{flex:none}
 body[data-step="1"] #popOut{display:none}
-.preview-wrapper #popOut{position:absolute;z-index:4;width:28px;height:28px;border:0;border-radius:8px;background:#fff;color:#9a9a9a;box-shadow:0 1px 5px rgba(0,0,0,.18)}
-.preview-wrapper #popOut:hover{background:#fff;color:#333;box-shadow:0 2px 8px rgba(0,0,0,.28)}
+.preview-wrapper #popOut,.preview-wrapper #popIn{position:absolute;z-index:4;width:28px;height:28px;border:0;border-radius:8px;background:#fff;color:#9a9a9a;box-shadow:0 1px 5px rgba(0,0,0,.18)}
+.preview-wrapper #popOut:hover,.preview-wrapper #popIn:hover{background:#fff;color:#333;box-shadow:0 2px 8px rgba(0,0,0,.28)}
 .container #startPickerHelp{display:block;margin-top:6px}
 .container #startPickerHelp>span{display:block;margin:0 0 6px;font-size:11px;line-height:1.5;color:var(--cp-muted)}
 .container #startPickerHelp .pk-now{color:var(--cp-text)}
@@ -376,3 +376,12 @@ body.popout-window .editor-stage{right:24px}
 .container .step-list a:hover{background:transparent;color:var(--cp-text)}
 .container .step-list a[aria-checked=true]{background:transparent;color:var(--yellow);border-bottom-color:var(--yellow)}
 .container .step-list a span{color:inherit;opacity:.7}
+
+/* Steps as a sentence, like the rule text on Form: each step is a word, the current one is yellow with a dashed underline */
+.container .cp-stepsec{padding:12px 16px 10px;flex:none;overflow:visible}
+.container .step-list{display:block;overflow:visible;font-size:18px;line-height:2.1;margin-top:6px}
+.container .step-list a,.container .step-list a:not([aria-checked=true]){display:inline;min-height:0;padding:0;border:0;border-bottom:1px dashed transparent;border-radius:0;background:transparent;color:var(--cp-text);font-size:inherit;opacity:1;white-space:normal}
+.container .step-list a span{display:none}
+.container .step-list a:hover{color:var(--yellow);background:transparent}
+.container .step-list a[aria-checked=true]{color:var(--yellow);background:transparent;border-bottom:1px dashed var(--yellow)}
+.container .step-list .step-sep{font-style:normal;color:var(--cp-text)}
