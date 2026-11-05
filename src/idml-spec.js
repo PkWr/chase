@@ -1,4 +1,4 @@
-import { styleDefs, fontName, EMPHASIS, usedStyles } from './idml-styles.js';
+import { styleDefs, fontName, EMPHASIS } from './idml-styles.js';
 
 // Specification page for the IDML export: a last page holding a table of every setting, its value, and
 // where to change it in InDesign (menu path and Mac / Windows shortcut). Pure functions, no DOM.
@@ -47,17 +47,15 @@ export function specRows(spec, lay, facing, family) {
     rows.push(['Alignment', i.justifyText ? 'Justified' : 'Left aligned', BODY + ' Or the alignment buttons in the Paragraph panel (Window > Type & Tables > Paragraph, Opt+Cmd+T / Ctrl+Alt+T).']);
     rows.push(['Hyphenation', i.hyphenation ? 'On' : 'Off', BODY + ' Hyphenation is in the style options.']);
     rows.push(['Space after paragraph', `${num(after)} pt`, BODY + ' Indents and Spacing.']);
-    // The other styles in use, with their sizes and where to find them
-    const { used, emphasis } = usedStyles(spec.text);
+    // Every paragraph and character style in the file, with sizes and where to find them
     for (const d of styleDefs(spec, fontName)) {
-        if (d.key === 'body' || !used[d.key])
+        if (d.key === 'body')
             continue;
         const m = d.metrics;
         const indent = m.indentPx ? `, indent ${num(m.indentPx)} pt` : '';
         rows.push([d.name, `${num(m.sizePx)} pt on ${num(m.lineHeightPx)} pt leading, ${d.font}, space before ${num(m.marginTopPx)} pt, after ${num(m.marginBottomPx)} pt${indent}`, STYLE_PATH + d.name + '.']);
     }
-    if (emphasis)
-        rows.push([EMPHASIS, 'Italic', CHAR_PATH + EMPHASIS + '.']);
+    rows.push([EMPHASIS, 'Italic', CHAR_PATH + EMPHASIS + '.']);
     rows.push(['Text frames', `${lay.spans * lay.pages.length} linked, starting in column ${lay.startIndex + 1}, each ${lay.spanCols} column${lay.spanCols > 1 ? 's' : ''} wide`, 'Object > Text Frame Options… (Cmd+B / Ctrl+B). Show the links with View > Extras > Show Text Threads (Opt+Cmd+Y / Ctrl+Alt+Y). Text that does not fit shows a red plus (overset).']);
     return rows;
 }

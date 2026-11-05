@@ -149,8 +149,8 @@ test('story uses the styles, marks are stripped and soft returns are forced line
     assert.ok(story.includes('<Content>\u2014 Source Name</Content>'));
 });
 
-test('specification page lists the styles in use', () => {
+test('specification page lists every paragraph style and the Emphasis character style', () => {
     const spec2 = new Map(buildIdmlFiles(styled)).get('Stories/Story_u1001.xml');
     assert.ok(spec2.includes('Heading 1') && spec2.includes('Block Quote') && spec2.includes('Emphasis'));
-    assert.ok(!spec2.includes('Heading 2'));
+    for (const n of ['Heading 2', 'Heading 3', 'Citation', 'Body Text']) assert.ok(spec2.includes(n), n);
 });

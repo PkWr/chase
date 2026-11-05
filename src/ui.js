@@ -9,6 +9,7 @@ import { convertFromMM, convertToMM, formatValue } from './units.js';
 import { DEFAULT_SAMPLE_TEXT } from './defaultText.js';
 import { buildIdmlBlob } from './idml.js';
 import { initStylesPanel, getStyleSettings, getStyleFonts } from './styles-panel.js';
+import { styleDefs, fontName, EMPHASIS } from './idml-styles.js';
 // Page dimensions are always in mm, gutter is always in em
 const PAGE_UNIT = 'mm';
 const GUTTER_UNIT = 'em';
@@ -359,6 +360,23 @@ function updateSpecification() {
         html += `<tr><td class="spec-label">Hyphenation:</td><td class="spec-value">${inputs.hyphenation !== false ? 'Enabled' : 'Disabled'}</td></tr>`;
         const justifyText = document.getElementById('justifyText')?.checked ?? false;
         html += `<tr><td class="spec-label">Text alignment:</td><td class="spec-value">${justifyText ? 'Justified' : 'Left-aligned'}</td></tr>`;
+        // Paragraph and character styles
+        try {
+            const spaceField = document.getElementById('paraSpace')?.value ?? '';
+            const styleSpec = { inputs, styleSettings: getStyleSettings(), styleFonts: getStyleFonts(), paraSpacePt: spaceField === '' ? undefined : parseFloat(spaceField) };
+            const r1 = (v) => String(Math.round(v * 10) / 10);
+            html += '<tr><td class="spec-label spec-group" colspan="2">Paragraph styles</td></tr>';
+            for (const d of styleDefs(styleSpec, fontName)) {
+                const m = d.metrics;
+                const indent = m.indentPx ? `, indent ${r1(m.indentPx)} pt` : '';
+                html += `<tr><td class="spec-label">${d.name}:</td><td class="spec-value">${r1(m.sizePx)} pt on ${r1(m.lineHeightPx)} pt, ${d.font}, space before ${r1(m.marginTopPx)} pt, after ${r1(m.marginBottomPx)} pt${indent}</td></tr>`;
+            }
+            html += '<tr><td class="spec-label spec-group" colspan="2">Character styles</td></tr>';
+            html += `<tr><td class="spec-label">${EMPHASIS}:</td><td class="spec-value">Italic</td></tr>`;
+        }
+        catch (e) {
+            // Styles are optional in the specification
+        }
         // Column Layout
         html += `<tr><td class="spec-label">Number of columns:</td><td class="spec-value">${inputs.numCols}</td></tr>`;
         // Get gutter width in display unit

@@ -463,3 +463,5 @@ body[data-step="8"] .scale-line{display:none}
 /* Footer (scale and links) always sits at the bottom of the panel, even when the step is short */
 .container .cp-foot{margin-top:auto}
 .container #layoutForm{margin-bottom:12px}
+
+.report-stage .spec-table .spec-group{padding-top:14px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#666}
