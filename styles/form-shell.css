@@ -298,13 +298,18 @@ html.show-start #startScreen{display:block}
 /* Text editor: style buttons, how-to guide, and the expanded editor in the page area */
 .editor-head{display:flex;align-items:center;justify-content:space-between;margin:0 0 6px}
 .editor-head label{margin:0}
-.mark-tools{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 8px}
+.mark-tools{display:none;flex-wrap:wrap;gap:6px;margin:0 0 8px}
+.editor-stage .mark-tools{display:flex}
 .mark-btn{font:inherit;font-size:12px;min-width:36px;padding:5px 9px;border:1px solid var(--cp-line);border-radius:8px;background:transparent;color:var(--cp-text);cursor:pointer}
 .mark-btn:hover{background:var(--cp-accent-bg);border-color:var(--cp-accent-line)}
 .mark-btn:focus-visible{outline:2px solid var(--yellow);outline-offset:2px}
 .mark-btn em{font-style:italic}
-#expandEditor .ic-collapse,#expandEditor[aria-expanded=true] .ic-expand{display:none}
+#expandEditor .ic-collapse,#expandEditor .lbl-close,#expandEditor[aria-expanded=true] .ic-expand,#expandEditor[aria-expanded=true] .lbl-open{display:none}
 #expandEditor[aria-expanded=true] .ic-collapse{display:block}
+#expandEditor[aria-expanded=true] .lbl-close{display:inline}
+.text-btn{display:inline-flex;align-items:center;gap:8px;height:34px;margin-left:auto;padding:0 12px;font:inherit;font-size:12px;border:1px solid var(--cp-line);border-radius:8px;background:transparent;color:var(--cp-text);cursor:pointer}
+.text-btn:hover{background:var(--cp-accent-bg);border-color:var(--cp-accent-line)}
+.text-btn:focus-visible{outline:2px solid var(--yellow);outline-offset:2px}
 body.popped #expandEditor{display:none}
 .markup-help{margin:10px 0 0;font-size:12px;color:var(--cp-muted)}
 .markup-help summary{cursor:pointer;color:var(--cp-text)}
