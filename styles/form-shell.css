@@ -485,10 +485,15 @@ body.help-on .container [title]:not(#helpLink),body.help-on .preview-wrapper [ti
 .intro-stage{display:none}
 body[data-step="1"] #visualizationContainer{display:none}
 body[data-step="1"] .intro-stage{display:flex;flex:1 1 0;min-height:0;overflow-y:auto;box-sizing:border-box;padding:6vw 5vw;background:#000;color:#fff;border-radius:14px}
-.intro-stage p{margin:auto 0;font-weight:300;font-style:italic;font-size:clamp(18px,2.6vw,36px);line-height:1.25;letter-spacing:-.01em}
+.intro-stage p{margin:0;font-weight:300;font-style:italic;font-size:clamp(18px,2.6vw,36px);line-height:1.25;letter-spacing:-.01em}
 .intro-stage a{color:var(--yellow);text-decoration:none;border-bottom:1px solid transparent}
 .intro-stage a:hover,.intro-stage a:focus-visible{border-bottom-color:var(--yellow);outline:none}
 .intro-stage sup{font-size:.4em;margin-left:.1em;vertical-align:super;font-style:normal}
 body[data-step="1"] .page-nav{width:100% !important}
 body[data-step="1"] .scale-line,body[data-step="1"] #popOut{display:none}
-@media(max-width:900px){.intro-stage p{font-size:clamp(18px,5.4vw,30px)}body[data-step="1"] .intro-stage{padding:20px}}
+@media(max-width:900px){.intro-stage p{font-size:clamp(16px,4.6vw,28px)}body[data-step="1"] .intro-stage{padding:20px}}
+
+.intro-stage{flex-direction:column}
+.intro-stage p+p{margin:1.2em 0 0;color:#bdbdbd}
+.intro-stage p:first-child{margin-top:auto}
+.intro-stage p:last-child{margin-bottom:auto}
