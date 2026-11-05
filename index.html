@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>chase</title>
-  <link rel="stylesheet" href="styles/main.css?v=202611051226">
-  <link rel="stylesheet" href="styles/form-shell.css?v=202611051226">
+  <link rel="stylesheet" href="styles/main.css?v=202611051227">
+  <link rel="stylesheet" href="styles/form-shell.css?v=202611051227">
   <!-- Padding handled in main.css for better control -->
 </head>
 <body>
@@ -85,8 +85,10 @@
           <a href="#" role="radio" data-go="3" aria-checked="false"><span>3</span> Page</a>
           <a href="#" role="radio" data-go="4" aria-checked="false"><span>4</span> Margins</a>
           <a href="#" role="radio" data-go="5" aria-checked="false"><span>5</span> Columns</a>
-          <a href="#" role="radio" data-go="6" aria-checked="false"><span>6</span> Type</a>
-          <a href="#" role="radio" data-go="7" aria-checked="false"><span>7</span> Download</a>
+          <a href="#" role="radio" data-go="6" aria-checked="false"><span>6</span> Typography</a>
+          <a href="#" role="radio" data-go="7" aria-checked="false"><span>7</span> Styles</a>
+          <a href="#" role="radio" data-go="8" aria-checked="false"><span>8</span> Report</a>
+          <a href="#" role="radio" data-go="9" aria-checked="false"><span>9</span> Download</a>
         </div>
       </section>
 
@@ -320,7 +322,7 @@
           <span class="helper-text">Marks the ragged right edge, and the rivers of white space when the text is justified</span>
         </div>
       </section>
-      <section data-step="6" class="form-section" id="stylesSection" hidden>
+      <section data-step="7" class="form-section" id="stylesSection">
         <h2>Styles</h2>
         <div class="form-group">
           <div class="style-row" data-style="h1" hidden>
@@ -353,11 +355,12 @@
             <span class="style-pt" id="styleCitationPt"></span>
             <span class="helper-text">ratio of body size</span>
           </div>
-          <span class="helper-text">Only the styles used in the text are listed. Headings are set in whole lines of leading, with the space after paragraph from Type, so the text after them stays on the baseline grid.</span>
+          <span class="helper-text" id="stylesNone">No styles are used in the text yet. Add marks in the Text step (# for headings, > for a quote, -- for a source) and they are listed here.</span>
+          <span class="helper-text">Only the styles used in the text are listed. Heading leading is tight, and each heading is padded to whole lines of body leading, with the space after paragraph from Typography, so the text after it stays on the baseline grid.</span>
         </div>
       </section>
 
-      <section data-step="6" class="form-section bringhurst-section">
+      <section data-step="8" class="form-section bringhurst-section">
         <h2>Bringhurst says</h2>
         <div class="form-group">
           <p><span class="bringhurst-label">Words per line:</span> <span id="wordsPerLine" class="bringhurst-value">—</span></p>
@@ -369,7 +372,7 @@
         </div>
       </section>
 
-      <section data-step="6" class="form-section bringhurst-section">
+      <section data-step="8" class="form-section bringhurst-section">
         <h2>Patrick says</h2>
         <div class="form-group">
           <p><span class="bringhurst-label">Words per line:</span> <span id="patrickWordsPerLine" class="bringhurst-value">—</span></p>
@@ -421,7 +424,7 @@
       </section>
 
 
-      <section data-step="7" class="form-section step-pane">
+      <section data-step="9" class="form-section step-pane">
         <div class="specification-section">
           <h3>Specification</h3>
           <div id="specificationContent" class="specification-content"></div>
@@ -446,7 +449,7 @@
         <div id="visualizationContainer" class="visualization-container"></div>
         <div class="page-nav">
           <div class="page-meta">
-            <p id="stepNow" class="step-now" aria-live="polite">Step 1 of 7 · Intro</p>
+            <p id="stepNow" class="step-now" aria-live="polite">Step 1 of 9 · Intro</p>
             <span class="page-tools"><button type="button" id="popOut" class="icon-btn" title="Open the page in its own window" aria-label="Open the page in its own window"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></button><button type="button" id="popIn" class="icon-btn" title="Bring the page back into this window" aria-label="Bring the page back into this window" hidden><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10h-6V4"/><path d="M14 10l7-7"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></button></span>
           </div>
           <div class="row nav" role="group" aria-label="Steps">
@@ -515,13 +518,13 @@
   <!-- PDF Export Libraries -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script type="module" src="src/main.js?v=202611051226"></script>
-  <script src="src/start.js?v=202611051226"></script>
-  <script src="src/steps.js?v=202611051226"></script>
-  <script src="src/column-picker.js?v=202611051226"></script>
-  <script src="src/popout.js?v=202611051226"></script>
-  <script type="module" src="src/editor.js?v=202611051226"></script>
-  <script type="module" src="src/text-import.js?v=202611051226"></script>
-  <script src="src/layer-cycle.js?v=202611051226"></script>
+  <script type="module" src="src/main.js?v=202611051227"></script>
+  <script src="src/start.js?v=202611051227"></script>
+  <script src="src/steps.js?v=202611051227"></script>
+  <script src="src/column-picker.js?v=202611051227"></script>
+  <script src="src/popout.js?v=202611051227"></script>
+  <script type="module" src="src/editor.js?v=202611051227"></script>
+  <script type="module" src="src/text-import.js?v=202611051227"></script>
+  <script src="src/layer-cycle.js?v=202611051227"></script>
 </body>
 </html>
