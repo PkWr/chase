@@ -251,3 +251,4 @@ body[data-step="1"] #popOut{display:none}
 .container .layer-checkbox .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 .container .cp-show .layer-controls{gap:10px}
 .container .cp-show .layer-checkbox span.ic{display:inline-flex;align-items:center;justify-content:center;width:36px;height:32px;padding:0 0 2px}
+.container .layer-checkbox.is-solid .ic svg rect:first-child{fill:var(--yellow);}

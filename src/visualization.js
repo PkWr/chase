@@ -18,7 +18,7 @@ function getLayerVisibility() {
     const showText = document.getElementById('showText')?.checked ?? true;
     const solidFills = document.getElementById('solidFills')?.checked ?? false;
     const showRaggedEdge = document.getElementById('showRaggedEdge')?.checked ?? false;
-    return { margins: showMargins, columns: showColumns, text: showText, solidFills, raggedEdge: showRaggedEdge };
+    return { margins: showMargins, columns: showColumns, text: showText, solidFills, marginsSolid: document.getElementById('showMargins')?.dataset.solid === '1', columnsSolid: document.getElementById('showColumns')?.dataset.solid === '1', raggedEdge: showRaggedEdge };
 }
 // Page dimensions and margins are always in mm, gutter is always in em
 const PAGE_UNIT = 'mm';
@@ -153,15 +153,15 @@ function drawPage(svg, inputs, pageX, pageY, pageWidth, pageHeight, leftMargin, 
     const scaledRightMargin = Math.max(rightMargin * scaleX, MIN_MARGIN_VISUAL);
     // Draw margins
     if (layerVisibility.margins) {
-        if (layerVisibility.solidFills) {
-            // Draw margin areas as solid fills (top, bottom, left, right)
+        if (layerVisibility.marginsSolid) {
+            // Solid yellow block (top, bottom, left, right)
             // Top margin
             const topMarginRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
             topMarginRect.setAttribute('x', pageX.toString());
             topMarginRect.setAttribute('y', pageY.toString());
             topMarginRect.setAttribute('width', pageWidth.toString());
             topMarginRect.setAttribute('height', scaledTopMargin.toString());
-            topMarginRect.setAttribute('fill', 'rgba(255, 255, 0, 0.2)'); // Yellow fill 20% tint
+            topMarginRect.setAttribute('fill', '#ffe100'); // Solid yellow
             topMarginRect.setAttribute('stroke', 'none');
             svg.appendChild(topMarginRect);
             // Bottom margin
@@ -170,7 +170,7 @@ function drawPage(svg, inputs, pageX, pageY, pageWidth, pageHeight, leftMargin, 
             bottomMarginRect.setAttribute('y', (pageY + pageHeight - scaledBottomMargin).toString());
             bottomMarginRect.setAttribute('width', pageWidth.toString());
             bottomMarginRect.setAttribute('height', scaledBottomMargin.toString());
-            bottomMarginRect.setAttribute('fill', 'rgba(255, 255, 0, 0.2)'); // Yellow fill 20% tint
+            bottomMarginRect.setAttribute('fill', '#ffe100'); // Solid yellow
             bottomMarginRect.setAttribute('stroke', 'none');
             svg.appendChild(bottomMarginRect);
             // Left margin
@@ -179,7 +179,7 @@ function drawPage(svg, inputs, pageX, pageY, pageWidth, pageHeight, leftMargin, 
             leftMarginRect.setAttribute('y', (pageY + scaledTopMargin).toString());
             leftMarginRect.setAttribute('width', scaledLeftMargin.toString());
             leftMarginRect.setAttribute('height', (pageHeight - scaledTopMargin - scaledBottomMargin).toString());
-            leftMarginRect.setAttribute('fill', 'rgba(255, 255, 0, 0.2)'); // Yellow fill 20% tint
+            leftMarginRect.setAttribute('fill', '#ffe100'); // Solid yellow
             leftMarginRect.setAttribute('stroke', 'none');
             svg.appendChild(leftMarginRect);
             // Right margin
@@ -188,20 +188,20 @@ function drawPage(svg, inputs, pageX, pageY, pageWidth, pageHeight, leftMargin, 
             rightMarginRect.setAttribute('y', (pageY + scaledTopMargin).toString());
             rightMarginRect.setAttribute('width', scaledRightMargin.toString());
             rightMarginRect.setAttribute('height', (pageHeight - scaledTopMargin - scaledBottomMargin).toString());
-            rightMarginRect.setAttribute('fill', 'rgba(255, 255, 0, 0.2)'); // Yellow fill 20% tint
+            rightMarginRect.setAttribute('fill', '#ffe100'); // Solid yellow
             rightMarginRect.setAttribute('stroke', 'none');
             svg.appendChild(rightMarginRect);
         }
         else {
-            // Draw margin keyline (outline of text area)
+            // Margin keyline in yellow
             const marginRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
             marginRect.setAttribute('x', (pageX + scaledLeftMargin).toString());
             marginRect.setAttribute('y', (pageY + scaledTopMargin).toString());
             marginRect.setAttribute('width', (pageWidth - scaledLeftMargin - scaledRightMargin).toString());
             marginRect.setAttribute('height', (pageHeight - scaledTopMargin - scaledBottomMargin).toString());
             marginRect.setAttribute('fill', 'none');
-            marginRect.setAttribute('stroke', '#888888');
-            marginRect.setAttribute('stroke-width', '0.5');
+            marginRect.setAttribute('stroke', '#ffe100');
+            marginRect.setAttribute('stroke-width', '1.5');
             svg.appendChild(marginRect);
         }
     }
@@ -222,14 +222,14 @@ function drawPage(svg, inputs, pageX, pageY, pageWidth, pageHeight, leftMargin, 
             colRect.setAttribute('y', textBoxY.toString());
             colRect.setAttribute('width', columnWidth.toString());
             colRect.setAttribute('height', textBoxHeight.toString());
-            if (layerVisibility.solidFills) {
-                colRect.setAttribute('fill', 'rgba(255, 0, 0, 0.2)'); // Red fill 20% tint
+            if (layerVisibility.columnsSolid) {
+                colRect.setAttribute('fill', 'rgba(255, 225, 0, 0.3)'); // Yellow tint
                 colRect.setAttribute('stroke', 'none');
             }
             else {
                 colRect.setAttribute('fill', 'none');
-                colRect.setAttribute('stroke', '#888888');
-                colRect.setAttribute('stroke-width', '0.5');
+                colRect.setAttribute('stroke', '#ffe100');
+                colRect.setAttribute('stroke-width', '1');
             }
             svg.appendChild(colRect);
         }
