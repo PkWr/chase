@@ -56,6 +56,8 @@
     var c = p.classList.toggle('collapsed');
     g.setAttribute('aria-expanded', String(!c));
     g.setAttribute('aria-label', c ? 'Open controls' : 'Collapse controls');
+    document.body.classList.toggle('cp-folded', c);
+    setTimeout(function () { window.dispatchEvent(new Event('resize')); }, 50);
   };
 })();
 

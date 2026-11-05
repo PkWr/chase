@@ -48,7 +48,10 @@ body{padding:0;background:var(--paper);color:var(--ink);font:300 13px/1.5 var(--
 
 /* Narrow windows: controls become a bottom sheet */
 @media(max-width:900px){
-.preview-wrapper{bottom:auto;height:56vh;padding:16px 16px 0}
+.preview-wrapper{top:0;bottom:44vh;height:auto;padding:16px 16px 0}
+body.cp-folded .preview-wrapper{bottom:140px}
+.preview-wrapper #popOut{display:none!important}
+#panel.collapsed{top:auto!important;bottom:0!important}
 .container{top:auto;left:0;right:0;bottom:0;width:auto;max-width:none;height:44vh;border-width:1px 0 0;border-radius:20px 20px 0 0}
 }
 
@@ -445,7 +448,7 @@ body[data-step="8"] .scale-line{display:none}
 .report-stage .helper-text.report-warning{color:#111;font-weight:400;border-left:3px solid #f2c200;padding-left:8px}
 
 /* Phone: space between the Back/Next buttons and the control panel below */
-@media(max-width:900px){.preview-wrapper .page-nav{padding-bottom:18px}}
+@media(max-width:900px){.preview-wrapper .page-nav{padding-bottom:12px}}
 
 .container .align-row .hyph-toggle{border-left:1px solid var(--cp-muted);padding-left:12px;margin-left:4px}
 
