@@ -53,7 +53,7 @@
     var ctrlRow = document.createElement('div');
     ctrlRow.className = 'start-ctrl';
     host.appendChild(colsRow);
-    host.appendChild(ctrlRow);
+    colsRow.appendChild(ctrlRow); // − + sit at the front; columns flow after them
     for (var k = 1; k <= r.n; k++) {
       var b = document.createElement('button');
       b.type = 'button';

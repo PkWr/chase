@@ -252,3 +252,5 @@ body[data-step="1"] #popOut{display:none}
 .container .cp-show .layer-controls{gap:10px}
 .container .cp-show .layer-checkbox span.ic{display:inline-flex;align-items:center;justify-content:center;width:36px;height:32px;padding:0 0 2px}
 .container .layer-checkbox.is-solid .ic svg rect:first-child{fill:var(--yellow);}
+.container .start-cols{align-items:center}
+.container .start-cols>.start-ctrl{display:flex;flex:none;flex-wrap:nowrap;gap:6px;margin:0 8px 0 0;padding-right:8px;border-right:1px solid var(--cp-line)}
