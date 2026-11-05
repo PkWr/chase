@@ -43,9 +43,9 @@
     if (help) {
       help.innerHTML =
         '<span class="pk-now">Text starts in column ' + r.start +
-        (r.span > 1 ? ' and fills columns ' + r.start + ' to ' + endCol + ', then carries on to the next page.' : ' and fills that column only, then carries on to the next page.') + '</span>' +
+        (r.span > 1 ? ' and spans columns ' + r.start + ' to ' + endCol + ', then carries on to the next page.' : ' and spans that column only, then carries on to the next page.') + '</span>' +
         '<span class="pk-how">Plus and minus add or remove a column. To move where the text starts, widen the box to the left by clicking an earlier column, then narrow it from the right by clicking its last column. Clicking a column beside the box widens it, and clicking an end column of the box narrows it.</span>' +
-        '<span class="pk-key"><i class="k-start"></i>text starts here <i class="k-text"></i>text continues <i class="k-empty"></i>empty column</span>';
+        '<span class="pk-key"><i class="k-start"></i>text starts here <i class="k-text"></i>text spans <i class="k-empty"></i>empty column</span>';
     }
     host.innerHTML = '';
     for (var k = 1; k <= r.n; k++) {
