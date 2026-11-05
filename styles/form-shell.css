@@ -223,3 +223,6 @@ body.popped .app-wrapper{display:block}
 .page-nav .step-now{margin:0 0 6px;text-align:center;font-size:11px;color:var(--ink)}
 .preview-wrapper .section-header{justify-content:flex-end}
 .preview-wrapper .page-nav .step-now{display:block;width:100%;flex:none;text-align:center}
+.page-meta{position:relative;display:flex;align-items:center;justify-content:center;min-height:30px;margin-bottom:6px}
+.page-meta .step-now{margin:0}
+.page-tools{position:absolute;right:0;top:50%;transform:translateY(-50%);display:flex;gap:6px}
