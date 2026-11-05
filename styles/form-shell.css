@@ -101,7 +101,8 @@ html.start-leaving #startScreen{opacity:0;pointer-events:none}
 body[data-step="1"] .container [data-step]:not([data-step="1"]),
 body[data-step="2"] .container [data-step]:not([data-step="2"]),
 body[data-step="3"] .container [data-step]:not([data-step="3"]),
-body[data-step="4"] .container [data-step]:not([data-step="4"]){display:none !important}
+body[data-step="4"] .container [data-step]:not([data-step="4"]),
+body[data-step="5"] .container [data-step]:not([data-step="5"]){display:none !important}
 .foot-label{margin:0 0 4px;font-size:11px;color:var(--cp-muted)}
 .container .layer-controls{display:flex;flex-wrap:wrap;gap:4px 14px;margin:0 0 10px;padding:0}
 .container .layer-checkbox,.container .layer-checkbox span{color:var(--cp-text);font-size:12px}
@@ -143,7 +144,7 @@ body.page{padding:0}
 .cp-foot .hint{margin:0;font-size:11px;color:var(--cp-muted)}
 .cp-foot .hint a{color:var(--cp-text)}
 .cp-foot #downloadRow{display:none;margin-bottom:8px}
-body[data-step="4"] .cp-foot #downloadRow{display:block}
+body[data-step="5"] .cp-foot #downloadRow{display:block}
 .cp-foot .btn-export{width:100%;padding:9px 14px;background:var(--yellow);border-color:var(--yellow);color:var(--ink)}
 .step-now{margin:0;font-size:11px;color:var(--ink)}
 .header-actions .row.nav{display:flex;gap:6px}
