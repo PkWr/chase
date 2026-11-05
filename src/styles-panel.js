@@ -27,7 +27,6 @@ export function getStyleSettings() {
 function refresh() {
     const text = document.getElementById('sampleText')?.value || '';
     const used = stylesUsed(parseStyled(text));
-    const section = document.getElementById('stylesSection');
     const typeSize = parseFloat(document.getElementById('typeSize')?.value) || 12;
     let any = false;
     for (const [style, [id, key]] of Object.entries(ROWS)) {
@@ -41,8 +40,9 @@ function refresh() {
             readout.textContent = `${Math.round(v * typeSize * 10) / 10} pt`;
         }
     }
-    if (section)
-        section.hidden = !any;
+    const none = document.getElementById('stylesNone');
+    if (none)
+        none.hidden = any;
 }
 
 /** Wires the panel. onChange redraws the page. */

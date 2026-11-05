@@ -2,7 +2,7 @@
 // and the specification download last. Sections carry data-step="1".."4" in index.html;
 // the preview updates live throughout, so no calculation depends on the current step.
 (function () {
-  var titles = ['Intro', 'Text', 'Page', 'Margins', 'Columns', 'Type', 'Download'];
+  var titles = ['Intro', 'Text', 'Page', 'Margins', 'Columns', 'Typography', 'Styles', 'Report', 'Download'];
   var step = 1;
   var previous = 0;
   var back = document.getElementById('stepBack');
