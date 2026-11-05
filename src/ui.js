@@ -10,6 +10,7 @@ import { DEFAULT_SAMPLE_TEXT } from './defaultText.js';
 import { buildIdmlBlob } from './idml.js';
 import { initStylesPanel, getStyleSettings, getStyleFonts, resetStyles } from './styles-panel.js';
 import { styleDefs, fontName, EMPHASIS } from './idml-styles.js';
+import { drawGridPage } from './pdf-grid.js';
 // Page dimensions are always in mm, gutter is always in em
 const PAGE_UNIT = 'mm';
 const GUTTER_UNIT = 'em';
@@ -1074,25 +1075,42 @@ async function exportVisualizationAsPDF() {
     const inputs = getFormInputs();
     const facingPagesCheckbox = document.getElementById('facingPages');
     const facingPages = facingPagesCheckbox?.checked ?? false;
-    // Force enable all layers for PDF export to show all structural elements
+    // Page 1 is the clean page: text only, in the set layout. Margins, columns, the baseline grid and
+    // the ragged-edge marks are switched off for the capture and put back afterwards.
     const showMarginsCheckbox = document.getElementById('showMargins');
     const showColumnsCheckbox = document.getElementById('showColumns');
     const showTextCheckbox = document.getElementById('showText');
     const showRaggedEdgeCheckbox = document.getElementById('showRaggedEdge');
+    const showBaselineCheckbox = document.getElementById('showBaseline');
     const originalMargins = showMarginsCheckbox?.checked ?? true;
     const originalColumns = showColumnsCheckbox?.checked ?? true;
     const originalText = showTextCheckbox?.checked ?? true;
     const originalRaggedEdge = showRaggedEdgeCheckbox?.checked ?? false;
-    // Temporarily enable all layers BUT disable ragged edge (so text is black)
+    const originalBaseline = showBaselineCheckbox?.checked ?? false;
     if (showMarginsCheckbox)
-        showMarginsCheckbox.checked = true;
+        showMarginsCheckbox.checked = false;
     if (showColumnsCheckbox)
-        showColumnsCheckbox.checked = true;
+        showColumnsCheckbox.checked = false;
     if (showTextCheckbox)
         showTextCheckbox.checked = true;
     if (showRaggedEdgeCheckbox)
-        showRaggedEdgeCheckbox.checked = false; // Disable to get black text
-    // Re-render visualization with all layers visible but ragged edge disabled
+        showRaggedEdgeCheckbox.checked = false;
+    if (showBaselineCheckbox)
+        showBaselineCheckbox.checked = false;
+    const restoreLayers = () => {
+        if (showMarginsCheckbox)
+            showMarginsCheckbox.checked = originalMargins;
+        if (showColumnsCheckbox)
+            showColumnsCheckbox.checked = originalColumns;
+        if (showTextCheckbox)
+            showTextCheckbox.checked = originalText;
+        if (showRaggedEdgeCheckbox)
+            showRaggedEdgeCheckbox.checked = originalRaggedEdge;
+        if (showBaselineCheckbox)
+            showBaselineCheckbox.checked = originalBaseline;
+        updateVisualizationOnInputChange();
+    };
+    // Re-render with only the text layer showing
     updateVisualizationOnInputChange();
     // Wait for visualization to update and SVG to be sized
     await new Promise(resolve => setTimeout(resolve, 300));
@@ -1100,14 +1118,7 @@ async function exportVisualizationAsPDF() {
     const updatedSvg = container.querySelector('svg');
     if (!updatedSvg) {
         alert('Failed to generate visualization. Please try again.');
-        // Restore original layer states
-        if (showMarginsCheckbox)
-            showMarginsCheckbox.checked = originalMargins;
-        if (showColumnsCheckbox)
-            showColumnsCheckbox.checked = originalColumns;
-        if (showTextCheckbox)
-            showTextCheckbox.checked = originalText;
-        updateVisualizationOnInputChange();
+        restoreLayers();
         return;
     }
     // Use the updated SVG (reassign the existing svg variable)
@@ -1199,7 +1210,10 @@ async function exportVisualizationAsPDF() {
         // Add image to PDF, centered horizontally
         const xOffset = (pdfWidth - imageWidthMM) / 2;
         pdf.addImage(imgData, 'PNG', xOffset, margin, imageWidthMM, imageHeightMM);
-        // Page 2: Specification table
+        // Page 2: grid only, with measurements (vector)
+        pdf.addPage();
+        drawGridPage(pdf, inputs, facingPages);
+        // Page 3: Specification table
         pdf.addPage();
         // Get specification table HTML
         const specContent = document.getElementById('specificationContent');
@@ -1257,10 +1271,7 @@ async function exportVisualizationAsPDF() {
                 document.body.removeChild(tempTableContainer);
             }
         }
-        // Restore original ragged edge state
-        if (showRaggedEdgeCheckbox)
-            showRaggedEdgeCheckbox.checked = originalRaggedEdge;
-        updateVisualizationOnInputChange();
+        restoreLayers();
         // Save PDF
         pdf.save(`typography-layout-${Date.now()}.pdf`);
     }
@@ -1275,16 +1286,7 @@ async function exportVisualizationAsPDF() {
         if (tempTableContainer && document.body.contains(tempTableContainer)) {
             document.body.removeChild(tempTableContainer);
         }
-        // Restore original layer states on error
-        if (showMarginsCheckbox)
-            showMarginsCheckbox.checked = originalMargins;
-        if (showColumnsCheckbox)
-            showColumnsCheckbox.checked = originalColumns;
-        if (showTextCheckbox)
-            showTextCheckbox.checked = originalText;
-        if (showRaggedEdgeCheckbox)
-            showRaggedEdgeCheckbox.checked = originalRaggedEdge;
-        updateVisualizationOnInputChange();
+        restoreLayers();
         alert(`Error exporting PDF: ${error instanceof Error ? error.message : 'Unknown error'}. Please check the console for details.`);
     }
 }
