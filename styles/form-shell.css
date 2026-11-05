@@ -437,3 +437,6 @@ body[data-step="8"] .scale-line{display:none}
 /* - + fields: narrower buttons and tighter padding so values are never clipped */
 .container .num-btn{width:34px}
 .num-step input[type=number]{padding-left:2px;padding-right:2px;text-overflow:clip}
+
+/* Typeface menu on each style row */
+.container .style-row .style-font{flex:0 0 100%;box-sizing:border-box;min-height:36px;padding:4px 8px;font:inherit;font-size:12px;color:var(--cp-text);background:var(--cp-surface);border:1px solid var(--cp-line);border-radius:6px}

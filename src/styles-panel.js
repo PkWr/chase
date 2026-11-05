@@ -24,6 +24,17 @@ export function getStyleSettings() {
     return out;
 }
 
+const FONT_KEY = 'compositorStyleFonts';
+
+/** Typeface chosen for each style, '' meaning the body typeface. */
+export function getStyleFonts() {
+    const out = {};
+    for (const style of Object.keys(ROWS)) {
+        out[style] = document.querySelector(`.style-font[data-style="${style}"]`)?.value || '';
+    }
+    return out;
+}
+
 function refresh() {
     const text = document.getElementById('sampleText')?.value || '';
     const used = stylesUsed(parseStyled(text));
@@ -41,7 +52,7 @@ function refresh() {
         const label = row?.querySelector('label');
         if (label && isFinite(v)) {
             const bodyPx = typeSize * 4 / 3;
-            label.style.fontFamily = family;
+            label.style.fontFamily = getStyleFonts()[style] || family;
             label.style.fontStyle = 'normal';
             label.style.fontSize = (style === 'quote' ? bodyPx : bodyPx * v) + 'px';
             label.style.lineHeight = '1.15';
@@ -74,6 +85,31 @@ export function initStylesPanel(onChange) {
             if (onChange)
                 onChange();
         });
+    }
+    // A typeface menu for each style, built from the body typeface menu; the first choice follows the body
+    let savedFonts = {};
+    try { savedFonts = JSON.parse(localStorage.getItem(FONT_KEY) || '{}') || {}; } catch (e) { savedFonts = {}; }
+    const bodyMenu = document.getElementById('fontFamily');
+    for (const style of Object.keys(ROWS)) {
+        const row = document.querySelector(`.style-row[data-style="${style}"]`);
+        const anchor = row?.querySelector('.num-step, input');
+        if (!row || !bodyMenu || !anchor)
+            continue;
+        const sel = document.createElement('select');
+        sel.className = 'style-font';
+        sel.dataset.style = style;
+        sel.setAttribute('aria-label', `${row.querySelector('label')?.textContent || style} typeface`);
+        sel.innerHTML = '<option value="">Same as body</option>' + bodyMenu.innerHTML;
+        sel.value = savedFonts[style] || '';
+        if (sel.value !== (savedFonts[style] || ''))
+            sel.value = '';
+        sel.addEventListener('change', () => {
+            refresh();
+            try { localStorage.setItem(FONT_KEY, JSON.stringify(getStyleFonts())); } catch (e) { /* storage can be unavailable */ }
+            if (onChange)
+                onChange();
+        });
+        row.insertBefore(sel, anchor.closest('.num-step') || anchor);
     }
     document.getElementById('sampleText')?.addEventListener('input', refresh);
     document.getElementById('typeSize')?.addEventListener('input', refresh);

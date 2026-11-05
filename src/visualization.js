@@ -1,7 +1,7 @@
 import { DEFAULT_SAMPLE_TEXT } from './defaultText.js';
 import { parseStyled } from './styled-text.js';
 import { blockMetrics, snapHeight } from './style-settings.js';
-import { getStyleSettings } from './styles-panel.js';
+import { getStyleSettings, getStyleFonts } from './styles-panel.js';
 /**
  * Gets sample text from textarea. The intro step always shows the Bringhurst essay,
  * whatever has been typed into the Text step.
@@ -396,6 +396,7 @@ function drawPage(svg, inputs, pageX, pageY, pageWidth, pageHeight, leftMargin, 
                 // Styled blocks: marks in the text (headings, quote, citation, emphasis) set each block's style
                 const blocks = parseStyled(sampleText);
                 const styleSettings = getStyleSettings();
+                const styleFonts = getStyleFonts();
                 const styleBase = { sizePx: fontSizeSVG, lineHeightPx: lineHeight, spaceAfterPx: spaceAfter };
                 const XHTML = 'http://www.w3.org/1999/xhtml';
                 const wrapWords = showRivers || showRaggedEdge;
@@ -414,6 +415,8 @@ function drawPage(svg, inputs, pageX, pageY, pageWidth, pageHeight, leftMargin, 
                         p.style.fontSize = `${metrics.sizePx}px`;
                         p.style.lineHeight = `${metrics.lineHeightPx}px`;
                     }
+                    if (styleFonts[block.style])
+                        p.style.fontFamily = fontStack(styleFonts[block.style]);
                     if (metrics.snapToGrid)
                         p.dataset.snap = '1';
                     if (metrics.keepWithNext)
