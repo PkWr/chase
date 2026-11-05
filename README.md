@@ -24,64 +24,42 @@ git clone https://github.com/PkWr/type-setting.git
 cd type-setting
 ```
 
-2. Install dependencies:
+2. Start a local web server (required for ES modules):
 ```bash
-npm install
+python3 -m http.server 8000
 ```
 
-3. Build the project:
+Then open http://localhost:8000 in a web browser. ES modules do not load over the file:// protocol.
+
+There is no build step and no dependencies. The source in `src/` is plain JavaScript that the browser loads directly.
+
+### Tests
+
 ```bash
-npm run build
+npm test
 ```
 
-4. Start a local web server (required for ES modules):
-```bash
-npm run serve
-```
-
-Then open http://localhost:8000 in your web browser.
-
-**Note:** ES modules require a web server and won't work when opening `index.html` directly (file:// protocol).
-
-### Development
-
-To watch for changes and automatically rebuild:
-```bash
-npm run watch
-```
+Runs the `node:test` suite in `test/` (Node 22 or later).
 
 ## Deployment
 
-### Netlify
-
-This project is configured for deployment on Netlify. The `netlify.toml` file contains the build configuration:
-
-- **Build command**: `npm install && npm run build`
-- **Publish directory**: `.` (root)
-- **Node version**: 18
-
-To deploy:
-1. Connect your GitHub repository to Netlify
-2. Netlify will automatically detect the `netlify.toml` configuration
-3. The site will build and deploy automatically on each push to the main branch
+The site is served by GitHub Pages from the repository root. `.nojekyll` disables Jekyll and `CNAME` holds the custom domain.
 
 ## Project Structure
 
 ```
 type-setting/
-├── src/           # TypeScript source files
-│   ├── types.ts   # Type definitions
-│   ├── calculator.ts  # Calculation logic
-│   ├── ui.ts      # UI interaction handlers
-│   └── main.ts    # Entry point
-├── styles/        # CSS stylesheets
-│   └── main.css   # Main stylesheet
-├── dist/          # Compiled JavaScript (generated)
-├── index.html     # Main HTML file
-├── netlify.toml   # Netlify deployment configuration
-├── _redirects     # Netlify redirects file
-├── package.json   # Dependencies and scripts
-└── tsconfig.json  # TypeScript configuration
+├── src/           # Plain JavaScript ES modules
+│   ├── calculator.js, units.js, paperSizes.js, types.js
+│   ├── ui.js, visualization.js, defaultText.js, main.js
+│   └── grep.js    # GREP pattern generator
+├── test/          # node:test tests
+├── styles/        # CSS
+├── vendor/fonts/  # Self-hosted fonts
+├── index.html     # Layout calculator
+├── grep.html      # GREP pattern generator
+├── CNAME          # Custom domain
+└── package.json   # Test script only
 ```
 
 ## Usage

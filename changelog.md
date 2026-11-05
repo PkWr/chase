@@ -10,6 +10,12 @@ This file tracks all changes made to the type-setting project.
 
 ---
 
+## Unreleased
+
+- Rebuilt on plain JavaScript with no build step; TypeScript toolchain and Netlify config removed.
+- Calculator, units and paper size modules covered by node:test tests.
+- Hosting moves to GitHub Pages.
+
 ## 2025-01-27
 
 ### [2025-01-27 - Initial Project Setup]

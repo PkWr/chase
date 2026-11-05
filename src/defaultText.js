@@ -2,7 +2,6 @@
  * Default sample text for typography preview
  * Excerpt from "The Elements of Typographic Style" by Robert Bringhurst
  */
-
 export const DEFAULT_SAMPLE_TEXT = `The Elements of Typographic Style by Robert Bringhurst
 
 Robert Bringhurst's "The Elements of Typographic Style" is widely considered the definitive reference on modern typesetting and typographic principles. Below is a detailed synthesis and extended discussion, heavily referenced, suitable for an academic context or syllabus, focusing on typesetting as articulated by Bringhurst.
@@ -70,4 +69,3 @@ Reveal meaning and clarify structure.
 Link the text meaningfully with other elements.
 
 Induce energetic repose—the right mood for deep reading.`;
-
