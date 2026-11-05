@@ -94,3 +94,31 @@ test('facing pages make a two-page spread starting on a left page', () => {
     const lay = layoutFor(facing.inputs, true);
     assert.ok(lay.pages[0].x < 0 && lay.pages[1].x === 0);
 });
+
+test('a last page lists every setting with where to change it in InDesign', () => {
+    const files = new Map(buildIdmlFiles(spec));
+    const map = files.get('designmap.xml');
+    assert.match(map, /StoryList="u1000 u1001"/);
+    assert.match(map, /Spreads\/Spread_u201\.xml/);
+    assert.match(map, /Section [^>]*Length="2"/);
+    assert.match(files.get('Resources/Preferences.xml'), /PagesPerDocument="2"/);
+    const page = files.get('Spreads/Spread_u201.xml');
+    assert.match(page, /<Page [^>]*Name="2"/);
+    const story = files.get('Stories/Story_u1001.xml');
+    assert.match(story, /File &gt; Open…/);
+    assert.match(story, /Layout &gt; Margins and Columns…/);
+    assert.match(story, /Opt\+Cmd\+P \/ Ctrl\+Alt\+P/);
+    assert.match(story, /210 × 297 mm/);
+    assert.match(story, /ColumnCount="3"|<Content>3<\/Content>/);
+    assert.equal((story.match(/<Cell /g) || []).length % 3, 0);
+    assert.match(files.get('Resources/Styles.xml'), /ParagraphStyle\/SpecText/);
+});
+
+test('the spec page follows the last spread in facing mode and can be switched off', () => {
+    const facing = new Map(buildIdmlFiles({ ...spec, facing: true }));
+    assert.match(facing.get('Spreads/Spread_u201.xml'), /<Page [^>]*Name="4"[^>]*ItemTransform="1 0 0 1 -595/);
+    assert.match(facing.get('Stories/Story_u1001.xml'), /Margins, verso page/);
+    const off = new Map(buildIdmlFiles({ ...spec, specPage: false }));
+    assert.equal(off.has('Spreads/Spread_u201.xml'), false);
+    assert.doesNotMatch(off.get('designmap.xml'), /u1001/);
+});

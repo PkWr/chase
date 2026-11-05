@@ -4,6 +4,9 @@
 // What is written: page size, facing pages, margins, columns and gutter on the document pages and the
 // master, a baseline grid at the leading, one paragraph style ("Body"), and the text in frames placed
 // where the text starts and spans, linked in order. Text that does not fit stays overset (red plus).
+// A last page (idml-spec.js) lists every setting with where to change it in InDesign; spec.specPage=false omits it.
+
+import { specPage } from './idml-spec.js';
 
 const PT_PER_MM = 72 / 25.4;
 const DOM = '8.0';
@@ -118,6 +121,8 @@ export function buildIdmlFiles(spec) {
     const spaceAfter = spec.paraSpacePt === undefined || isNaN(spec.paraSpacePt) ? leading : spec.paraSpacePt;
     const family = fontName(inputs.fontFamily);
     const files = [];
+    const sp = spec.specPage === false ? null : specPage(spec, lay, facing, family);
+    const extra = sp ? 1 : 0;
     const add = (path, content) => files.push([path, content]);
 
     add('mimetype', IDML_MIMETYPE);
@@ -140,16 +145,18 @@ export function buildIdmlFiles(spec) {
 
     add('designmap.xml', HEAD
         + '<?aid style="50" type="document" readerVersion="6.0" featureSet="257" product="8.0(370)" ?>\n'
-        + `<Document ${NS} DOMVersion="${DOM}" Self="d" StoryList="u1000" Name="${attr(spec.name || 'chase')}" ZeroPoint="0 0" ActiveLayer="u2" `
+        + `<Document ${NS} DOMVersion="${DOM}" Self="d" StoryList="u1000${sp ? ' u1001' : ''}" Name="${attr(spec.name || 'chase')}" ZeroPoint="0 0" ActiveLayer="u2" `
         + 'CMYKProfile="U.S. Web Coated (SWOP) v2" RGBProfile="sRGB IEC61966-2.1" SolidColorIntent="UseColorSettings" AfterBlendingIntent="UseColorSettings" DefaultImageIntent="UseColorSettings" RGBPolicy="PreserveEmbeddedProfiles" CMYKPolicy="CombinationOfPreserveAndSafeCmyk" AccurateLABSpots="false">\n'
         + '<idPkg:Graphic src="Resources/Graphic.xml"/>\n'
         + '<idPkg:Styles src="Resources/Styles.xml"/>\n'
         + '<idPkg:Preferences src="Resources/Preferences.xml"/>\n'
         + '<Layer Self="u2" Name="Layer 1" Visible="true" Locked="false" IgnoreWrap="false" ShowGuides="true" LockGuides="false" UI="true" Expendable="true" Printable="true"><Properties><LayerColor type="enumeration">LightBlue</LayerColor></Properties></Layer>\n'
-        + `<Section Self="u300" Length="${lay.pages.length}" Name="" ContinueNumbering="false" IncludeSectionPrefix="false" PageNumberStyle="Arabic" Marker="" PageStart="${pageIds[0]}" SectionPrefix=""${facing ? ' PageNumberStart="2"' : ''}/>\n`
+        + `<Section Self="u300" Length="${lay.pages.length + extra}" Name="" ContinueNumbering="false" IncludeSectionPrefix="false" PageNumberStyle="Arabic" Marker="" PageStart="${pageIds[0]}" SectionPrefix=""${facing ? ' PageNumberStart="2"' : ''}/>\n`
         + '<idPkg:MasterSpread src="MasterSpreads/MasterSpread_u100.xml"/>\n'
         + '<idPkg:Spread src="Spreads/Spread_u200.xml"/>\n'
+        + (sp ? '<idPkg:Spread src="Spreads/Spread_u201.xml"/>\n' : '')
         + '<idPkg:Story src="Stories/Story_u1000.xml"/>\n'
+        + (sp ? '<idPkg:Story src="Stories/Story_u1001.xml"/>\n' : '')
         + '</Document>\n');
 
     add('Resources/Graphic.xml', HEAD
@@ -169,7 +176,10 @@ export function buildIdmlFiles(spec) {
         + '<ParagraphStyle Self="ParagraphStyle/$ID/[No paragraph style]" Name="$ID/[No paragraph style]" Imported="false" NextStyle="ParagraphStyle/$ID/[No paragraph style]" KeyboardShortcut="0 0"/>\n'
         + `<ParagraphStyle Self="ParagraphStyle/Body" Name="Body" Imported="false" NextStyle="ParagraphStyle/Body" KeyboardShortcut="0 0" FontStyle="Regular" PointSize="${num(inputs.typeSize)}" Justification="${inputs.justifyText ? 'LeftJustified' : 'LeftAlign'}" Hyphenation="${inputs.hyphenation ? 'true' : 'false'}" SpaceBefore="0" SpaceAfter="${num(spaceAfter)}" FillColor="Color/Black">`
         + `<Properties><Leading type="unit">${num(leading)}</Leading><AppliedFont type="string">${attr(family)}</AppliedFont></Properties></ParagraphStyle>\n`
+        + (sp ? sp.styles : '')
         + '</RootParagraphStyleGroup>\n'
+        + '<RootCellStyleGroup Self="u73"><CellStyle Self="CellStyle/$ID/[None]" Name="$ID/[None]" Imported="false" KeyboardShortcut="0 0"/></RootCellStyleGroup>\n'
+        + '<RootTableStyleGroup Self="u74"><TableStyle Self="TableStyle/$ID/[No table style]" Name="$ID/[No table style]" Imported="false" KeyboardShortcut="0 0"/><TableStyle Self="TableStyle/$ID/[Basic Table]" Name="$ID/[Basic Table]" Imported="false" KeyboardShortcut="0 0"/></RootTableStyleGroup>\n'
         + '<RootObjectStyleGroup Self="u72">\n'
         + '<ObjectStyle Self="ObjectStyle/$ID/[None]" Name="$ID/[None]" Imported="false" KeyboardShortcut="0 0"/>\n'
         + '<ObjectStyle Self="ObjectStyle/$ID/[Normal Text Frame]" Name="$ID/[Normal Text Frame]" Imported="false" KeyboardShortcut="0 0"/>\n'
@@ -178,7 +188,7 @@ export function buildIdmlFiles(spec) {
 
     add('Resources/Preferences.xml', HEAD
         + `<idPkg:Preferences ${NS} DOMVersion="${DOM}">\n`
-        + `<DocumentPreference PageHeight="${num(lay.H)}" PageWidth="${num(lay.W)}" PagesPerDocument="${lay.pages.length}" FacingPages="${facing ? 'true' : 'false'}" PageBinding="LeftToRight" ColumnDirection="Horizontal" PageOrientation="${lay.H >= lay.W ? 'Portrait' : 'Landscape'}"/>\n`
+        + `<DocumentPreference PageHeight="${num(lay.H)}" PageWidth="${num(lay.W)}" PagesPerDocument="${lay.pages.length + extra}" FacingPages="${facing ? 'true' : 'false'}" PageBinding="LeftToRight" ColumnDirection="Horizontal" PageOrientation="${lay.H >= lay.W ? 'Portrait' : 'Landscape'}"/>\n`
         + '<ViewPreference HorizontalMeasurementUnits="Millimeters" VerticalMeasurementUnits="Millimeters"/>\n'
         + `<GridPreference BaselineStart="${num(leading)}" BaselineDivision="${num(leading)}" BaselineShown="true" BaselineViewThreshold="25" BaselineGridRelativeOption="TopOfMarginOfBaselineGridRelativeOption"/>\n`
         + '</idPkg:Preferences>\n');
@@ -195,6 +205,15 @@ export function buildIdmlFiles(spec) {
         + lay.pages.map((p, i) => pageXml(pageIds[i], String(facing ? i + 2 : i + 1), 'u100', p, lay)).join('\n') + '\n'
         + frames.map((fr) => frameXml(fr.id, fr.prev, fr.next, fr.f)).join('\n') + '\n'
         + '</Spread>\n</idPkg:Spread>\n');
+
+    if (sp) {
+        add('Spreads/Spread_u201.xml', HEAD
+            + `<idPkg:Spread ${NS} DOMVersion="${DOM}">\n`
+            + `<Spread Self="u201" PageTransitionType="None" PageTransitionDirection="NotApplicable" PageTransitionDuration="Medium" ShowMasterItems="true" PageCount="1" BindingLocation="${facing ? 1 : 0}" AllowPageShuffle="true" ItemTransform="1 0 0 1 0 0" FlattenerOverride="Default">\n`
+            + sp.page + '\n' + sp.frame + '\n</Spread>\n</idPkg:Spread>\n');
+        add('Stories/Story_u1001.xml', HEAD
+            + `<idPkg:Story ${NS} DOMVersion="${DOM}">\n` + sp.story + '\n</idPkg:Story>\n');
+    }
 
     const body = paras.map((t, i) =>
         '<ParagraphStyleRange AppliedParagraphStyle="ParagraphStyle/Body">'

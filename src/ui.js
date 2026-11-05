@@ -2408,7 +2408,7 @@ export function initializeCalculator() {
                 link.click();
                 link.remove();
                 setTimeout(() => URL.revokeObjectURL(link.href), 5000);
-                say('Downloaded chase-layout.idml. Open it in InDesign; text that does not fit shows as overset.');
+                say('Downloaded chase-layout.idml. Open it in InDesign; text that does not fit shows as overset. The last page lists each setting and where to change it.');
             }
             catch (error) {
                 console.error('IDML export error:', error);
