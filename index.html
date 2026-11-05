@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>chase</title>
-  <link rel="stylesheet" href="styles/main.css?v=202611051245">
-  <link rel="stylesheet" href="styles/form-shell.css?v=202611051245">
+  <link rel="stylesheet" href="styles/main.css?v=202611051246">
+  <link rel="stylesheet" href="styles/form-shell.css?v=202611051246">
   <!-- Padding handled in main.css for better control -->
 </head>
 <body>
@@ -330,38 +330,33 @@
       <section data-step="7" class="form-section" id="stylesSection">
         <h2>Styles</h2>
         <div class="form-group">
+          <span class="helper-text" id="stylesNone">No styles in use yet. Add marks in the Text step (# for headings, > for a quote, -- for a source) and each style appears here.</span>
+          <span class="helper-text" id="stylesNote" hidden>Sizes are ratios of the body size; Block Quote is an indent in em. Headings are set tight and padded to whole lines of body leading, so the text after them stays on the baseline grid.</span>
           <div class="style-row" data-style="h1" hidden>
             <label for="styleH1">Heading 1</label>
             <input type="number" id="styleH1" value="2.2" min="0.5" max="4" step="0.05" class="input-small">
             <span class="style-pt" id="styleH1Pt"></span>
-            <span class="helper-text">ratio of body size</span>
           </div>
           <div class="style-row" data-style="h2" hidden>
             <label for="styleH2">Heading 2</label>
             <input type="number" id="styleH2" value="1.5" min="0.5" max="4" step="0.05" class="input-small">
             <span class="style-pt" id="styleH2Pt"></span>
-            <span class="helper-text">ratio of body size</span>
           </div>
           <div class="style-row" data-style="h3" hidden>
             <label for="styleH3">Heading 3</label>
             <input type="number" id="styleH3" value="1.15" min="0.5" max="4" step="0.05" class="input-small">
             <span class="style-pt" id="styleH3Pt"></span>
-            <span class="helper-text">ratio of body size</span>
           </div>
           <div class="style-row" data-style="quote" hidden>
             <label for="styleQuote">Block Quote</label>
             <input type="number" id="styleQuote" value="2" min="0" max="8" step="0.5" class="input-small">
             <span class="style-pt" id="styleQuotePt"></span>
-            <span class="helper-text">indent in em</span>
           </div>
           <div class="style-row" data-style="citation" hidden>
             <label for="styleCitation">Citation</label>
             <input type="number" id="styleCitation" value="0.85" min="0.3" max="2" step="0.05" class="input-small">
             <span class="style-pt" id="styleCitationPt"></span>
-            <span class="helper-text">ratio of body size</span>
           </div>
-          <span class="helper-text" id="stylesNone">No styles in use yet. Add marks in the Text step (# for headings, > for a quote, -- for a source) and each style appears here.</span>
-          <span class="helper-text" id="stylesNote" hidden>Sizes are ratios of the body size. Headings are set tight and padded to whole lines of body leading, so the text after them stays on the baseline grid.</span>
         </div>
       </section>
 
@@ -523,14 +518,14 @@
   <!-- PDF Export Libraries -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script type="module" src="src/main.js?v=202611051245"></script>
-  <script src="src/start.js?v=202611051245"></script>
-  <script src="src/steps.js?v=202611051245"></script>
-  <script src="src/column-picker.js?v=202611051245"></script>
-  <script src="src/popout.js?v=202611051245"></script>
-  <script type="module" src="src/editor.js?v=202611051245"></script>
-  <script type="module" src="src/text-import.js?v=202611051245"></script>
-  <script src="src/number-steppers.js?v=202611051245"></script>
-  <script src="src/layer-cycle.js?v=202611051245"></script>
+  <script type="module" src="src/main.js?v=202611051246"></script>
+  <script src="src/start.js?v=202611051246"></script>
+  <script src="src/steps.js?v=202611051246"></script>
+  <script src="src/column-picker.js?v=202611051246"></script>
+  <script src="src/popout.js?v=202611051246"></script>
+  <script type="module" src="src/editor.js?v=202611051246"></script>
+  <script type="module" src="src/text-import.js?v=202611051246"></script>
+  <script src="src/number-steppers.js?v=202611051246"></script>
+  <script src="src/layer-cycle.js?v=202611051246"></script>
 </body>
 </html>

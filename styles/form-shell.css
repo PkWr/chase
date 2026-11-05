@@ -400,3 +400,4 @@ body.popout-window .editor-stage{right:24px}
 .container .style-row .num-step{flex:0 1 170px;min-width:132px;width:auto}
 .container .style-row .style-pt{flex:1 1 auto;min-width:3.5em;text-align:left;white-space:nowrap}
 .container .style-row .helper-text{flex:0 0 100%}
+#stylesNone,#stylesNote{display:block;margin:0 0 16px}
