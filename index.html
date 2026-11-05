@@ -188,7 +188,7 @@
           <span class="helper-text">Number of columns the text box should span</span>
         </div>
         <div class="form-group">
-          <label for="textStartSlider">Text starts</label>
+          <label id="startPickerLabel">Text starts in column <span id="startPickerValue"></span></label>
           <div class="slider-container">
             <input type="range" id="textStartSlider" min="1" max="2" value="1" class="slider-input">
             <span id="textStartValue" class="slider-value">1</span>
@@ -432,5 +432,6 @@
   <script type="module" src="src/main.js"></script>
   <script src="src/start.js"></script>
   <script src="src/steps.js"></script>
+  <script src="src/column-picker.js"></script>
 </body>
 </html>
