@@ -553,7 +553,38 @@ export function updateVisualization(inputs) {
             svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
         }
         updateScaleIndicator(container, svg, inputs, facingPages);
+        buildPageStack(container, svg);
     });
+}
+/**
+ * On the intro step, show the essay running over as many pages as it needs: the page is repeated
+ * below, each copy scrolled along to the next group of columns, and the stage scrolls.
+ */
+function buildPageStack(container, svg) {
+    container.classList.remove('stack');
+    const body = container.ownerDocument.body;
+    if (body.getAttribute('data-step') !== '1' || !svg.getAttribute('height'))
+        return;
+    const flow = svg.querySelector('foreignObject > div');
+    if (!flow)
+        return;
+    const padding = parseFloat(flow.style.paddingLeft) || 0;
+    const gap = parseFloat(flow.style.columnGap) || 0;
+    const step = flow.clientWidth - 2 * padding + gap;
+    const extra = flow.scrollWidth - flow.clientWidth;
+    if (step <= 0 || extra <= 1)
+        return;
+    const pages = Math.min(8, 1 + Math.ceil((extra - 1) / step));
+    for (let k = 1; k < pages; k++) {
+        const copy = svg.cloneNode(true);
+        copy.classList.add('stack-page');
+        container.appendChild(copy);
+        const copyFlow = copy.querySelector('foreignObject > div');
+        if (copyFlow)
+            copyFlow.scrollLeft = k * step;
+    }
+    if (pages > 1)
+        container.classList.add('stack');
 }
 /**
  * Updates the scale indicator based on actual rendered SVG size

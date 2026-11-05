@@ -4,6 +4,7 @@
 (function () {
   var titles = ['Intro', 'Text', 'Page', 'Margins', 'Columns', 'Type', 'Download'];
   var step = 1;
+  var previous = 0;
   var back = document.getElementById('stepBack');
   var next = document.getElementById('stepNext');
   var now = document.getElementById('stepNow');
@@ -20,6 +21,9 @@
     next.textContent = step < titles.length ? 'Next / ' + titles[step] : 'Next';
     back.hidden = step === 1;
     next.hidden = step === titles.length;
+    // The intro shows the essay over several pages; other steps show a single page.
+    if (previous !== step && (previous === 1 || step === 1)) window.dispatchEvent(new Event('resize'));
+    previous = step;
     // Each layer switches on when its step is reached (and stays on until turned off).
     var layerFor = { 2: 'showText', 4: 'showMargins', 5: 'showColumns' }[step];
     var box = layerFor && document.getElementById(layerFor);
