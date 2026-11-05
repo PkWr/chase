@@ -257,3 +257,6 @@ body[data-step="1"] #popOut{display:none}
 .container .para-row{display:flex;align-items:center;gap:14px}
 .container .para-row .input-small{flex:1 1 auto;min-width:0}
 .container .para-row .layer-checkbox[hidden]{display:none}
+/* The page preview takes its typeface from the Typeface select, not the panel's mono italic */
+#visualizationContainer foreignObject div *{font-family:inherit;font-style:normal}
+#visualizationContainer foreignObject div{font-style:normal}
