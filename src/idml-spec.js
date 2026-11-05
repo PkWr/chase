@@ -41,6 +41,8 @@ export function specRows(spec, lay, facing, family) {
     rows.push(['Columns', String(lay.n), MARGINS]);
     rows.push(['Gutter', `${mmOf(lay.gutter)} mm`, MARGINS]);
     rows.push(['Baseline grid', `${num(leading)} pt, starting at the top of the page margin`, GRID]);
+    rows.push(['Show or hide the baseline grid', 'Hidden until switched on (View mode: Normal)', 'View > Grids & Guides > Show Baseline Grid, or Hide Baseline Grid to switch it off (Opt+Cmd+\' / Ctrl+Alt+\'). The grid does not show in Preview mode (press W to toggle).']);
+    rows.push(['Lock text to the baseline grid', 'On in every paragraph style (Align to Grid: All Lines)', 'To switch it off for a style: ' + 'Window > Styles > Paragraph Styles (Cmd+F11 / F11), double-click the style, Indents and Spacing, set Align to Grid to None. For selected text only: the Align to Baseline Grid buttons in the Paragraph panel (Window > Type & Tables > Paragraph, Opt+Cmd+T / Ctrl+Alt+T).']);
     rows.push(['Type size', `${num(i.typeSize)} pt`, BODY]);
     rows.push(['Leading', `${num(leading)} pt`, BODY]);
     rows.push(['Typeface', family, BODY]);
