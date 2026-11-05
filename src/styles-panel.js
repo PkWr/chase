@@ -70,6 +70,18 @@ function refresh() {
         note.hidden = false;
 }
 
+/** Puts every style back to its default size, indent and typeface, and forgets the saved values. */
+export function resetStyles() {
+    try { localStorage.removeItem(KEY); localStorage.removeItem(FONT_KEY); } catch (e) { /* storage can be unavailable */ }
+    for (const [, [id, key]] of Object.entries(ROWS)) {
+        const input = document.getElementById(id);
+        if (input)
+            input.value = String(STYLE_DEFAULTS[key]);
+    }
+    document.querySelectorAll('.style-font').forEach((sel) => { sel.value = ''; });
+    refresh();
+}
+
 /** Wires the panel. onChange redraws the page. */
 export function initStylesPanel(onChange) {
     let saved = {};

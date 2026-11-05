@@ -8,7 +8,7 @@ import { updateVisualization } from './visualization.js';
 import { convertFromMM, convertToMM, formatValue } from './units.js';
 import { DEFAULT_SAMPLE_TEXT } from './defaultText.js';
 import { buildIdmlBlob } from './idml.js';
-import { initStylesPanel, getStyleSettings, getStyleFonts } from './styles-panel.js';
+import { initStylesPanel, getStyleSettings, getStyleFonts, resetStyles } from './styles-panel.js';
 import { styleDefs, fontName, EMPHASIS } from './idml-styles.js';
 // Page dimensions are always in mm, gutter is always in em
 const PAGE_UNIT = 'mm';
@@ -591,6 +591,9 @@ function resetToDefaults() {
         localStorage.removeItem('compositorSettings');
         // Apply default settings
         applyDefaultSettings();
+        // Styles (sizes, indent, typefaces) go back to their defaults too
+        resetStyles();
+        updateVisualizationOnInputChange();
     }
     catch (e) {
         console.error('Error resetting to defaults:', e);
