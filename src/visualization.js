@@ -1,6 +1,6 @@
 import { DEFAULT_SAMPLE_TEXT } from './defaultText.js';
 import { parseStyled } from './styled-text.js';
-import { blockMetrics } from './style-settings.js';
+import { blockMetrics, snapHeight } from './style-settings.js';
 import { getStyleSettings } from './styles-panel.js';
 /**
  * Gets sample text from textarea. The intro step always shows the Bringhurst essay,
@@ -414,6 +414,8 @@ function drawPage(svg, inputs, pageX, pageY, pageWidth, pageHeight, leftMargin, 
                         p.style.fontSize = `${metrics.sizePx}px`;
                         p.style.lineHeight = `${metrics.lineHeightPx}px`;
                     }
+                    if (metrics.snapToGrid)
+                        p.dataset.snap = '1';
                     if (metrics.keepWithNext)
                         p.style.breakAfter = 'avoid-column';
                     block.runs.forEach(run => {
@@ -452,6 +454,17 @@ function drawPage(svg, inputs, pageX, pageY, pageWidth, pageHeight, leftMargin, 
                 });
                 textGroup.appendChild(textDiv);
                 parentSvg.appendChild(textGroup);
+                // Headings wrap onto tight lines; pad each to whole body lines to keep the baseline grid
+                requestAnimationFrame(() => {
+                    if (!textDiv.isConnected)
+                        return;
+                    const foW = parseFloat(textGroup.getAttribute('width') || '0');
+                    const scale = foW ? textGroup.getBoundingClientRect().width / foW : 1;
+                    textDiv.querySelectorAll('p[data-snap]').forEach((hp) => {
+                        hp.style.paddingBottom = '0px';
+                        hp.style.paddingBottom = `${snapHeight(hp.getBoundingClientRect().height / scale, lineHeight)}px`;
+                    });
+                });
                 // Draw ragged edge highlight if enabled
                 if (layerVisibility.raggedEdge && sampleText && sampleText.trim().length > 0) {
                     // Use requestAnimationFrame to ensure text is fully rendered before measuring

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { blockMetrics, linesFor, STYLE_DEFAULTS } from '../src/style-settings.js';
+import { blockMetrics, linesFor, snapHeight, STYLE_DEFAULTS } from '../src/style-settings.js';
 
 const base = { sizePx: 12, lineHeightPx: 14, spaceAfterPx: 14 };
 
@@ -8,11 +8,11 @@ test('headings are sized by ratio and set in whole lines of the body leading', (
     const h1 = blockMetrics('h1', {}, base);
     assert.ok(Math.abs(h1.sizePx - 26.4) < 1e-9);
     assert.equal(h1.lineHeightPx, 28);
-    assert.equal(blockMetrics('h2', {}, base).lineHeightPx, 28); // 18 px needs two 14 px lines
-    assert.equal(blockMetrics('h3', {}, base).lineHeightPx, 14); // 13.8 px fits one
+    assert.equal(blockMetrics('h2', {}, base).lineHeightPx, 21); // 18 px: three half lines of 7
+    assert.equal(blockMetrics('h3', {}, base).lineHeightPx, 14); // 13.8 px fits two half lines
     for (const h of ['h1', 'h2', 'h3']) {
         const m = blockMetrics(h, {}, base);
-        assert.equal(m.lineHeightPx % base.lineHeightPx, 0);
+        assert.equal(m.lineHeightPx % (base.lineHeightPx / 2), 0);
         assert.equal(m.marginTopPx % base.lineHeightPx, 0);
         assert.equal(m.bold, undefined); // headings differ by size, not weight
         assert.equal(m.keepWithNext, true);
@@ -39,4 +39,10 @@ test('linesFor never returns less than one line', () => {
     assert.equal(linesFor(5, 14), 1);
     assert.equal(linesFor(14, 14), 1);
     assert.equal(linesFor(14.1, 14), 2);
+});
+
+test('snapHeight pads a block up to whole body lines', () => {
+    assert.equal(snapHeight(42, 28), 14);
+    assert.equal(snapHeight(84, 28), 0);
+    assert.equal(snapHeight(56, 28), 0);
 });
