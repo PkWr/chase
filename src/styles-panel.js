@@ -33,7 +33,7 @@ function refresh() {
     for (const [style, [id, key]] of Object.entries(ROWS)) {
         const row = document.querySelector(`.style-row[data-style="${style}"]`);
         if (row)
-            row.hidden = !used[style];
+            row.hidden = false; // every style is always listed, used or not
         any = any || used[style];
         const readout = document.getElementById(id + 'Pt');
         const v = parseFloat(document.getElementById(id)?.value);
@@ -53,10 +53,10 @@ function refresh() {
     }
     const none = document.getElementById('stylesNone');
     if (none)
-        none.hidden = any;
+        none.hidden = true;
     const note = document.getElementById('stylesNote');
     if (note)
-        note.hidden = !any;
+        note.hidden = false;
 }
 
 /** Wires the panel. onChange redraws the page. */
