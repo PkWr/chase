@@ -2488,10 +2488,10 @@ export function initializeCalculator() {
         const raggedEdgeLabel = raggedEdgeCheckbox?.closest('label')?.querySelector('span');
         if (raggedEdgeLabel && justifyTextCheckbox) {
             if (justifyTextCheckbox.checked) {
-                raggedEdgeLabel.textContent = 'Rivers';
+                raggedEdgeLabel.textContent = 'Show rivers';
             }
             else {
-                raggedEdgeLabel.textContent = 'Ragged edge';
+                raggedEdgeLabel.textContent = 'Show ragged edge';
             }
         }
     }

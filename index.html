@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>chase</title>
-  <link rel="stylesheet" href="styles/main.css?v=202611051233">
-  <link rel="stylesheet" href="styles/form-shell.css?v=202611051233">
+  <link rel="stylesheet" href="styles/main.css?v=202611051234">
+  <link rel="stylesheet" href="styles/form-shell.css?v=202611051234">
   <!-- Padding handled in main.css for better control -->
 </head>
 <body>
@@ -306,6 +306,7 @@
         </div>
         <div class="form-group">
           <label id="alignLabel">Alignment</label>
+          <div class="align-row">
           <div class="layer-controls" role="radiogroup" aria-labelledby="alignLabel">
             <label class="layer-checkbox" title="Left aligned">
               <input type="radio" name="alignMode" id="alignLeft" checked>
@@ -316,16 +317,14 @@
               <span class="ic"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg><em class="sr">Justified</em></span>
             </label>
           </div>
-          <input type="checkbox" id="justifyText" hidden>
-        </div>
-        <div class="form-group">
-          <div class="layer-controls" role="group" aria-label="Show ragged edge and rivers">
-            <label class="layer-checkbox">
+          <div class="layer-controls ragged-toggle" role="group" aria-label="Show ragged edge and rivers">
+            <label class="layer-checkbox" title="Marks the ragged right edge, and the rivers of white space when the text is justified">
               <input type="checkbox" id="showRaggedEdge">
-              <span>Show ragged edge and rivers</span>
+              <span>Show ragged edge</span>
             </label>
           </div>
-          <span class="helper-text">Marks the ragged right edge, and the rivers of white space when the text is justified</span>
+          </div>
+          <input type="checkbox" id="justifyText" hidden>
         </div>
       </section>
       <section data-step="7" class="form-section" id="stylesSection">
@@ -524,14 +523,14 @@
   <!-- PDF Export Libraries -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script type="module" src="src/main.js?v=202611051233"></script>
-  <script src="src/start.js?v=202611051233"></script>
-  <script src="src/steps.js?v=202611051233"></script>
-  <script src="src/column-picker.js?v=202611051233"></script>
-  <script src="src/popout.js?v=202611051233"></script>
-  <script type="module" src="src/editor.js?v=202611051233"></script>
-  <script type="module" src="src/text-import.js?v=202611051233"></script>
-  <script src="src/number-steppers.js?v=202611051233"></script>
-  <script src="src/layer-cycle.js?v=202611051233"></script>
+  <script type="module" src="src/main.js?v=202611051234"></script>
+  <script src="src/start.js?v=202611051234"></script>
+  <script src="src/steps.js?v=202611051234"></script>
+  <script src="src/column-picker.js?v=202611051234"></script>
+  <script src="src/popout.js?v=202611051234"></script>
+  <script type="module" src="src/editor.js?v=202611051234"></script>
+  <script type="module" src="src/text-import.js?v=202611051234"></script>
+  <script src="src/number-steppers.js?v=202611051234"></script>
+  <script src="src/layer-cycle.js?v=202611051234"></script>
 </body>
 </html>

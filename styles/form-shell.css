@@ -353,3 +353,8 @@ body.popout-window .editor-stage{right:24px}
 .container .num-btn{flex:none;width:40px;min-height:40px;padding:0;font:inherit;font-size:18px;line-height:1;color:var(--cp-text);background:var(--cp-surface);border:1px solid var(--cp-line);border-radius:6px;cursor:pointer;touch-action:manipulation}
 .container .num-btn:hover{border-color:var(--cp-accent-line);background:var(--cp-accent-bg)}
 .container .num-btn:active{background:var(--cp-accent-bg);color:var(--yellow)}
+
+/* Alignment icons on the left, the ragged edge toggle on the right of the same row */
+.container .align-row{display:flex;align-items:center;justify-content:space-between;gap:8px 12px;flex-wrap:wrap}
+.container .align-row .layer-controls{margin:0}
+.container .align-row .ragged-toggle{margin-left:auto;text-align:right}
