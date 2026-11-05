@@ -393,3 +393,10 @@ body.popout-window .editor-stage{right:24px}
 .container .style-row label{grid-column:1 / -1;color:var(--cp-text);overflow-wrap:anywhere}
 .container .style-row .num-step{grid-column:1;width:184px}
 .container .style-row .style-pt{grid-column:2;text-align:left}
+
+/* Style rows: wrap instead of a fixed grid so the readout never overlaps the - + controls */
+.container .style-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
+.container .style-row label{flex:0 0 100%}
+.container .style-row .num-step{flex:0 1 170px;min-width:132px;width:auto}
+.container .style-row .style-pt{flex:1 1 auto;min-width:3.5em;text-align:left;white-space:nowrap}
+.container .style-row .helper-text{flex:0 0 100%}
