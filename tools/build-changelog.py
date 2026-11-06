@@ -13,7 +13,7 @@ import re
 import sys
 
 HERE = pathlib.Path(__file__).resolve().parent.parent
-DEFAULT_NOTE = pathlib.Path.home() / "Vaults/2026-PkWr/40 Projects/Type Setting/Changelog.md"
+DEFAULT_NOTE = pathlib.Path.home() / "Vaults/2026-PkWr/40 Projects/Chase/Changelog.md"
 HEAD = re.compile(r"^## (Unreleased|v\d+(?:\.\d+)*) ?(?:\((\d{4}-\d{2}-\d{2})\))?\s*$")
 TAG = re.compile(r"^\[(amend|fix|gone)\]\s")
 
