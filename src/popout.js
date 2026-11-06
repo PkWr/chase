@@ -17,28 +17,13 @@ window.previewEl = function (id) {
   if (!wrapper || !out) return;
   var win = null;
 
-  // The pop-out button sits in the bottom left corner of the page drawing.
+  // The pop-out button sits in the top left corner of the page area.
   // The pop-in button takes the same place when the page is in its own window.
   wrapper.appendChild(out);
   if (inBtn) wrapper.appendChild(inBtn);
   var box = wrapper.querySelector('.visualization-container');
-  function placeOut() {
-    var svg = box && box.querySelector('svg');
-    if (!svg) return;
-    var w = wrapper.getBoundingClientRect(), s = svg.getBoundingClientRect(), b = box.getBoundingClientRect();
-    var bottom = Math.min(s.bottom, b.bottom);
-    [out, inBtn].forEach(function (btn) {
-      if (!btn) return;
-      btn.style.left = (s.left - w.left + wrapper.scrollLeft + 10) + 'px';
-      btn.style.top = (bottom - w.top + wrapper.scrollTop - 28 - 10) + 'px';
-    });
-  }
-  if (box) {
-    new MutationObserver(function () { requestAnimationFrame(placeOut); }).observe(box, { childList: true });
-    window.addEventListener('resize', function () { requestAnimationFrame(placeOut); });
-    if (window.ResizeObserver) new ResizeObserver(function () { requestAnimationFrame(placeOut); }).observe(box);
-    requestAnimationFrame(placeOut);
-  }
+  // Placed by CSS (top left corner of the page area) so it never moves while the drawing redraws.
+  function placeOut() {}
   window.placePopOut = placeOut;
 
   function setState(popped) {
