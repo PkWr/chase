@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="robots" content="noindex, nofollow">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>chase vx</title>
+  <link rel="stylesheet" href="styles/main.css?v=202611061143">
+  <link rel="stylesheet" href="styles/form-shell.css?v=202611061143">
+  <!-- Padding handled in main.css for better control -->
+</head>
+<body>
+  <script>if (!location.search) document.documentElement.classList.add('show-start');</script>
+  <div id="startScreen">
+    <div class="start-scroll" role="button" tabindex="0" aria-label="Open chase. Text about the compositor, the chase and the em.">
+      <div class="start-scroll-inner">
+      <div class="start-loop">
+        <h1 class="start-title">chase</h1>
+        <p>The chase is the rectangular iron frame that holds the composed type. Lines of type and the blank spacing material around them are packed inside it and locked tight, so that the whole page can be moved, inked and printed as one piece.</p>
+        <h2 class="start-title">compositor</h2>
+        <p>The compositor is the person who sets the type. Working letter by letter in a composing stick, the compositor decides the line length, the spacing between words and where each line breaks, and turns a manuscript into a page that reads well.</p>
+        <h2 class="start-title">em</h2>
+        <p>The em is a unit of measure that takes its size from the type. One em equals the point size of the typeface being set, so in 12 point type an em is 12 points, and in 40 point type it is 40.</p>
+      </div>
+      </div>
+    </div>
+    <a class="start-version" href="changelog.html" title="Changelog"><!--version-->vx development<!--/version--></a>
+    <div class="start-drawer" id="startDrawer">
+      <button type="button" class="start-strip" id="startStrip" aria-expanded="false" aria-controls="startPanel" aria-label="About chase">
+        <span class="strip-label">chase · About</span>
+        <span class="strip-icon" aria-hidden="true">+</span>
+      </button>
+      <aside class="start-panel" id="startPanel" aria-label="About chase">
+        <div class="sa-content">
+          <h2>About</h2>
+          <p>chase is a small set of tooling for working out page layouts. Composition, the calculator, takes a page size, margins, columns and a type size, and works out column widths, gutters and line lengths following Bringhurst's principles. It draws the result as a page.</p>
+          <p>A second tool builds InDesign GREP patterns for paragraph styles, to find words, digits, punctuation or enclosed text.</p>
+          <h2>Features</h2>
+          <p>The calculator works in ems or millimetres, for single pages or facing pages with inner and outer margins, and sets column widths, gutters and baseline grid from the type size and leading. Columns are set with a visual picker that also places the text box across them, and the text flows from one column to the next. The preview shows margins, columns, baseline grid, text, the ragged edge and, when justified, rivers.</p>
+          <p>Text can be typed or pasted into an editor, or imported from Word, OpenDocument or HTML files. Simple marks give three heading levels, block quotes, source lines, italics and soft returns. Each style takes a size ratio and its own typeface, and only the styles the text uses are listed. Hyphenation and justification can be switched on.</p>
+          <p>The report checks line length, type size and leading, and counts orphans, widows and short last lines in the preview. When a check is out of range it says why that matters for readers.</p>
+          <p>The result downloads as a PDF with a clean text page, a grid page with every measurement in millimetres and ems, and the specification. It also exports as an InDesign file (IDML) with the page, margins, columns, baseline grid, named paragraph and character styles and text, and a final page that lists every setting and where to change it in InDesign. Settings are remembered between visits, and the page and the text editor can open in their own windows.</p>
+          <h2>The names</h2>
+          <p>The calculator is called Composition and the site chase, after letterpress. A compositor arranged type and spacing into lines and pages. A chase is the metal frame that held the composed page. An em is a unit equal to the type size, so spacing set in ems scales with the type.</p>
+          <h2>Tools</h2>
+          <p><a href="./?calculator">Composition</a><br><a href="grep.html">GREP generator</a></p>
+          <h2>Project</h2>
+          <p>chase is a GD v/x AI project, a growing typographic resource for education. <i>What you don't have to do, you won't need to know, so who will be lost.</i></p>
+        </div>
+        <footer class="sp-foot"><span>© 2026 pkwr</span><a href="https://github.com/PkWr/chase">Source</a></footer>
+      </aside>
+    </div>
+  </div>
+  <div class="app-wrapper">
+    <div class="container" id="panel">
+      <button class="cp-grab" id="grab" aria-label="Collapse controls" aria-expanded="true"><span></span></button>
+      <header class="cp-head">
+        <div class="header-top">
+          <h1>Composition</h1>
+          <div class="header-right">
+            <button type="button" id="popInPanel" class="icon-btn" title="Bring the page back into this window" aria-label="Bring the page back into this window" hidden><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10h-6V4"/><path d="M14 10l7-7"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></button>
+            <a href="#" id="helpLink" class="read-me-link" aria-pressed="false" title="Help: tap a control to read what it does">?</a>
+            <a href="#" id="resetLink" class="read-me-link">Reset</a>
+          </div>
+        </div>
+        <div class="cp-viewbar">
+          <div class="layer-controls" role="group" aria-label="View on the page">
+            <label class="layer-checkbox" title="Text">
+              <input type="checkbox" id="showText" checked>
+              <span class="ic"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 6h14M5 10h14M5 14h14M5 18h9"/></svg><em class="sr">Text</em></span>
+            </label>
+            <label class="layer-checkbox" title="Margins">
+              <input type="checkbox" id="showMargins">
+              <span class="ic"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="1"/><rect x="7" y="7" width="10" height="10" stroke-dasharray="2 2"/></svg><em class="sr">Margins</em></span>
+            </label>
+            <label class="layer-checkbox" title="Columns">
+              <input type="checkbox" id="showColumns">
+              <span class="ic"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M9 3v18M15 3v18"/></svg><em class="sr">Columns</em></span>
+            </label>
+          </div>
+          <div class="unit-pick" role="group" aria-label="Units">
+            <input type="checkbox" id="marginUnitToggle" class="unit-state" checked tabindex="-1" aria-hidden="true">
+            <button type="button" class="unit-opt" data-unit="em">em</button><button type="button" class="unit-opt" data-unit="mm">mm</button>
+          </div>
+        </div>
+      <p id="helpTip" class="help-tip" role="status" hidden></p>
+      </header>
+      <section class="cp-sec cp-stepsec" aria-label="Steps">
+        <h3>Steps</h3>
+        <div id="cpSteps" class="step-list" role="radiogroup" aria-label="Steps">
+                    <a href="#" role="radio" data-go="1" aria-checked="true">Intro<span>1</span></a><i class="step-sep" aria-hidden="true">,</i>
+          <a href="#" role="radio" data-go="2" aria-checked="false">Text<span>2</span></a><i class="step-sep" aria-hidden="true">,</i>
+          <a href="#" role="radio" data-go="3" aria-checked="false">Page<span>3</span></a><i class="step-sep" aria-hidden="true">,</i>
+          <a href="#" role="radio" data-go="4" aria-checked="false">Margins<span>4</span></a><i class="step-sep" aria-hidden="true">,</i>
+          <a href="#" role="radio" data-go="5" aria-checked="false">Columns<span>5</span></a><i class="step-sep" aria-hidden="true">,</i>
+          <a href="#" role="radio" data-go="6" aria-checked="false">Typography<span>6</span></a><i class="step-sep" aria-hidden="true">,</i>
+          <a href="#" role="radio" data-go="7" aria-checked="false">Styles<span>7</span></a><i class="step-sep" aria-hidden="true">,</i>
+          <a href="#" role="radio" data-go="8" aria-checked="false">Report<span>8</span></a><i class="step-sep" aria-hidden="true"> and</i>
+          <a href="#" role="radio" data-go="9" aria-checked="false">Download<span>9</span></a>
+        </div>
+      </section>
+
+
+      <form id="layoutForm">
+            <section data-step="1" class="form-section intro-pane">
+        <h2>Intro</h2>
+        <p class="helper-text">Choose a step above, or press Next.</p>
+      </section>
+
+      <section data-step="3" class="form-section">
+        <h2>Page Dimensions</h2>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="paperSizeSelect">Paper size</label>
+            <select id="paperSizeSelect" class="paper-size-select">
+              <option value="">Custom</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Orientation</label>
+            <div class="unit-toggle-wrapper">
+              <label class="unit-toggle-label">
+                <span class="unit-option unit-option-portrait" title="Portrait">
+                  <svg class="orient-icon" viewBox="0 0 24 24" width="19" height="19" aria-hidden="true" fill="currentColor"><path d="M17 3H7c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H7V5h10v14z"/></svg>
+                </span>
+                <span class="unit-toggle-container">
+                  <input type="checkbox" id="orientationToggle" class="unit-toggle-input">
+                  <span class="unit-toggle-slider"></span>
+                </span>
+                <span class="unit-option unit-option-landscape" title="Landscape">
+                  <svg class="orient-icon" viewBox="0 0 24 24" width="19" height="19" aria-hidden="true" fill="currentColor"><path d="M19 5H5c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 12H5V7h14v10z"/></svg>
+                </span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="pageWidth">Width (mm)</label>
+            <input type="number" id="pageWidth" value="210" class="input-small" required>
+          </div>
+          <div class="form-group">
+            <label for="pageHeight">Height (mm)</label>
+            <input type="number" id="pageHeight" value="297" class="input-small" required>
+          </div>
+        </div>
+        <div class="form-row form-row-single-col">
+          <div class="form-group">
+            <label id="pageModeLabel">Pages</label>
+            <div class="layer-controls" role="radiogroup" aria-labelledby="pageModeLabel">
+              <label class="layer-checkbox" title="Single pages">
+                <input type="radio" name="pageMode" id="pageSingle" checked>
+                <span class="ic"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="4" width="10" height="16" rx="1"/></svg><em class="sr">Single pages</em></span>
+              </label>
+              <label class="layer-checkbox" title="Facing pages: two pages side by side, like a book">
+                <input type="radio" name="pageMode" id="pageFacing">
+                <span class="ic"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="9" height="14" rx="1"/><rect x="12" y="5" width="9" height="14" rx="1"/></svg><em class="sr">Facing pages (book layout)</em></span>
+              </label>
+            </div>
+            <input type="checkbox" id="facingPages" hidden>
+          </div>
+        </div>
+      </section>
+
+      <section data-step="4" class="form-section">
+        <h2>Margins</h2>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="topMargin" id="topMarginLabel">Top (mm)</label>
+            <input type="number" id="topMargin" value="20" class="input-small" required>
+            <span class="helper-text" id="topMarginConversion"></span>
+          </div>
+          <div class="form-group">
+            <label for="bottomMargin" id="bottomMarginLabel">Bottom (mm)</label>
+            <input type="number" id="bottomMargin" value="20" class="input-small" required>
+            <span class="helper-text" id="bottomMarginConversion"></span>
+          </div>
+        </div>
+        <!-- Single page margins -->
+        <div id="singlePageMargins" class="form-row">
+          <div class="form-group">
+            <label for="leftMargin" id="leftMarginLabel">Left (mm)</label>
+            <input type="number" id="leftMargin" value="20" class="input-small" required>
+            <span class="helper-text" id="leftMarginConversion"></span>
+          </div>
+          <div class="form-group">
+            <label for="rightMargin" id="rightMarginLabel">Right (mm)</label>
+            <input type="number" id="rightMargin" value="20" class="input-small" required>
+            <span class="helper-text" id="rightMarginConversion"></span>
+          </div>
+        </div>
+        <!-- Facing pages margins -->
+        <div id="facingPagesMargins" class="form-row" style="display: none;">
+          <div class="form-group">
+            <label class="page-label"><a href="#" class="page-link" data-term="verso">Verso</a></label>
+            <label for="innerMarginLeft" id="innerMarginLeftLabel">Inner (mm)</label>
+            <input type="number" id="innerMarginLeft" value="20" class="input-small" required>
+            <span class="helper-text" id="innerMarginLeftConversion"></span>
+            <label for="outerMarginLeft" id="outerMarginLeftLabel">Outer (mm)</label>
+            <input type="number" id="outerMarginLeft" value="20" class="input-small" required>
+            <span class="helper-text" id="outerMarginLeftConversion"></span>
+          </div>
+          <div class="form-group">
+            <label class="page-label"><a href="#" class="page-link" data-term="recto">Recto</a></label>
+            <label for="innerMarginRight" id="innerMarginRightLabel">Inner (mm)</label>
+            <input type="number" id="innerMarginRight" value="20" class="input-small" required>
+            <span class="helper-text" id="innerMarginRightConversion"></span>
+            <label for="outerMarginRight" id="outerMarginRightLabel">Outer (mm)</label>
+            <input type="number" id="outerMarginRight" value="20" class="input-small" required>
+            <span class="helper-text" id="outerMarginRightConversion"></span>
+          </div>
+        </div>
+        <div id="facingPagesMarginsOuter" class="form-row" style="display: none;">
+        </div>
+      </section>
+
+      <section data-step="5" class="form-section">
+        <h2>Columns</h2>
+        <div class="form-group" id="numColsGroup">
+          <label for="numCols">Number of columns</label>
+          <input type="number" id="numCols" value="2" min="1" class="input-small" required>
+        </div>
+        <div class="form-group" id="startGroup">
+          <label id="startPickerLabel">Columns</label>
+          <div class="slider-container">
+            <input type="range" id="textStartSlider" min="1" max="2" value="1" class="slider-input">
+            <span id="textStartValue" class="slider-value">1</span>
+          </div>
+          <span class="helper-text" id="startPickerHelp"></span>
+        </div>
+        <div class="form-group">
+          <label for="gutterWidth" id="gutterWidthLabel">Gutter width (em)</label>
+          <input type="number" id="gutterWidth" value="" step="0.001" class="input-small" required>
+          <span class="helper-text" id="gutterWidthConversion"></span>
+        </div>
+        <div class="form-group">
+          <span id="columnWidthDisplay" class="helper-text"></span>
+          <span id="autoGutterNote" class="helper-text"></span>
+        </div>
+        <div class="form-group" id="spanGroup">
+          <label for="columnSpanSlider">Text box spans columns</label>
+          <div class="slider-container">
+            <input type="range" id="columnSpanSlider" min="1" max="2" value="2" class="slider-input">
+            <span id="columnSpanValue" class="slider-value">2</span>
+          </div>
+        </div>
+      </section>
+
+      <section data-step="6" class="form-section">
+        <h2>Typography Settings</h2>
+        <div class="form-group">
+          <label for="fontFamily">Typeface</label>
+          <select id="fontFamily" class="font-select">
+            <optgroup label="Old-style serif">
+            <option value="Garamond">Garamond</option>
+            <option value="Palatino">Palatino</option>
+            </optgroup>
+            <optgroup label="Transitional serif">
+            <option value="Times New Roman" selected>Times New Roman</option>
+            <option value="Georgia">Georgia</option>
+            </optgroup>
+            <optgroup label="Humanist sans">
+            <option value="Gill Sans">Gill Sans</option>
+            <option value="Verdana">Verdana</option>
+            <option value="Trebuchet MS">Trebuchet MS</option>
+            </optgroup>
+            <optgroup label="Neo-grotesque sans">
+            <option value="Helvetica">Helvetica</option>
+            <option value="Arial">Arial</option>
+            </optgroup>
+            <optgroup label="Monospace">
+            <option value="Courier New">Courier New</option>
+            </optgroup>
+          </select>
+          <span class="helper-text">Typefaces that are installed on Mac and Windows</span>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="typeSize">Type size (pt)</label>
+            <input type="number" id="typeSize" value="12" class="input-small" required>
+          </div>
+          <div class="form-group">
+            <label for="leading">Leading (pt)</label>
+            <input type="number" id="leading" value="" step="0.1" class="input-small" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="paraSpace">Space after paragraph (pt)</label>
+          <div class="para-row">
+            <input type="number" id="paraSpace" value="14" min="0" step="0.5" class="input-small">
+            <label class="layer-checkbox" id="baselineToggle" hidden title="Baseline grid: shows the lines the text sits on">
+            <input type="checkbox" id="showBaseline">
+            <span class="ic"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 6h20M2 11h20M2 16h20M2 21h20"/></svg><em class="sr">Baseline grid</em></span>
+          </label>
+          </div>
+          <span class="helper-text">Paragraphs are separated by this space, not by empty lines. Blank lines in the text are ignored.</span>
+        </div>
+        <div class="form-group">
+          <label id="alignLabel">Alignment</label>
+          <div class="align-row">
+          <div class="layer-controls" role="radiogroup" aria-labelledby="alignLabel">
+            <label class="layer-checkbox" title="Left aligned">
+              <input type="radio" name="alignMode" id="alignLeft" checked>
+              <span class="ic"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 10h10M4 14h16M4 18h8"/></svg><em class="sr">Left aligned</em></span>
+            </label>
+            <label class="layer-checkbox" title="Justified">
+              <input type="radio" name="alignMode" id="alignJustify">
+              <span class="ic"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg><em class="sr">Justified</em></span>
+            </label>
+          </div>
+          <div class="layer-controls hyph-toggle" role="group" aria-label="Hyphenation">
+            <label class="layer-checkbox" title="Hyphenation: lets long words break at the end of a line">
+              <input type="checkbox" id="hyphenation">
+              <span class="ic"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h12M18 6h3M3 12h18M3 18h8"/></svg><em class="sr">Hyphenation</em></span>
+            </label>
+          </div>
+          <div class="layer-controls ragged-toggle" role="group" aria-label="Show ragged edge and rivers">
+            <label class="layer-checkbox" title="Shows the uneven right edge of the text, and gaps in justified text">
+              <input type="checkbox" id="showRaggedEdge">
+              <span>Show ragged edge</span>
+            </label>
+          </div>
+          </div>
+          <input type="checkbox" id="justifyText" hidden>
+        </div>
+      </section>
+      <section data-step="7" class="form-section" id="stylesSection">
+        <h2>Styles</h2>
+        <div class="form-group">
+          <span class="helper-text" id="stylesNone">No styles in use yet. Add marks in the <a href="#" id="stylesToText">Text step</a> (# for headings, > for a quote, -- for a source) and the styles appear here.</span>
+          <span class="helper-text" id="stylesNote">Each name is shown at its size. Sizes are ratios of the body size; Block Quote is an indent in em. Headings are set tight and padded to whole lines of body leading, so the text after them stays on the baseline grid.</span>
+          <div class="style-row" data-style="h1">
+            <label for="styleH1">Heading 1</label>
+            <input type="number" id="styleH1" value="2.2" min="0.5" max="4" step="0.05" class="input-small">
+            <span class="style-pt" id="styleH1Pt"></span>
+          </div>
+          <div class="style-row" data-style="h2">
+            <label for="styleH2">Heading 2</label>
+            <input type="number" id="styleH2" value="1.5" min="0.5" max="4" step="0.05" class="input-small">
+            <span class="style-pt" id="styleH2Pt"></span>
+          </div>
+          <div class="style-row" data-style="h3">
+            <label for="styleH3">Heading 3</label>
+            <input type="number" id="styleH3" value="1.15" min="0.5" max="4" step="0.05" class="input-small">
+            <span class="style-pt" id="styleH3Pt"></span>
+          </div>
+          <div class="style-row" data-style="quote">
+            <label for="styleQuote">Block Quote</label>
+            <input type="number" id="styleQuote" value="2" min="0" max="8" step="0.5" class="input-small">
+            <span class="style-pt" id="styleQuotePt"></span>
+          </div>
+          <div class="style-row" data-style="citation">
+            <label for="styleCitation">Citation</label>
+            <input type="number" id="styleCitation" value="0.85" min="0.3" max="2" step="0.05" class="input-small">
+            <span class="style-pt" id="styleCitationPt"></span>
+          </div>
+        </div>
+      </section>
+
+      <section data-step="8" class="form-section">
+        <h2>Report</h2>
+        <div class="form-group">
+          <span class="helper-text">The report is shown on the page area: considerations on line length, type size and leading first, then the full specification. Scroll to read it.</span>
+        </div>
+      </section>
+
+      <section data-step="2" class="form-section">
+        <h2>Sample Text</h2>
+        <div class="form-group" id="textEditor">
+          <div class="editor-head">
+            <label for="sampleText">Text</label>
+          </div>
+          <p class="markup-intro">Start a line with a mark and a space to set its style (see the table below), or use the buttons: they apply to the line at the cursor, or to every selected line. Italic works on selected words. Shift+Enter, or a backslash at the end of a line, keeps the next line in the same paragraph. Marks are not drawn on the page or in the InDesign file.</p>
+          <div class="mark-tools" role="toolbar" aria-label="Styles for the text">
+            <button type="button" class="mark-btn" data-mark="h1" title="Heading 1 (Cmd/Ctrl+Alt+1)">H1</button>
+            <button type="button" class="mark-btn" data-mark="h2" title="Heading 2 (Cmd/Ctrl+Alt+2)">H2</button>
+            <button type="button" class="mark-btn" data-mark="h3" title="Heading 3 (Cmd/Ctrl+Alt+3)">H3</button>
+            <button type="button" class="mark-btn" data-mark="quote" title="Quote: marks the line as a quote">Quote</button>
+            <button type="button" class="mark-btn" data-mark="citation" title="Source: the line that names where a quote comes from">Source</button>
+            <button type="button" class="mark-btn" data-mark="break" title="New line: starts a new line without starting a new paragraph (Shift+Enter)">Break</button>
+            <button type="button" class="mark-btn mark-italic" data-mark="italic" title="Italic (Cmd/Ctrl+I)"><em>Italic</em></button>
+          </div>
+          <textarea id="sampleText" rows="10" placeholder="Enter sample text to preview how it will look in your layout..."></textarea>
+          <div class="text-tools" role="group" aria-label="Text actions">
+            <button type="button" id="loadFileButton" class="icon-btn" title="Load text from a file" aria-label="Load text from a file"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4"/><path d="M7 9l5-5 5 5"/><path d="M5 20h14"/></svg></button>
+            <button type="button" id="loadDefaultTextButton" class="icon-btn" title="Load the sample text" aria-label="Load the sample text"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h9a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3z"/><path d="M8 9h5M8 13h5"/><path d="M19 9v10"/></svg></button>
+            <button type="button" id="clearTextButton" class="icon-btn" title="Clear the text" aria-label="Clear the text"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16"/><path d="M9 7V4h6v3"/><path d="M6 7l1 13h10l1-13"/><path d="M10 11v6M14 11v6"/></svg></button>
+            <button type="button" id="expandEditor" class="text-btn" aria-expanded="false" title="Open the text editor in the page area"><svg class="ic-expand" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6"/><path d="M20 4l-7 7"/><path d="M10 20H4v-6"/><path d="M4 20l7-7"/></svg><svg class="ic-collapse" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10h-6V4"/><path d="M14 10l7-7"/><path d="M4 14h6v6"/><path d="M10 14l-7 7"/></svg><span class="lbl-open">Open text editor</span><span class="lbl-close">Close text editor</span></button>
+          </div>
+          <input type="file" id="textFileInput" class="visually-hidden-control" accept=".txt,.md,.markdown,.html,.htm,.docx,.odt,.rtf,text/plain,text/html" tabindex="-1">
+          <span class="helper-text" id="textFileStatus">Type or paste text, or load a file (txt, md, html, docx, odt, rtf). Files can also be dropped onto the box.</span>
+          <details id="markupHelp" class="markup-help">
+            <summary>How to mark up the text</summary>
+            <table class="mark-guide">
+              <thead><tr><th>Start the line with</th><th>Style</th></tr></thead>
+              <tbody>
+                <tr><td><code># </code></td><td>Heading 1</td></tr>
+                <tr><td><code>## </code></td><td>Heading 2</td></tr>
+                <tr><td><code>### </code></td><td>Heading 3</td></tr>
+                <tr><td><code>&gt; </code></td><td>Block Quote</td></tr>
+                <tr><td><code>-- </code></td><td>Citation, set with an em dash</td></tr>
+                <tr><td><code>*words*</code></td><td>Emphasis (italic), anywhere in a line</td></tr>
+                <tr><td><code>\</code> at the end of a line</td><td>Soft return: the next line joins the same paragraph after a line break</td></tr>
+              </tbody>
+            </table>
+          </details>
+        </div>
+      </section>
+
+
+      </form>
+      <div class="cp-foot">
+        <div id="downloadRow"><button type="button" id="exportHtmlButton" class="btn-export btn-primary">Download specification (PDF)</button><button type="button" id="exportIdmlButton" class="btn-export btn-primary" title="Saves an InDesign file with this page, margins, columns, baseline grid and styles">Download for InDesign (IDML)</button><p class="hint" id="idmlStatus" role="status"></p></div>
+        <p class="hint scale-line"><span id="scaleIndicator" class="scale-indicator"></span></p>
+        <p class="hint"><a href="index.html?calculator" aria-current="page">Composition</a> · <a href="grep.html">Grep</a> · <a href="./">About</a> · <a href="changelog.html"><!--version-->vx development<!--/version--></a></p>
+      </div>
+    </div>
+
+    <div class="preview-wrapper">
+      <section id="editorStage" class="editor-stage" aria-label="Text editor" hidden>
+        <div class="editor-stage-head"><h2>Text editor</h2><button type="button" id="collapseEditor" class="step-btn">Done</button></div>
+        <div id="editorStageBody"></div>
+      </section>
+      <section class="visualization-section">
+        <div class="section-header">
+        </div>
+        <div id="visualizationContainer" class="visualization-container"></div>
+      <section id="introStage" class="intro-stage" aria-label="Introduction">
+        <p>Start with the content, then make it beautiful to read. It draws a page of text and checks that the layout works. First read the text and understand its structure: which parts are headings, quotes or sources. Then add the <a href="#" data-go="2">text<sup>2</sup></a>. Next choose the <a href="#" data-go="3">page<sup>3</sup></a> size, the <a href="#" data-go="4">margins<sup>4</sup></a>, the <a href="#" data-go="5">columns<sup>5</sup></a> and the <a href="#" data-go="6">typography<sup>6</sup></a>. <a href="#" data-go="7">Styles<sup>7</sup></a> sets how headings and quotes look. The <a href="#" data-go="8">report<sup>8</sup></a> lists any problems. The <a href="#" data-go="9">download<sup>9</sup></a> saves the layout as a PDF or an InDesign file.</p>
+        <p class="intro-iter">None of this is done once. Try something, look at the page, change it and try again. Any step can be revisited at any time.</p>
+      </section>
+      <section id="reportStage" class="report-stage" aria-label="Report">
+        <h2 class="report-title">Report</h2>
+        <h3 class="report-sub">Considerations</h3>
+      <section class="report-block bringhurst-section">
+        <h2>Bringhurst says</h2>
+        <div class="form-group">
+          <p><span class="bringhurst-label">Words per line:</span> <span id="wordsPerLine" class="bringhurst-value">—</span></p>
+          <p class="helper-text" id="bringhurstGuidance">Estimated from column width and type size</p>
+        </div>
+        <div class="form-group">
+          <p><span class="bringhurst-label">Type size:</span> <span id="typeSizeValue" class="bringhurst-value">—</span></p>
+          <p class="helper-text" id="typeSizeGuidance"></p>
+        </div>
+        <div class="form-group">
+          <p><span class="bringhurst-label">Leading:</span> <span id="bringhurstLeading" class="bringhurst-value">—</span></p>
+          <p class="helper-text" id="bringhurstLeadingGuidance"></p>
+        </div>
+        <div class="form-group">
+          <p><span id="orphanValue" class="bringhurst-value">—</span></p>
+          <p class="helper-text" id="orphanGuidance"></p>
+        </div>
+        <div class="form-group">
+          <p><span id="widowValue" class="bringhurst-value">—</span></p>
+          <p class="helper-text" id="widowGuidance"></p>
+        </div>
+        <div class="form-group">
+          <p><span id="runtValue" class="bringhurst-value">—</span></p>
+          <p class="helper-text" id="runtGuidance"></p>
+        </div>
+      </section>
+
+        <h3 class="report-sub">Specification</h3>
+        <div id="specificationContent" class="specification-content"></div>
+      </section>
+        <div class="page-nav">
+          <div class="page-meta">
+            <p id="stepNow" class="step-now" aria-live="polite">Step 1 of 9 · Intro</p>
+            <span class="page-tools"><button type="button" id="popOut" class="icon-btn" title="Open the page in its own window" aria-label="Open the page in its own window"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></button><button type="button" id="popIn" class="icon-btn" title="Bring the page back into this window" aria-label="Bring the page back into this window" hidden><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10h-6V4"/><path d="M14 10l7-7"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></button></span>
+          </div>
+          <div class="row nav" role="group" aria-label="Steps">
+          <button type="button" id="stepBack" class="step-btn">Back</button>
+          <button type="button" id="stepNext" class="step-btn">Next</button>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div id="introModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Compositor Chase Em</h2>
+        <button type="button" id="closeModal" class="modal-close" aria-label="Close modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-intro">A typographic layout calculator for designing multi-column page layouts. Set page dimensions, margins, columns, and typography settings to visualize and calculate optimal column widths, text box spans, and line lengths based on Bringhurst's principles of typography.</p>
+        
+        <div class="modal-section">
+          <h3 class="modal-section-title">Compositor</h3>
+          <p class="modal-section-text">In letterpress printing, a compositor is the person who arranges type and spacing elements to create a page layout. They work at a composing stick, selecting individual pieces of type and spacing material (furniture, leads, and reglets) to build up lines and pages before locking them into a chase.</p>
+          <p class="modal-section-links">
+            <a href="https://en.wikipedia.org/wiki/Compositor_(typesetting)" target="_blank" rel="noopener noreferrer">Wikipedia: Compositor</a> · 
+            <a href="https://www.flickr.com/search/?text=compositor%20letterpress" target="_blank" rel="noopener noreferrer">Images</a>
+          </p>
+        </div>
+        
+        <div class="modal-section">
+          <h3 class="modal-section-title">Chase</h3>
+          <p class="modal-section-text">A chase is a rectangular metal frame used in letterpress printing to hold the composed type and spacing material securely in place. Once the compositor has arranged all the elements, they are locked into the chase using quoins (wedges) and keys, creating a stable form ready for printing.</p>
+          <p class="modal-section-links">
+            <a href="https://en.wikipedia.org/wiki/Chase_(printing)" target="_blank" rel="noopener noreferrer">Wikipedia: Chase</a> · 
+            <a href="https://www.flickr.com/search/?text=chase%20letterpress" target="_blank" rel="noopener noreferrer">Images</a>
+          </p>
+        </div>
+        
+        <div class="modal-section">
+          <h3 class="modal-section-title">Em</h3>
+          <p class="modal-section-text">An em is a typographic unit equal to the current font size. For example, if your type size is 12pt, then 1em = 12pt. Ems are relative units that scale with the font size, making them ideal for spacing elements like gutters and margins in typography.</p>
+          <p class="modal-section-links">
+            <a href="https://en.wikipedia.org/wiki/Em_(typography)" target="_blank" rel="noopener noreferrer">Wikipedia: Em</a> · 
+            <a href="https://practicaltypography.com/em-sizing.html" target="_blank" rel="noopener noreferrer">Practical Typography: Em sizing</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Term Modal -->
+  <div id="termModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="termModalTitle"></h2>
+        <button class="modal-close" id="termModalClose">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="termModalContent"></div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- PDF Export Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script type="module" src="src/main.js?v=202611061143"></script>
+  <script src="src/start.js?v=202611061143"></script>
+  <script src="src/steps.js?v=202611061143"></script>
+  <script src="src/column-picker.js?v=202611061143"></script>
+  <script src="src/popout.js?v=202611061143"></script>
+  <script type="module" src="src/editor.js?v=202611061143"></script>
+  <script type="module" src="src/text-import.js?v=202611061143"></script>
+  <script src="src/margin-link.js?v=202611061143"></script>
+  <script src="src/number-steppers.js?v=202611061143"></script>
+  <script src="src/layer-cycle.js?v=202611061143"></script>
+  <script src="src/help-tips.js?v=202611061143"></script>
+  <script src="src/sheet.js?v=202611061143"></script>
+</body>
+</html>

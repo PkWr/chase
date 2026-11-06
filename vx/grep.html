@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="robots" content="noindex, nofollow">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grep generator for InDesign · chase</title>
+  <link rel="stylesheet" href="styles/main.css?v=202611061143">
+  <link rel="stylesheet" href="styles/form-shell.css?v=202611061143">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-wrapper">
+    <div class="container">
+      <header class="cp-head">
+        <div class="header-top">
+          <h1>Grep</h1>
+          <div class="header-right">
+            <a href="#" id="grepInfoLink" class="read-me-link">About GREP</a>
+          </div>
+        </div>
+      </header>
+
+      <form id="grepForm">
+        <section class="form-section">
+          <h2>Search Type</h2>
+          <div class="form-row">
+            <div class="form-group">
+              <label>
+                <input type="radio" name="searchType" value="words" checked>
+                <span>Specific Words</span>
+              </label>
+            </div>
+            <div class="form-group">
+              <label>
+                <input type="radio" name="searchType" value="digits">
+                <span>Digits</span>
+              </label>
+            </div>
+            <div class="form-group">
+              <label>
+                <input type="radio" name="searchType" value="punctuation">
+                <span>Punctuation</span>
+              </label>
+            </div>
+            <div class="form-group">
+              <label>
+                <input type="radio" name="searchType" value="enclosed">
+                <span>Content Enclosed by Markers</span>
+              </label>
+            </div>
+          </div>
+        </section>
+
+        <section class="form-section" id="wordsSection">
+          <h2>Words</h2>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="wordsInput">Enter words (one per line)</label>
+              <textarea id="wordsInput" rows="6" placeholder="word1&#10;word2&#10;word3"></textarea>
+              <span class="helper-text">Enter one word per line. The pattern will match all listed words.</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="form-section" id="digitsSection" style="display: none;">
+          <h2>Digits</h2>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="digitsMin">Minimum digits</label>
+              <input type="number" id="digitsMin" value="1" min="1" class="input-small">
+              <span class="helper-text">The smallest number of consecutive digits to match (e.g., 1 matches single digits 0-9).</span>
+            </div>
+            <div class="form-group">
+              <label for="digitsMax">Maximum digits</label>
+              <input type="number" id="digitsMax" value="10" min="1" class="input-small">
+              <span class="helper-text">The largest number of consecutive digits to match. When equal to minimum, matches exact length.</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="form-section" id="punctuationSection" style="display: none;">
+          <h2>Punctuation</h2>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="punctuationSelect">Punctuation type</label>
+              <select id="punctuationSelect">
+                <option value="all">All punctuation</option>
+                <option value="period">Period (.)</option>
+                <option value="comma">Comma (,)</option>
+                <option value="semicolon">Semicolon (;)</option>
+                <option value="colon">Colon (:)</option>
+                <option value="question">Question mark (?)</option>
+                <option value="exclamation">Exclamation mark (!)</option>
+                <option value="quotes">Quotes (" ")</option>
+                <option value="apostrophe">Apostrophe (')</option>
+                <option value="hyphen">Hyphen (-)</option>
+                <option value="dash">Dash (—)</option>
+                <option value="parentheses">Parentheses ( )</option>
+                <option value="brackets">Brackets [ ]</option>
+                <option value="braces">Braces { }</option>
+              </select>
+              <span class="helper-text">Select which punctuation marks to match. "All punctuation" matches everything; specific options target individual marks.</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="form-section" id="enclosedSection" style="display: none;">
+          <h2>Enclosed Content</h2>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="startMarker">Start marker</label>
+              <input type="text" id="startMarker" placeholder="(" class="input-small">
+              <span class="helper-text">The character(s) that mark the beginning (e.g., "(" or "["). Can be single or multiple characters.</span>
+            </div>
+            <div class="form-group">
+              <label for="endMarker">End marker</label>
+              <input type="text" id="endMarker" placeholder=")" class="input-small">
+              <span class="helper-text">The character(s) that mark the end (e.g., ")" or "]"). Must match the start marker type.</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="form-section">
+          <h2>Options</h2>
+          <div class="form-row">
+            <div class="form-group">
+              <label>
+                <input type="checkbox" id="caseSensitive">
+                <span>Case sensitive</span>
+              </label>
+            </div>
+            <div class="form-group">
+              <label>
+                <input type="checkbox" id="wholeWord" checked>
+                <span>Whole word only</span>
+              </label>
+            </div>
+          </div>
+        </section>
+      </form>
+      <div class="cp-foot">
+        <p class="hint"><a href="index.html?calculator">Composition</a> · <a href="grep.html" aria-current="page">Grep</a> · <a href="./">About</a> · <a href="changelog.html"><!--version-->vx development<!--/version--></a></p>
+      </div>
+    </div>
+
+    <div class="preview-wrapper">
+      <section class="visualization-section">
+        <div class="section-header">
+          <h2>Pattern</h2>
+        </div>
+        <div id="grepOutput" class="grep-output">
+          <p class="helper-text">Select a search type and configure options to generate grep pattern</p>
+        </div>
+        <div id="syntaxExplanation" class="syntax-explanation" style="display: none;">
+          <h3 class="syntax-title">Pattern Syntax</h3>
+          <table class="syntax-table">
+            <tr>
+              <td class="syntax-code"><code>\\d</code></td>
+              <td class="syntax-description">Finds any number from 0 to 9</td>
+            </tr>
+            <tr>
+              <td class="syntax-code"><code>\\b</code></td>
+              <td class="syntax-description">Matches the start or end of a word (not in the middle)</td>
+            </tr>
+            <tr>
+              <td class="syntax-code"><code>|</code></td>
+              <td class="syntax-description">Means "OR" - matches this pattern OR that pattern</td>
+            </tr>
+            <tr>
+              <td class="syntax-code"><code>()</code></td>
+              <td class="syntax-description">Groups things together so you can apply rules to the whole group</td>
+            </tr>
+            <tr>
+              <td class="syntax-code"><code>[]</code></td>
+              <td class="syntax-description">Matches any single character that appears inside these brackets</td>
+            </tr>
+            <tr>
+              <td class="syntax-code"><code>\\</code></td>
+              <td class="syntax-description">Makes special characters work as normal text (like finding a period instead of using it as a rule)</td>
+            </tr>
+            <tr>
+              <td class="syntax-code"><code>*</code></td>
+              <td class="syntax-description">The thing before this can appear zero times or many times</td>
+            </tr>
+            <tr>
+              <td class="syntax-code"><code>?</code></td>
+              <td class="syntax-description">The thing before this can appear zero times or once</td>
+            </tr>
+            <tr>
+              <td class="syntax-code"><code>{n}</code></td>
+              <td class="syntax-description">The thing before this must appear exactly n times (e.g., <code>{3}</code> means exactly 3 times)</td>
+            </tr>
+            <tr>
+              <td class="syntax-code"><code>{n,m}</code></td>
+              <td class="syntax-description">The thing before this must appear between n and m times (e.g., <code>{2,5}</code> means 2, 3, 4, or 5 times)</td>
+            </tr>
+            <tr>
+              <td class="syntax-code"><code>^</code></td>
+              <td class="syntax-description">When inside brackets, means "NOT" - matches anything that is NOT in the brackets</td>
+            </tr>
+            <tr>
+              <td class="syntax-code"><code>(?i)</code></td>
+              <td class="syntax-description">Ignores capital letters (matches "Hello", "hello", and "HELLO" the same way)</td>
+            </tr>
+          </table>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- Grep Info Modal -->
+  <div id="grepModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>About GREP</h2>
+        <button class="modal-close" id="grepModalClose">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-section">
+          <h3 class="modal-section-title">What is GREP?</h3>
+          <p class="modal-section-text">
+            GREP (Global Regular Expression Print) is a powerful pattern-matching system used in Adobe InDesign's paragraph style settings. It allows you to automatically format text based on complex patterns rather than manually selecting and formatting each instance.
+          </p>
+          <p class="modal-section-text">
+            In InDesign, GREP styles are applied within paragraph styles to automatically format specific text patterns. This tool generates GREP patterns that you can copy and paste directly into InDesign's GREP Style settings in your paragraph style options.
+          </p>
+        </div>
+        <div class="modal-section">
+          <h3 class="modal-section-title">What can you do with GREP in InDesign?</h3>
+          <p class="modal-section-text">
+            <strong>Format specific words:</strong> Automatically style multiple words at once, with options for case sensitivity and whole word matching. Useful for emphasizing key terms or applying consistent formatting.
+          </p>
+          <p class="modal-section-text">
+            <strong>Format digits:</strong> Style numbers of specific lengths, useful for formatting phone numbers, dates, or other numeric patterns with different fonts or colors.
+          </p>
+          <p class="modal-section-text">
+            <strong>Format punctuation:</strong> Style specific punctuation marks or all punctuation, helpful for applying consistent formatting to quotes, dashes, or other marks.
+          </p>
+          <p class="modal-section-text">
+            <strong>Format enclosed content:</strong> Style text between markers like parentheses, brackets, or custom characters, useful for formatting citations, notes, or other enclosed text.
+          </p>
+        </div>
+        <div class="modal-section">
+          <h3 class="modal-section-title">How to use this tool</h3>
+          <p class="modal-section-text">
+            1. Select a search type (words, digits, punctuation, or enclosed content)
+          </p>
+          <p class="modal-section-text">
+            2. Configure your search options (case sensitivity, whole word, etc.)
+          </p>
+          <p class="modal-section-text">
+            3. Copy the generated pattern
+          </p>
+          <p class="modal-section-text">
+            4. In InDesign, open your paragraph style options, go to the "GREP Style" section, click "New GREP Style", paste the pattern in the "Apply Style" field, and set your case sensitivity preference
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <script type="module" src="src/grep.js?v=202611061143"></script>
+</body>
+</html>
+
