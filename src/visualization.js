@@ -462,7 +462,7 @@ function drawPage(svg, inputs, pageX, pageY, pageWidth, pageHeight, leftMargin, 
                 if (letterpress) {
                     // Type is set to read backwards, so the page is shown as the compositor sees it
                     textDiv.style.transform = 'scaleX(-1)';
-                    drawForme(parentSvg, textGroup, textDiv, { sizePx: fontSizeSVG, spanWidth, columnStep, gutter: scaledGutterWidth, spans: numberOfSpans, boxWidth, boxHeight: textBoxHeight });
+                    drawForme(parentSvg, textGroup, textDiv, { sizePx: fontSizeSVG, spanWidth, columnStep, gutter: scaledGutterWidth, spans: numberOfSpans, boxWidth, boxHeight: textBoxHeight, pxPerPt: lineHeight / leadingPt });
                 }
                 // Headings wrap onto tight lines; pad each to whole body lines to keep the baseline grid
                 requestAnimationFrame(() => {
@@ -502,10 +502,13 @@ function drawPage(svg, inputs, pageX, pageY, pageWidth, pageHeight, leftMargin, 
     }
 }
 let formeId = 0;
+// Lead is cast in standard thicknesses: a pica (12 pt) slug, 2 pt leads and 1 pt leads.
+const LEAD_SIZES_PT = [12, 2, 1];
 /**
- * Letterpress view: the chase round the type, furniture in the gutters, each line as a type body
- * (the size of the type) and the lead between lines (leading less type size) as a hatched strip.
- * The text div is mirrored; lines are measured after layout.
+ * Letterpress view: the forme as material. Every character and every space is one piece of type
+ * (a space is lower, a lighter piece), the empty end of a line is filled with quads, the lead between
+ * lines is built from standard leads (4 pt of lead is two 2 pt strips), the gutters are furniture, and
+ * the chase is the heavy frame round it all. The text div is mirrored; the pieces are measured after layout.
  */
 function drawForme(svg, textGroup, textDiv, o) {
     const NS = 'http://www.w3.org/2000/svg';
@@ -513,19 +516,26 @@ function drawForme(svg, textGroup, textDiv, o) {
     const y0 = parseFloat(textGroup.getAttribute('y') || '0');
     const g = document.createElementNS(NS, 'g');
     g.setAttribute('class', 'forme');
-    const pid = `formeLead${++formeId}`;
+    const pid = `formeFill${++formeId}`;
     const defs = document.createElementNS(NS, 'defs');
-    defs.innerHTML = `<pattern id="${pid}" width="3" height="3" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="3" height="3" fill="#f1f1f1"/><line x1="0" y1="0" x2="0" y2="3" stroke="#9a9a9a" stroke-width="0.8"/></pattern>`;
+    defs.innerHTML = `<pattern id="${pid}" width="3" height="3" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="3" height="3" fill="#ececec"/><line x1="0" y1="0" x2="0" y2="3" stroke="#a8a8a8" stroke-width="0.7"/></pattern>`;
     g.appendChild(defs);
-    const add = (tag, attrs) => {
+    const add = (parent, tag, attrs) => {
         const el = document.createElementNS(NS, tag);
         Object.keys(attrs).forEach(k => el.setAttribute(k, String(attrs[k])));
-        g.appendChild(el);
+        parent.appendChild(el);
         return el;
     };
+    // The chase: a heavy frame round the forme, with the bed of the forme inside it
+    const pad = Math.max(5, o.sizePx * 0.9);
+    add(g, 'path', {
+        d: `M${x0 - pad} ${y0 - pad}h${o.boxWidth + 2 * pad}v${o.boxHeight + 2 * pad}h${-(o.boxWidth + 2 * pad)}z M${x0} ${y0}v${o.boxHeight}h${o.boxWidth}v${-o.boxHeight}z`,
+        fill: '#4a4a4a', 'fill-rule': 'evenodd'
+    });
+    add(g, 'rect', { x: x0, y: y0, width: o.boxWidth, height: o.boxHeight, fill: '#8c8c8c' });
     // Furniture between the spans
     for (let k = 1; k < o.spans; k++) {
-        add('rect', { x: x0 + k * o.columnStep - o.gutter, y: y0, width: o.gutter, height: o.boxHeight, fill: '#c4c4c4' });
+        add(g, 'rect', { x: x0 + k * o.columnStep - o.gutter, y: y0, width: o.gutter, height: o.boxHeight, fill: `url(#${pid})`, stroke: '#6a6a6a', 'stroke-width': 0.5 });
     }
     svg.insertBefore(g, textGroup);
     requestAnimationFrame(() => {
@@ -534,6 +544,7 @@ function drawForme(svg, textGroup, textDiv, o) {
         const foW = parseFloat(textGroup.getAttribute('width') || '0');
         const gr = textGroup.getBoundingClientRect();
         const scale = foW && gr.width ? gr.width / foW : 1;
+        // Every character, with the line it sits on
         const cols = [];
         textDiv.querySelectorAll('p').forEach((p) => {
             const size = parseFloat(p.style.fontSize) || o.sizePx;
@@ -541,46 +552,85 @@ function drawForme(svg, textGroup, textDiv, o) {
             const range = document.createRange();
             let node;
             while ((node = walker.nextNode())) {
-                range.selectNodeContents(node);
-                for (const r of range.getClientRects()) {
-                    if (r.width < 0.5)
+                const str = node.nodeValue;
+                for (let i = 0; i < str.length; i++) {
+                    const ch = str[i];
+                    if (ch === '\n' || ch === '­')
                         continue;
+                    range.setStart(node, i);
+                    range.setEnd(node, i + 1);
+                    const r = range.getClientRects()[0];
+                    if (!r || r.width < 0.2)
+                        continue;
+                    const left = x0 + (r.left - gr.left) / scale;
+                    const width = r.width / scale;
                     const cy = y0 + ((r.top + r.bottom) / 2 - gr.top) / scale;
-                    const cx = x0 + ((r.left + r.right) / 2 - gr.left) / scale;
-                    const col = Math.floor((cx - x0) / o.columnStep);
+                    const col = Math.floor((left + width / 2 - x0) / o.columnStep);
                     if (col < 0 || col >= o.spans || cy > y0 + o.boxHeight)
                         continue;
-                    const list = cols[col] || (cols[col] = []);
-                    list.push({ cy, size });
+                    (cols[col] || (cols[col] = [])).push({ left, width, cy, size, space: /\s/.test(ch) });
                 }
             }
         });
-        cols.forEach((list, col) => {
-            if (!list)
+        const frag = document.createDocumentFragment();
+        const rect = (attrs) => add(frag, 'rect', attrs);
+        const pxPerPt = o.pxPerPt || 1;
+        cols.forEach((chars, col) => {
+            if (!chars)
                 return;
-            list.sort((a, b) => a.cy - b.cy);
+            chars.sort((a, b) => a.cy - b.cy || a.left - b.left);
+            // Lines: characters whose centres lie within half a type size
             const lines = [];
-            list.forEach(l => {
+            chars.forEach(c => {
                 const last = lines[lines.length - 1];
-                if (last && Math.abs(l.cy - last.cy) < Math.min(l.size, last.size) * 0.5)
-                    last.size = Math.max(last.size, l.size);
+                if (last && Math.abs(c.cy - last.cy) < Math.min(c.size, last.size) * 0.5) {
+                    last.chars.push(c);
+                    last.size = Math.max(last.size, c.size);
+                }
                 else
-                    lines.push({ cy: l.cy, size: l.size });
+                    lines.push({ cy: c.cy, size: c.size, chars: [c] });
             });
-            const x = x0 + col * o.columnStep;
+            const colX = x0 + col * o.columnStep;
+            let bottom = y0;
             lines.forEach((l, i) => {
                 const top = l.cy - l.size / 2;
-                const next = lines[i + 1];
-                if (next) {
-                    const gap = (next.cy - next.size / 2) - (top + l.size);
-                    if (gap > 0.3)
-                        add('rect', { x, y: top + l.size, width: o.spanWidth, height: gap, fill: `url(#${pid})` });
+                // Lead between the previous line and this one, built from standard leads
+                if (top - bottom > 0.3) {
+                    let remaining = (top - bottom) / pxPerPt; // in points
+                    let y = bottom;
+                    LEAD_SIZES_PT.forEach(sz => {
+                        while (remaining >= sz - 0.01) {
+                            rect({ x: colX, y, width: o.spanWidth, height: sz * pxPerPt, fill: '#f6f6f6', stroke: '#7a7a7a', 'stroke-width': 0.5 });
+                            y += sz * pxPerPt;
+                            remaining -= sz;
+                        }
+                    });
+                    if (remaining > 0.05)
+                        rect({ x: colX, y, width: o.spanWidth, height: top - y, fill: '#f6f6f6', stroke: '#7a7a7a', 'stroke-width': 0.5 });
                 }
-                add('rect', { x, y: top, width: o.spanWidth, height: l.size, fill: '#d9d9d9', stroke: '#b0b0b0', 'stroke-width': 0.4 });
+                bottom = top + l.size;
+                // The pieces of the line, left to right as drawn
+                l.chars.sort((a, b) => a.left - b.left);
+                let minX = Infinity, maxX = -Infinity;
+                l.chars.forEach(c => {
+                    minX = Math.min(minX, c.left);
+                    maxX = Math.max(maxX, c.left + c.width);
+                    rect(c.space
+                        ? { x: c.left, y: top + l.size * 0.25, width: c.width, height: l.size * 0.75, fill: '#fafafa', stroke: '#8a8a8a', 'stroke-width': 0.4 }
+                        : { x: c.left, y: top, width: c.width, height: l.size, fill: '#d4d4d4', stroke: '#6e6e6e', 'stroke-width': 0.4 });
+                });
+                // The empty end of the line is filled with quads
+                if (minX - colX > 0.5)
+                    rect({ x: colX, y: top + l.size * 0.25, width: minX - colX, height: l.size * 0.75, fill: `url(#${pid})`, stroke: '#8a8a8a', 'stroke-width': 0.4 });
+                if (colX + o.spanWidth - maxX > 0.5)
+                    rect({ x: maxX, y: top + l.size * 0.25, width: colX + o.spanWidth - maxX, height: l.size * 0.75, fill: `url(#${pid})`, stroke: '#8a8a8a', 'stroke-width': 0.4 });
             });
+            // Below the last line the column is filled with furniture
+            const end = y0 + o.boxHeight;
+            if (end - bottom > 0.5)
+                rect({ x: colX, y: bottom, width: o.spanWidth, height: end - bottom, fill: `url(#${pid})`, stroke: '#6a6a6a', 'stroke-width': 0.5 });
         });
-        // The chase: the frame round the forme
-        add('rect', { x: x0, y: y0, width: o.boxWidth, height: o.boxHeight, fill: 'none', stroke: '#444', 'stroke-width': 1.2 });
+        g.appendChild(frag);
     });
 }
 /**

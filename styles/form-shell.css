@@ -144,6 +144,9 @@ body.page{padding:0}
 .container .cp-grab{position:sticky;top:0;z-index:3}
 .cp-viewbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:6px}
 .cp-viewbar .layer-controls{display:flex;gap:10px;margin:0;padding:0}
+.cp-viewbar .view-lp{margin-right:auto;padding-left:12px;border-left:1px solid var(--cp-muted)}
+.container .view-lp .layer-checkbox span.ic{border-radius:4px;border-bottom:0;padding:0}
+.container .view-lp .layer-checkbox input:checked+span{background:var(--yellow);color:#000}
 .unit-pick{display:inline-flex;align-items:center;gap:8px;font-size:16px}
 .unit-pick .unit-state{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
 .unit-pick .unit-opt{display:inline-flex;align-items:center;height:32px;padding:0 4px 2px;border:0;border-bottom:2px solid transparent;border-radius:0;background:none;font:inherit;color:var(--cp-muted);cursor:pointer}
