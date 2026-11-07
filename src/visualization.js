@@ -552,14 +552,45 @@ function drawForme(svg, textGroup, textDiv, o) {
         parent.appendChild(el);
         return el;
     };
-    // The chase: the margins, iron round the forme (the whole page outside the margin box)
+    // The chase is the iron frame at the edge of the page. Inside it the margins are made of furniture in standard
+    // pica sizes, locked with sidesticks, footsticks and quoins at the head and the right side; solid furniture
+    // backs the other two sides.
     const p = o.page, m = o.margin;
-    add(g, 'path', {
-        d: `M${p.x} ${p.y}h${p.w}v${p.h}h${-p.w}z M${m.x} ${m.y}v${m.h}h${m.w}v${-m.h}z`,
-        fill: '#202020', 'fill-rule': 'evenodd'
-    });
-    add(g, 'path', { d: `M${m.x - 0.5} ${m.y + m.h + 0.5}V${m.y - 0.5}H${m.x + m.w + 0.5}`, fill: 'none', stroke: '#101010', 'stroke-width': 1.4 });
-    add(g, 'path', { d: `M${m.x - 0.5} ${m.y + m.h + 0.5}H${m.x + m.w + 0.5}V${m.y - 0.5}`, fill: 'none', stroke: '#8a8a8a', 'stroke-width': 1 });
+    const pt = o.pxPerPt || 1;
+    const c = Math.max(4, p.w * 0.012);
+    add(g, 'rect', { x: p.x, y: p.y, width: p.w, height: p.h, fill: '#202020' });
+    const FURNITURE = [72, 48, 36, 24, 18, 12, 6].map(n => n * pt); // 6, 4, 3, 2, 1.5, 1 pica and 6 pt reglet
+    const side = (matrix, len, D, locking) => {
+        if (D < 1 || len < 1)
+            return;
+        const gg = add(g, 'g', { transform: `matrix(${matrix})` });
+        const sDepth = locking ? Math.min(24 * pt, D * 0.6) : 0;
+        let vv = 0;
+        // Furniture graduates from the smallest at the forme to the widest at the chase
+        standardPieces(D - sDepth, FURNITURE).reverse().forEach(h => {
+            add(gg, 'rect', { x: 0, y: vv, width: len, height: h, fill: '#5c5c5c', stroke: '#161616', 'stroke-width': 0.6 });
+            vv += h;
+        });
+        if (!locking)
+            return;
+        // Sidestick or footstick: thick at one end, thin at the other
+        const ts = sDepth * 0.3, tk = sDepth * 0.62;
+        const slope = (u) => vv + ts + (tk - ts) * u / len;
+        add(gg, 'polygon', { points: `0,${vv} ${len},${vv} ${len},${vv + tk} 0,${vv + ts}`, fill: '#747474', stroke: '#161616', 'stroke-width': 0.6 });
+        // The quoin, an expanding wedge, driven in between the stick and the chase
+        const u1 = len * 0.12, u2 = Math.min(len * 0.9, u1 + Math.min(len * 0.35, 72 * pt));
+        add(gg, 'polygon', { points: `${u1},${slope(u1)} ${u2},${slope(u2)} ${u2},${vv + sDepth} ${u1},${vv + sDepth}`, fill: '#9c9c9c', stroke: '#161616', 'stroke-width': 0.7 });
+        add(gg, 'rect', { x: u1 + (u2 - u1) * 0.1, y: slope(u1) + (vv + sDepth - slope(u1)) * 0.3, width: Math.min(6 * pt, (u2 - u1) * 0.2), height: (vv + sDepth - slope(u1)) * 0.4, fill: '#2a2a2a' }); // the key socket
+    };
+    const dTop = m.y - (p.y + c), dBottom = (p.y + p.h - c) - (m.y + m.h), dLeft = m.x - (p.x + c), dRight = (p.x + p.w - c) - (m.x + m.w);
+    const sideLen = p.h - 2 * c - Math.max(0, dTop) - Math.max(0, dBottom);
+    side(`1 0 0 -1 ${p.x + c} ${m.y}`, p.w - 2 * c, dTop, true);
+    side(`1 0 0 1 ${p.x + c} ${m.y + m.h}`, p.w - 2 * c, dBottom, false);
+    side(`0 1 -1 0 ${m.x} ${p.y + c + Math.max(0, dTop)}`, sideLen, dLeft, false);
+    side(`0 1 1 0 ${m.x + m.w} ${p.y + c + Math.max(0, dTop)}`, sideLen, dRight, true);
+    // Bevel on the inner edge of the chase
+    add(g, 'path', { d: `M${p.x + c} ${p.y + p.h - c}V${p.y + c}H${p.x + p.w - c}`, fill: 'none', stroke: '#000', 'stroke-width': 1.4 });
+    add(g, 'path', { d: `M${p.x + c} ${p.y + p.h - c}H${p.x + p.w - c}V${p.y + c}`, fill: 'none', stroke: '#8a8a8a', 'stroke-width': 1 });
     // The bed inside the chase: furniture where there is no text, with the text box on it
     add(g, 'rect', { x: m.x, y: m.y, width: m.w, height: m.h, fill: `url(#${pid})`, stroke: '#6a6a6a', 'stroke-width': 1 });
     add(g, 'rect', { x: x0, y: y0, width: o.boxWidth, height: o.boxHeight, fill: '#262626' });
