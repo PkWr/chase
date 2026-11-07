@@ -21,7 +21,7 @@ function getLayerVisibility() {
     const showText = document.getElementById('showText')?.checked ?? true;
     const solidFills = document.getElementById('solidFills')?.checked ?? false;
     const showRaggedEdge = document.getElementById('showRaggedEdge')?.checked ?? false;
-    return { margins: showMargins, columns: showColumns, text: showText, solidFills, marginsSolid: document.getElementById('showMargins')?.dataset.solid === '1', columnsSolid: document.getElementById('showColumns')?.dataset.solid === '1', raggedEdge: showRaggedEdge, baseline: document.getElementById('showBaseline')?.checked ?? false };
+    return { margins: showMargins, columns: showColumns, text: showText, solidFills, marginsSolid: document.getElementById('showMargins')?.dataset.solid === '1', columnsSolid: document.getElementById('showColumns')?.dataset.solid === '1', raggedEdge: showRaggedEdge, baseline: document.getElementById('showBaseline')?.checked ?? false, letterpress: document.getElementById('showLetterpress')?.checked ?? false };
 }
 // Page dimensions and margins are always in mm, gutter is always in em
 const PAGE_UNIT = 'mm';
@@ -337,8 +337,9 @@ function drawPage(svg, inputs, pageX, pageY, pageWidth, pageHeight, leftMargin, 
                 textGroup.setAttribute('width', boxWidth.toString());
                 textGroup.setAttribute('height', textBoxHeight.toString());
                 // Determine visualization mode
-                const showRivers = layerVisibility.raggedEdge && inputs.justifyText;
-                const showRaggedEdge = layerVisibility.raggedEdge && !inputs.justifyText;
+                const letterpress = !!layerVisibility.letterpress; // the forme seen from the face: no ragged edge or rivers
+                const showRivers = !letterpress && layerVisibility.raggedEdge && inputs.justifyText;
+                const showRaggedEdge = !letterpress && layerVisibility.raggedEdge && !inputs.justifyText;
                 // Set background color based on visualization mode
                 let textBgColor = '#ffffff'; // Default white background
                 if (showRivers || showRaggedEdge) {
@@ -458,6 +459,11 @@ function drawPage(svg, inputs, pageX, pageY, pageWidth, pageHeight, leftMargin, 
                 });
                 textGroup.appendChild(textDiv);
                 parentSvg.appendChild(textGroup);
+                if (letterpress) {
+                    // Type is set to read backwards, so the page is shown as the compositor sees it
+                    textDiv.style.transform = 'scaleX(-1)';
+                    drawForme(parentSvg, textGroup, textDiv, { sizePx: fontSizeSVG, spanWidth, columnStep, gutter: scaledGutterWidth, spans: numberOfSpans, boxWidth, boxHeight: textBoxHeight });
+                }
                 // Headings wrap onto tight lines; pad each to whole body lines to keep the baseline grid
                 requestAnimationFrame(() => {
                     if (!textDiv.isConnected)
@@ -470,7 +476,7 @@ function drawPage(svg, inputs, pageX, pageY, pageWidth, pageHeight, leftMargin, 
                     });
                 });
                 // Draw ragged edge highlight if enabled
-                if (layerVisibility.raggedEdge && sampleText && sampleText.trim().length > 0) {
+                if (!letterpress && layerVisibility.raggedEdge && sampleText && sampleText.trim().length > 0) {
                     // Use requestAnimationFrame to ensure text is fully rendered before measuring
                     // Store RAF IDs so they can be cancelled if visualization updates
                     const rafIds = [];
@@ -494,6 +500,88 @@ function drawPage(svg, inputs, pageX, pageY, pageWidth, pageHeight, leftMargin, 
             }
         }
     }
+}
+let formeId = 0;
+/**
+ * Letterpress view: the chase round the type, furniture in the gutters, each line as a type body
+ * (the size of the type) and the lead between lines (leading less type size) as a hatched strip.
+ * The text div is mirrored; lines are measured after layout.
+ */
+function drawForme(svg, textGroup, textDiv, o) {
+    const NS = 'http://www.w3.org/2000/svg';
+    const x0 = parseFloat(textGroup.getAttribute('x') || '0');
+    const y0 = parseFloat(textGroup.getAttribute('y') || '0');
+    const g = document.createElementNS(NS, 'g');
+    g.setAttribute('class', 'forme');
+    const pid = `formeLead${++formeId}`;
+    const defs = document.createElementNS(NS, 'defs');
+    defs.innerHTML = `<pattern id="${pid}" width="3" height="3" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="3" height="3" fill="#f1f1f1"/><line x1="0" y1="0" x2="0" y2="3" stroke="#9a9a9a" stroke-width="0.8"/></pattern>`;
+    g.appendChild(defs);
+    const add = (tag, attrs) => {
+        const el = document.createElementNS(NS, tag);
+        Object.keys(attrs).forEach(k => el.setAttribute(k, String(attrs[k])));
+        g.appendChild(el);
+        return el;
+    };
+    // Furniture between the spans
+    for (let k = 1; k < o.spans; k++) {
+        add('rect', { x: x0 + k * o.columnStep - o.gutter, y: y0, width: o.gutter, height: o.boxHeight, fill: '#c4c4c4' });
+    }
+    svg.insertBefore(g, textGroup);
+    requestAnimationFrame(() => {
+        if (!textGroup.isConnected || !g.isConnected)
+            return;
+        const foW = parseFloat(textGroup.getAttribute('width') || '0');
+        const gr = textGroup.getBoundingClientRect();
+        const scale = foW && gr.width ? gr.width / foW : 1;
+        const cols = [];
+        textDiv.querySelectorAll('p').forEach((p) => {
+            const size = parseFloat(p.style.fontSize) || o.sizePx;
+            const walker = document.createTreeWalker(p, NodeFilter.SHOW_TEXT);
+            const range = document.createRange();
+            let node;
+            while ((node = walker.nextNode())) {
+                range.selectNodeContents(node);
+                for (const r of range.getClientRects()) {
+                    if (r.width < 0.5)
+                        continue;
+                    const cy = y0 + ((r.top + r.bottom) / 2 - gr.top) / scale;
+                    const cx = x0 + ((r.left + r.right) / 2 - gr.left) / scale;
+                    const col = Math.floor((cx - x0) / o.columnStep);
+                    if (col < 0 || col >= o.spans || cy > y0 + o.boxHeight)
+                        continue;
+                    const list = cols[col] || (cols[col] = []);
+                    list.push({ cy, size });
+                }
+            }
+        });
+        cols.forEach((list, col) => {
+            if (!list)
+                return;
+            list.sort((a, b) => a.cy - b.cy);
+            const lines = [];
+            list.forEach(l => {
+                const last = lines[lines.length - 1];
+                if (last && Math.abs(l.cy - last.cy) < Math.min(l.size, last.size) * 0.5)
+                    last.size = Math.max(last.size, l.size);
+                else
+                    lines.push({ cy: l.cy, size: l.size });
+            });
+            const x = x0 + col * o.columnStep;
+            lines.forEach((l, i) => {
+                const top = l.cy - l.size / 2;
+                const next = lines[i + 1];
+                if (next) {
+                    const gap = (next.cy - next.size / 2) - (top + l.size);
+                    if (gap > 0.3)
+                        add('rect', { x, y: top + l.size, width: o.spanWidth, height: gap, fill: `url(#${pid})` });
+                }
+                add('rect', { x, y: top, width: o.spanWidth, height: l.size, fill: '#d9d9d9', stroke: '#b0b0b0', 'stroke-width': 0.4 });
+            });
+        });
+        // The chase: the frame round the forme
+        add('rect', { x: x0, y: y0, width: o.boxWidth, height: o.boxHeight, fill: 'none', stroke: '#444', 'stroke-width': 1.2 });
+    });
 }
 /**
  * Updates the page layout visualization

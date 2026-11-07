@@ -1190,6 +1190,10 @@ async function exportVisualizationAsPDF() {
     const originalText = showTextCheckbox?.checked ?? true;
     const originalRaggedEdge = showRaggedEdgeCheckbox?.checked ?? false;
     const originalBaseline = showBaselineCheckbox?.checked ?? false;
+    const showLetterpressCheckbox = document.getElementById('showLetterpress');
+    const originalLetterpress = showLetterpressCheckbox?.checked ?? false;
+    if (showLetterpressCheckbox)
+        showLetterpressCheckbox.checked = false;
     if (showMarginsCheckbox)
         showMarginsCheckbox.checked = false;
     if (showColumnsCheckbox)
@@ -1211,6 +1215,8 @@ async function exportVisualizationAsPDF() {
             showRaggedEdgeCheckbox.checked = originalRaggedEdge;
         if (showBaselineCheckbox)
             showBaselineCheckbox.checked = originalBaseline;
+        if (showLetterpressCheckbox)
+            showLetterpressCheckbox.checked = originalLetterpress;
         updateVisualizationOnInputChange();
     };
     // Re-render with only the text layer showing
@@ -1516,6 +1522,7 @@ function saveSettingsImmediate() {
         settings.showText = showText;
         settings.solidFills = solidFills;
         settings.showRaggedEdge = showRaggedEdge;
+        settings.showLetterpress = document.getElementById('showLetterpress')?.checked ?? false;
         // Sparkle toggle
         const sparkleToggle = document.getElementById('sparkleToggle')?.checked ?? true;
         settings.sparkleEnabled = sparkleToggle;
@@ -1870,6 +1877,11 @@ function loadSettings() {
             const showRaggedEdgeCheckbox = document.getElementById('showRaggedEdge');
             if (showRaggedEdgeCheckbox)
                 showRaggedEdgeCheckbox.checked = settings.showRaggedEdge;
+        }
+        if (settings.showLetterpress !== undefined) {
+            const showLetterpressCheckbox = document.getElementById('showLetterpress');
+            if (showLetterpressCheckbox)
+                showLetterpressCheckbox.checked = settings.showLetterpress;
         }
         // Update margin labels and inputs visibility after loading
         // BUT don't sync values - we just loaded them, so preserve what was loaded
@@ -2359,7 +2371,7 @@ export function initializeCalculator() {
         }
     });
     // Handle layer visibility checkboxes
-    const layerCheckboxes = ['showMargins', 'showColumns', 'showText', 'solidFills', 'showRaggedEdge', 'showBaseline'];
+    const layerCheckboxes = ['showMargins', 'showColumns', 'showText', 'solidFills', 'showRaggedEdge', 'showBaseline', 'showLetterpress'];
     layerCheckboxes.forEach(id => {
         addInputChangeListeners(id, {
             onChange: () => {
