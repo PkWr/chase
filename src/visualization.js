@@ -462,6 +462,8 @@ function drawPage(svg, inputs, pageX, pageY, pageWidth, pageHeight, leftMargin, 
                 if (letterpress) {
                     // Type is set to read backwards, so the page is shown as the compositor sees it
                     textDiv.style.transform = 'scaleX(-1)';
+                    textDiv.style.color = '#f0f0f0'; // the raised face of the letter, lighter than the body of the type
+                    textDiv.style.textShadow = '0 0.04em 0 rgba(0,0,0,0.55)';
                     drawForme(parentSvg, textGroup, textDiv, { sizePx: fontSizeSVG, spanWidth, columnStep, gutter: scaledGutterWidth, spans: numberOfSpans, boxWidth, boxHeight: textBoxHeight, pxPerPt: lineHeight / leadingPt, page: { x: pageX, y: pageY, w: pageWidth, h: pageHeight }, margin: { x: textBoxX, y: textBoxY, w: fullTextBoxWidth, h: textBoxHeight } });
                 }
                 // Headings wrap onto tight lines; pad each to whole body lines to keep the baseline grid
@@ -540,7 +542,7 @@ function drawForme(svg, textGroup, textDiv, o) {
     g.setAttribute('class', 'forme');
     const pid = `formeFill${++formeId}`;
     const defs = document.createElementNS(NS, 'defs');
-    defs.innerHTML = `<pattern id="${pid}" width="3" height="3" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="3" height="3" fill="#b4b4b4"/><line x1="0" y1="0" x2="0" y2="3" stroke="#8c8c8c" stroke-width="0.7"/></pattern><linearGradient id="${pid}T" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#dadada"/><stop offset="0.55" stop-color="#bcbcbc"/><stop offset="1" stop-color="#989898"/></linearGradient><linearGradient id="${pid}R" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6e6e6e"/><stop offset="0.5" stop-color="#9a9a9a"/><stop offset="1" stop-color="#b4b4b4"/></linearGradient>`;
+    defs.innerHTML = `<pattern id="${pid}" width="3" height="3" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="3" height="3" fill="#b4b4b4"/><line x1="0" y1="0" x2="0" y2="3" stroke="#8c8c8c" stroke-width="0.7"/></pattern><linearGradient id="${pid}T" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8e8e8e"/><stop offset="0.55" stop-color="#707070"/><stop offset="1" stop-color="#555555"/></linearGradient><linearGradient id="${pid}R" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2c2c2c"/><stop offset="0.5" stop-color="#3e3e3e"/><stop offset="1" stop-color="#555555"/></linearGradient>`;
     g.appendChild(defs);
     const add = (parent, tag, attrs) => {
         const el = document.createElementNS(NS, tag);
@@ -552,7 +554,7 @@ function drawForme(svg, textGroup, textDiv, o) {
     const p = o.page, m = o.margin;
     add(g, 'path', {
         d: `M${p.x} ${p.y}h${p.w}v${p.h}h${-p.w}z M${m.x} ${m.y}v${m.h}h${m.w}v${-m.h}z`,
-        fill: '#3c3c3c', 'fill-rule': 'evenodd'
+        fill: '#202020', 'fill-rule': 'evenodd'
     });
     add(g, 'path', { d: `M${m.x - 0.5} ${m.y + m.h + 0.5}V${m.y - 0.5}H${m.x + m.w + 0.5}`, fill: 'none', stroke: '#101010', 'stroke-width': 1.4 });
     add(g, 'path', { d: `M${m.x - 0.5} ${m.y + m.h + 0.5}H${m.x + m.w + 0.5}V${m.y - 0.5}`, fill: 'none', stroke: '#8a8a8a', 'stroke-width': 1 });
@@ -571,6 +573,19 @@ function drawForme(svg, textGroup, textDiv, o) {
         const gr = textGroup.getBoundingClientRect();
         const scale = foW && gr.width ? gr.width / foW : 1;
         const pxPerPt = o.pxPerPt || 1;
+        // Where the baseline sits in the body of the type: the font's ascent as a share of ascent + descent
+        const ctx = document.createElement('canvas').getContext('2d');
+        const ratios = {};
+        const ascentShare = (cs) => {
+            const font = `${cs.fontStyle} ${cs.fontWeight} 100px ${cs.fontFamily}`;
+            if (ratios[font] === undefined) {
+                ctx.font = font;
+                const m = ctx.measureText('Hg');
+                const a = m.fontBoundingBoxAscent, d = m.fontBoundingBoxDescent;
+                ratios[font] = (a > 0 && d > 0) ? a / (a + d) : 0.8;
+            }
+            return ratios[font];
+        };
         // Every character, with the line it sits on
         const cols = [];
         textDiv.querySelectorAll('p').forEach((para) => {
@@ -579,6 +594,7 @@ function drawForme(svg, textGroup, textDiv, o) {
             const range = document.createRange();
             let node;
             while ((node = walker.nextNode())) {
+                const share = ascentShare(getComputedStyle(node.parentElement || para));
                 const str = node.nodeValue;
                 for (let i = 0; i < str.length; i++) {
                     const ch = str[i];
@@ -591,7 +607,8 @@ function drawForme(svg, textGroup, textDiv, o) {
                         continue;
                     const left = x0 + (r.left - gr.left) / scale;
                     const width = r.width / scale;
-                    const cy = y0 + ((r.top + r.bottom) / 2 - gr.top) / scale;
+                    const baseline = y0 + (r.top - gr.top) / scale + (r.height / scale) * share;
+                    const cy = baseline - size * (share - 0.5); // middle of the body: the baseline sits the same way in every block
                     const col = Math.floor((left + width / 2 - x0) / o.columnStep);
                     if (col < 0 || col >= o.spans || cy > y0 + o.boxHeight)
                         continue;
@@ -604,7 +621,7 @@ function drawForme(svg, textGroup, textDiv, o) {
         // A run of standard pieces side by side along x, each outlined so the sum shows
         const quads = (x, top, size, width, fractions) => {
             standardPieces(width, fractions.map(f => f * size).concat([pxPerPt, pxPerPt / 2])).reduce((cx, w) => {
-                rect({ x: cx, y: top + size * 0.25, width: w, height: size * 0.75, fill: `url(#${pid}R)`, stroke: '#4e4e4e', 'stroke-width': 0.4 });
+                rect({ x: cx, y: top + size * 0.25, width: w, height: size * 0.75, fill: `url(#${pid}R)`, stroke: '#161616', 'stroke-width': 0.4 });
                 return cx + w;
             }, x);
         };
@@ -630,7 +647,7 @@ function drawForme(svg, textGroup, textDiv, o) {
                 if (top - bottom > 0.3) {
                     let y = bottom;
                     standardPieces(top - bottom, LEAD_SIZES_PT.map(pt => pt * pxPerPt)).forEach(h => {
-                        rect({ x: colX, y, width: o.spanWidth, height: h, fill: `url(#${pid}R)`, stroke: '#4e4e4e', 'stroke-width': 0.5, 'fill-opacity': h >= 6 * pxPerPt * 0.99 ? 1 : 0.8 });
+                        rect({ x: colX, y, width: o.spanWidth, height: h, fill: `url(#${pid}R)`, stroke: '#161616', 'stroke-width': 0.5, 'fill-opacity': h >= 6 * pxPerPt * 0.99 ? 1 : 0.8 });
                         y += h;
                     });
                 }
@@ -644,8 +661,8 @@ function drawForme(svg, textGroup, textDiv, o) {
                         quads(c.left, top, l.size, c.width, SPACE_FRACTIONS);
                     else
                         {
-                            rect({ x: c.left, y: top, width: c.width, height: l.size, fill: `url(#${pid}T)`, stroke: '#4a4a4a', 'stroke-width': 0.4 });
-                            add(frag, 'path', { d: `M${c.left + 0.3} ${top + l.size - 0.3}V${top + 0.3}H${c.left + c.width - 0.3}`, fill: 'none', stroke: '#fff', 'stroke-opacity': 0.55, 'stroke-width': Math.max(0.5, l.size * 0.05) });
+                            rect({ x: c.left, y: top, width: c.width, height: l.size, fill: `url(#${pid}T)`, stroke: '#1c1c1c', 'stroke-width': 0.4 });
+                            add(frag, 'path', { d: `M${c.left + 0.3} ${top + l.size - 0.3}V${top + 0.3}H${c.left + c.width - 0.3}`, fill: 'none', stroke: '#fff', 'stroke-opacity': 0.4, 'stroke-width': Math.max(0.5, l.size * 0.05) });
                         }
                 });
                 // The empty end of the line is filled with quads
