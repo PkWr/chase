@@ -510,6 +510,8 @@ const LEAD_SIZES_PT = [12, 6, 2, 1];
 // Quads that fill the end of a line also come in 3-em and 2-em.
 const SPACE_FRACTIONS = [1, 1 / 2, 1 / 3, 1 / 4, 1 / 5];
 const FILL_FRACTIONS = [3, 2];
+// The baseline sits this far down the body of the type (the rest is the beard, which holds descenders)
+const BASELINE_IN_BODY = 0.77;
 /** Splits a length into standard pieces that add up to it; any rounding left over goes into the last piece. */
 function standardPieces(total, sizes) {
     const out = [];
@@ -542,7 +544,7 @@ function drawForme(svg, textGroup, textDiv, o) {
     g.setAttribute('class', 'forme');
     const pid = `formeFill${++formeId}`;
     const defs = document.createElementNS(NS, 'defs');
-    defs.innerHTML = `<pattern id="${pid}" width="3" height="3" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="3" height="3" fill="#b4b4b4"/><line x1="0" y1="0" x2="0" y2="3" stroke="#8c8c8c" stroke-width="0.7"/></pattern><linearGradient id="${pid}T" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8e8e8e"/><stop offset="0.55" stop-color="#707070"/><stop offset="1" stop-color="#555555"/></linearGradient><linearGradient id="${pid}R" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2c2c2c"/><stop offset="0.5" stop-color="#3e3e3e"/><stop offset="1" stop-color="#555555"/></linearGradient>`;
+    defs.innerHTML = `<pattern id="${pid}" width="3" height="3" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="3" height="3" fill="#b4b4b4"/><line x1="0" y1="0" x2="0" y2="3" stroke="#8c8c8c" stroke-width="0.7"/></pattern><linearGradient id="${pid}T" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a6a6a6"/><stop offset="0.55" stop-color="#848484"/><stop offset="1" stop-color="#666666"/></linearGradient><linearGradient id="${pid}R" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2c2c2c"/><stop offset="0.5" stop-color="#3e3e3e"/><stop offset="1" stop-color="#555555"/></linearGradient>`;
     g.appendChild(defs);
     const add = (parent, tag, attrs) => {
         const el = document.createElementNS(NS, tag);
@@ -560,7 +562,7 @@ function drawForme(svg, textGroup, textDiv, o) {
     add(g, 'path', { d: `M${m.x - 0.5} ${m.y + m.h + 0.5}H${m.x + m.w + 0.5}V${m.y - 0.5}`, fill: 'none', stroke: '#8a8a8a', 'stroke-width': 1 });
     // The bed inside the chase: furniture where there is no text, with the text box on it
     add(g, 'rect', { x: m.x, y: m.y, width: m.w, height: m.h, fill: `url(#${pid})`, stroke: '#6a6a6a', 'stroke-width': 1 });
-    add(g, 'rect', { x: x0, y: y0, width: o.boxWidth, height: o.boxHeight, fill: '#d0d0d0' });
+    add(g, 'rect', { x: x0, y: y0, width: o.boxWidth, height: o.boxHeight, fill: '#262626' });
     // Furniture between the spans
     for (let k = 1; k < o.spans; k++) {
         add(g, 'rect', { x: x0 + k * o.columnStep - o.gutter, y: y0, width: o.gutter, height: o.boxHeight, fill: `url(#${pid})`, stroke: '#6a6a6a', 'stroke-width': 0.5 });
@@ -608,7 +610,7 @@ function drawForme(svg, textGroup, textDiv, o) {
                     const left = x0 + (r.left - gr.left) / scale;
                     const width = r.width / scale;
                     const baseline = y0 + (r.top - gr.top) / scale + (r.height / scale) * share;
-                    const cy = baseline - size * (share - 0.5); // middle of the body: the baseline sits the same way in every block
+                    const cy = baseline - size * (BASELINE_IN_BODY - 0.5); // middle of the body: the baseline sits the same way in every block
                     const col = Math.floor((left + width / 2 - x0) / o.columnStep);
                     if (col < 0 || col >= o.spans || cy > y0 + o.boxHeight)
                         continue;
@@ -661,8 +663,8 @@ function drawForme(svg, textGroup, textDiv, o) {
                         quads(c.left, top, l.size, c.width, SPACE_FRACTIONS);
                     else
                         {
-                            rect({ x: c.left, y: top, width: c.width, height: l.size, fill: `url(#${pid}T)`, stroke: '#1c1c1c', 'stroke-width': 0.4 });
-                            add(frag, 'path', { d: `M${c.left + 0.3} ${top + l.size - 0.3}V${top + 0.3}H${c.left + c.width - 0.3}`, fill: 'none', stroke: '#fff', 'stroke-opacity': 0.4, 'stroke-width': Math.max(0.5, l.size * 0.05) });
+                            rect({ x: c.left, y: top, width: c.width, height: l.size, fill: `url(#${pid}T)`, stroke: '#101010', 'stroke-width': 0.7 });
+                            add(frag, 'path', { d: `M${c.left + 0.3} ${top + l.size - 0.3}V${top + 0.3}H${c.left + c.width - 0.3}`, fill: 'none', stroke: '#fff', 'stroke-opacity': 0.7, 'stroke-width': Math.max(0.6, l.size * 0.07) });
                         }
                 });
                 // The empty end of the line is filled with quads
