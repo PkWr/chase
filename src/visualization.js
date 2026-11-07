@@ -540,7 +540,7 @@ function drawForme(svg, textGroup, textDiv, o) {
     g.setAttribute('class', 'forme');
     const pid = `formeFill${++formeId}`;
     const defs = document.createElementNS(NS, 'defs');
-    defs.innerHTML = `<pattern id="${pid}" width="3" height="3" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="3" height="3" fill="#b4b4b4"/><line x1="0" y1="0" x2="0" y2="3" stroke="#8c8c8c" stroke-width="0.7"/></pattern>`;
+    defs.innerHTML = `<pattern id="${pid}" width="3" height="3" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="3" height="3" fill="#b4b4b4"/><line x1="0" y1="0" x2="0" y2="3" stroke="#8c8c8c" stroke-width="0.7"/></pattern><linearGradient id="${pid}T" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#dadada"/><stop offset="0.55" stop-color="#bcbcbc"/><stop offset="1" stop-color="#989898"/></linearGradient><linearGradient id="${pid}R" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6e6e6e"/><stop offset="0.5" stop-color="#9a9a9a"/><stop offset="1" stop-color="#b4b4b4"/></linearGradient>`;
     g.appendChild(defs);
     const add = (parent, tag, attrs) => {
         const el = document.createElementNS(NS, tag);
@@ -554,6 +554,8 @@ function drawForme(svg, textGroup, textDiv, o) {
         d: `M${p.x} ${p.y}h${p.w}v${p.h}h${-p.w}z M${m.x} ${m.y}v${m.h}h${m.w}v${-m.h}z`,
         fill: '#3c3c3c', 'fill-rule': 'evenodd'
     });
+    add(g, 'path', { d: `M${m.x - 0.5} ${m.y + m.h + 0.5}V${m.y - 0.5}H${m.x + m.w + 0.5}`, fill: 'none', stroke: '#101010', 'stroke-width': 1.4 });
+    add(g, 'path', { d: `M${m.x - 0.5} ${m.y + m.h + 0.5}H${m.x + m.w + 0.5}V${m.y - 0.5}`, fill: 'none', stroke: '#8a8a8a', 'stroke-width': 1 });
     // The bed inside the chase: furniture where there is no text, with the text box on it
     add(g, 'rect', { x: m.x, y: m.y, width: m.w, height: m.h, fill: `url(#${pid})`, stroke: '#6a6a6a', 'stroke-width': 1 });
     add(g, 'rect', { x: x0, y: y0, width: o.boxWidth, height: o.boxHeight, fill: '#d0d0d0' });
@@ -602,7 +604,7 @@ function drawForme(svg, textGroup, textDiv, o) {
         // A run of standard pieces side by side along x, each outlined so the sum shows
         const quads = (x, top, size, width, fractions) => {
             standardPieces(width, fractions.map(f => f * size).concat([pxPerPt, pxPerPt / 2])).reduce((cx, w) => {
-                rect({ x: cx, y: top + size * 0.25, width: w, height: size * 0.75, fill: '#e4e4e4', stroke: '#7a7a7a', 'stroke-width': 0.4 });
+                rect({ x: cx, y: top + size * 0.25, width: w, height: size * 0.75, fill: `url(#${pid}R)`, stroke: '#4e4e4e', 'stroke-width': 0.4 });
                 return cx + w;
             }, x);
         };
@@ -628,7 +630,7 @@ function drawForme(svg, textGroup, textDiv, o) {
                 if (top - bottom > 0.3) {
                     let y = bottom;
                     standardPieces(top - bottom, LEAD_SIZES_PT.map(pt => pt * pxPerPt)).forEach(h => {
-                        rect({ x: colX, y, width: o.spanWidth, height: h, fill: h >= 6 * pxPerPt * 0.99 ? '#d8d8d8' : '#ececec', stroke: '#6e6e6e', 'stroke-width': 0.5 });
+                        rect({ x: colX, y, width: o.spanWidth, height: h, fill: `url(#${pid}R)`, stroke: '#4e4e4e', 'stroke-width': 0.5, 'fill-opacity': h >= 6 * pxPerPt * 0.99 ? 1 : 0.8 });
                         y += h;
                     });
                 }
@@ -641,7 +643,10 @@ function drawForme(svg, textGroup, textDiv, o) {
                     if (c.space)
                         quads(c.left, top, l.size, c.width, SPACE_FRACTIONS);
                     else
-                        rect({ x: c.left, y: top, width: c.width, height: l.size, fill: '#bcbcbc', stroke: '#5e5e5e', 'stroke-width': 0.4 });
+                        {
+                            rect({ x: c.left, y: top, width: c.width, height: l.size, fill: `url(#${pid}T)`, stroke: '#4a4a4a', 'stroke-width': 0.4 });
+                            add(frag, 'path', { d: `M${c.left + 0.3} ${top + l.size - 0.3}V${top + 0.3}H${c.left + c.width - 0.3}`, fill: 'none', stroke: '#fff', 'stroke-opacity': 0.55, 'stroke-width': Math.max(0.5, l.size * 0.05) });
+                        }
                 });
                 // The empty end of the line is filled with quads
                 if (minX - colX > 0.5)
