@@ -1,6 +1,6 @@
 // Phone only: the panel is a bottom sheet. It rests at half height with the page above;
-// a finger pushing up on it (handle, header or content) lifts it over the page, and only
-// then does its content scroll. Pulling down at the top of the content lowers it again.
+// a finger on the handle or header lifts or lowers it, and its content scrolls at half height
+// and full. Pulling down at the top of the content lowers it.
 (function () {
   var p = document.getElementById('panel');
   var g = document.getElementById('grab');
@@ -30,8 +30,8 @@
     var dy = e.touches[0].clientY - y0;
     if (!dragging) {
       if (Math.abs(dy) < 8) return;
-      // Content scrolls itself once the sheet is full and not at the top (or moving up).
-      if (fromContent && full() && !(p.scrollTop <= 0 && dy > 0)) { y0 = null; return; }
+      // Content scrolls itself, at half height and full, unless it is at the top and being pulled down.
+      if (fromContent && !folded() && !(p.scrollTop <= 0 && dy > 0)) { y0 = null; return; }
       if (fromContent && folded()) { y0 = null; return; }
       dragging = true;
       p.style.transition = 'none';
