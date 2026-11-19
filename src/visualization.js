@@ -21,7 +21,7 @@ function getLayerVisibility() {
     const showText = document.getElementById('showText')?.checked ?? true;
     const solidFills = document.getElementById('solidFills')?.checked ?? false;
     const showRaggedEdge = document.getElementById('showRaggedEdge')?.checked ?? false;
-    return { margins: showMargins, columns: showColumns, text: showText, solidFills, marginsSolid: document.getElementById('showMargins')?.dataset.solid === '1', columnsSolid: document.getElementById('showColumns')?.dataset.solid === '1', raggedEdge: showRaggedEdge, baseline: document.getElementById('showBaseline')?.checked ?? false };
+    return { margins: showMargins, columns: showColumns, text: showText, solidFills, marginsSolid: document.getElementById('showMargins')?.dataset.solid === '1', columnsSolid: document.getElementById('showColumns')?.dataset.solid === '1', raggedEdge: showRaggedEdge, baseline: document.getElementById('showBaseline')?.checked ?? false, letterpress: (document.getElementById('showLetterpress')?.checked ?? false) && document.body.getAttribute('data-step') !== '1' }; // not on the intro
 }
 // Page dimensions and margins are always in mm, gutter is always in em
 const PAGE_UNIT = 'mm';
@@ -337,8 +337,9 @@ function drawPage(svg, inputs, pageX, pageY, pageWidth, pageHeight, leftMargin, 
                 textGroup.setAttribute('width', boxWidth.toString());
                 textGroup.setAttribute('height', textBoxHeight.toString());
                 // Determine visualization mode
-                const showRivers = layerVisibility.raggedEdge && inputs.justifyText;
-                const showRaggedEdge = layerVisibility.raggedEdge && !inputs.justifyText;
+                const letterpress = !!layerVisibility.letterpress; // the forme seen from the face: no ragged edge or rivers
+                const showRivers = !letterpress && layerVisibility.raggedEdge && inputs.justifyText;
+                const showRaggedEdge = !letterpress && layerVisibility.raggedEdge && !inputs.justifyText;
                 // Set background color based on visualization mode
                 let textBgColor = '#ffffff'; // Default white background
                 if (showRivers || showRaggedEdge) {
@@ -458,6 +459,13 @@ function drawPage(svg, inputs, pageX, pageY, pageWidth, pageHeight, leftMargin, 
                 });
                 textGroup.appendChild(textDiv);
                 parentSvg.appendChild(textGroup);
+                if (letterpress) {
+                    // Type is set to read backwards, so the page is shown as the compositor sees it
+                    textDiv.style.transform = 'scaleX(-1)';
+                    textDiv.style.color = '#f0f0f0'; // the raised face of the letter, lighter than the body of the type
+                    textDiv.style.textShadow = '0 0.04em 0 rgba(0,0,0,0.55)';
+                    drawForme(parentSvg, textGroup, textDiv, { sizePx: fontSizeSVG, spanWidth, columnStep, gutter: scaledGutterWidth, spans: numberOfSpans, boxWidth, boxHeight: textBoxHeight, pxPerPt: lineHeight / leadingPt, quoinSide: (isFacingPages() && pageX < pageWidth * 0.5) ? 'left' : 'right', page: { x: pageX, y: pageY, w: pageWidth, h: pageHeight }, margin: { x: textBoxX, y: textBoxY, w: fullTextBoxWidth, h: textBoxHeight } });
+                }
                 // Headings wrap onto tight lines; pad each to whole body lines to keep the baseline grid
                 requestAnimationFrame(() => {
                     if (!textDiv.isConnected)
@@ -470,7 +478,7 @@ function drawPage(svg, inputs, pageX, pageY, pageWidth, pageHeight, leftMargin, 
                     });
                 });
                 // Draw ragged edge highlight if enabled
-                if (layerVisibility.raggedEdge && sampleText && sampleText.trim().length > 0) {
+                if (!letterpress && layerVisibility.raggedEdge && sampleText && sampleText.trim().length > 0) {
                     // Use requestAnimationFrame to ensure text is fully rendered before measuring
                     // Store RAF IDs so they can be cancelled if visualization updates
                     const rafIds = [];
@@ -494,6 +502,218 @@ function drawPage(svg, inputs, pageX, pageY, pageWidth, pageHeight, leftMargin, 
             }
         }
     }
+}
+let formeId = 0;
+// Lead is cast in standard thicknesses: 12 pt and 6 pt slugs, 2 pt and 1 pt leads.
+const LEAD_SIZES_PT = [12, 6, 2, 1];
+// Spaces are standard quads, fractions of the em: em, en, 3-per-em, 4-per-em, 5-per-em, then brass spaces of 1 pt and 1/2 pt.
+// Quads that fill the end of a line also come in 3-em and 2-em.
+const SPACE_FRACTIONS = [1, 1 / 2, 1 / 3, 1 / 4, 1 / 5];
+const FILL_FRACTIONS = [3, 2];
+// The baseline sits this far down the body of the type (the rest is the beard, which holds descenders)
+const BASELINE_IN_BODY = 0.77;
+/** Splits a length into standard pieces that add up to it; any rounding left over goes into the last piece. */
+function standardPieces(total, sizes) {
+    const out = [];
+    let rem = total;
+    sizes.forEach(sz => {
+        while (sz > 0.01 && rem >= sz * 0.999) {
+            out.push(sz);
+            rem -= sz;
+        }
+    });
+    if (rem > 0.01) {
+        if (out.length)
+            out[out.length - 1] += rem;
+        else
+            out.push(rem);
+    }
+    return out;
+}
+/**
+ * Letterpress view: the forme as material, in greys. Every character is one piece of type; every space is
+ * built from standard quads that add up to its width; the empty end of a line is filled with quads; the lead
+ * between lines is built from standard leads and slugs (4 pt is two 2 pt strips); the gutters and the space
+ * below the text are furniture; the margins are the chase. The text div is mirrored; pieces are measured after layout.
+ */
+function drawForme(svg, textGroup, textDiv, o) {
+    const NS = 'http://www.w3.org/2000/svg';
+    const x0 = parseFloat(textGroup.getAttribute('x') || '0');
+    const y0 = parseFloat(textGroup.getAttribute('y') || '0');
+    const g = document.createElementNS(NS, 'g');
+    g.setAttribute('class', 'forme');
+    const pid = `formeFill${++formeId}`;
+    const defs = document.createElementNS(NS, 'defs');
+    defs.innerHTML = `<pattern id="${pid}" width="3" height="3" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="3" height="3" fill="#b4b4b4"/><line x1="0" y1="0" x2="0" y2="3" stroke="#8c8c8c" stroke-width="0.7"/></pattern><linearGradient id="${pid}T" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a6a6a6"/><stop offset="0.55" stop-color="#848484"/><stop offset="1" stop-color="#666666"/></linearGradient><linearGradient id="${pid}R" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2c2c2c"/><stop offset="0.5" stop-color="#3e3e3e"/><stop offset="1" stop-color="#555555"/></linearGradient>`;
+    g.appendChild(defs);
+    const add = (parent, tag, attrs) => {
+        const el = document.createElementNS(NS, tag);
+        Object.keys(attrs).forEach(k => el.setAttribute(k, String(attrs[k])));
+        parent.appendChild(el);
+        return el;
+    };
+    // The chase is the iron frame at the edge of the page. Inside it the margins are made of furniture in standard
+    // pica sizes, locked with sticks and quoins at the foot and the outer side (as in a two-page forme, where the
+    // quoins sit on the outer edges and the foot); the head and the gutter side are solid furniture.
+    const p = o.page, m = o.margin;
+    const pt = o.pxPerPt || 1;
+    const c = Math.max(4, p.w * 0.012);
+    add(g, 'rect', { x: p.x, y: p.y, width: p.w, height: p.h, fill: '#202020' });
+    const FURNITURE = [72, 48, 36, 24, 18, 12, 6].map(n => n * pt); // 6, 4, 3, 2, 1.5, 1 pica and 6 pt reglet
+    const side = (matrix, len, D, locking) => {
+        if (D < 1 || len < 1)
+            return;
+        const gg = add(g, 'g', { transform: `matrix(${matrix})` });
+        const sDepth = locking ? Math.min(30 * pt, D * 0.7) : 0;
+        let vv = 0;
+        // Furniture graduates from the smallest at the forme to the widest at the chase
+        standardPieces(D - sDepth, FURNITURE).reverse().forEach(h => {
+            add(gg, 'rect', { x: 0, y: vv, width: len, height: h, fill: '#5c5c5c', stroke: '#161616', 'stroke-width': 0.6 });
+            vv += h;
+        });
+        if (!locking)
+            return;
+        // Steel sidestick or footstick against the forme's furniture, then the quoins between it and the chase
+        const st = sDepth * 0.38, gd = sDepth - st;
+        add(gg, 'rect', { x: 0, y: vv, width: len, height: st, fill: '#3c3c3c', stroke: '#161616', 'stroke-width': 0.6 });
+        add(gg, 'rect', { x: 0, y: vv + st, width: len, height: gd, fill: '#2a2a2a', stroke: '#161616', 'stroke-width': 0.6 });
+        const Lq = Math.min(len * 0.2, 60 * pt);
+        [0.25, 0.75].forEach(f => {
+            const x = len * f - Lq / 2;
+            add(gg, 'rect', { x, y: vv + st, width: Lq, height: gd, fill: '#9c9c9c', stroke: '#101010', 'stroke-width': 0.8 });
+            for (let k = 1; k < 6; k++) // the teeth of the wedge
+                add(gg, 'line', { x1: x + Lq * k / 6, y1: vv + st, x2: x + Lq * k / 6, y2: vv + st + gd * 0.18, stroke: '#303030', 'stroke-width': 0.6 });
+            add(gg, 'circle', { cx: x + Lq / 2, cy: vv + st + gd / 2, r: Math.max(1.2, Math.min(gd * 0.24, Lq * 0.12)), fill: '#1a1a1a', stroke: '#000', 'stroke-width': 0.5 }); // the key socket
+        });
+    };
+    const dTop = m.y - (p.y + c), dBottom = (p.y + p.h - c) - (m.y + m.h), dLeft = m.x - (p.x + c), dRight = (p.x + p.w - c) - (m.x + m.w);
+    const sideLen = p.h - 2 * c - Math.max(0, dTop) - Math.max(0, dBottom);
+    side(`1 0 0 -1 ${p.x + c} ${m.y}`, p.w - 2 * c, dTop, false);
+    side(`1 0 0 1 ${p.x + c} ${m.y + m.h}`, p.w - 2 * c, dBottom, true);
+    side(`0 1 -1 0 ${m.x} ${p.y + c + Math.max(0, dTop)}`, sideLen, dLeft, o.quoinSide === 'left');
+    side(`0 1 1 0 ${m.x + m.w} ${p.y + c + Math.max(0, dTop)}`, sideLen, dRight, o.quoinSide !== 'left');
+    // Bevel on the inner edge of the chase
+    add(g, 'path', { d: `M${p.x + c} ${p.y + p.h - c}V${p.y + c}H${p.x + p.w - c}`, fill: 'none', stroke: '#000', 'stroke-width': 1.4 });
+    add(g, 'path', { d: `M${p.x + c} ${p.y + p.h - c}H${p.x + p.w - c}V${p.y + c}`, fill: 'none', stroke: '#8a8a8a', 'stroke-width': 1 });
+    // The bed inside the chase: furniture where there is no text, with the text box on it
+    add(g, 'rect', { x: m.x, y: m.y, width: m.w, height: m.h, fill: `url(#${pid})`, stroke: '#6a6a6a', 'stroke-width': 1 });
+    add(g, 'rect', { x: x0, y: y0, width: o.boxWidth, height: o.boxHeight, fill: '#262626' });
+    // Furniture between the spans
+    for (let k = 1; k < o.spans; k++) {
+        add(g, 'rect', { x: x0 + k * o.columnStep - o.gutter, y: y0, width: o.gutter, height: o.boxHeight, fill: `url(#${pid})`, stroke: '#6a6a6a', 'stroke-width': 0.5 });
+    }
+    svg.insertBefore(g, textGroup);
+    requestAnimationFrame(() => {
+        if (!textGroup.isConnected || !g.isConnected)
+            return;
+        const foW = parseFloat(textGroup.getAttribute('width') || '0');
+        const gr = textGroup.getBoundingClientRect();
+        const scale = foW && gr.width ? gr.width / foW : 1;
+        const pxPerPt = o.pxPerPt || 1;
+        // Where the baseline sits in the body of the type: the font's ascent as a share of ascent + descent
+        const ctx = document.createElement('canvas').getContext('2d');
+        const ratios = {};
+        const ascentShare = (cs) => {
+            const font = `${cs.fontStyle} ${cs.fontWeight} 100px ${cs.fontFamily}`;
+            if (ratios[font] === undefined) {
+                ctx.font = font;
+                const m = ctx.measureText('Hg');
+                const a = m.fontBoundingBoxAscent, d = m.fontBoundingBoxDescent;
+                ratios[font] = (a > 0 && d > 0) ? a / (a + d) : 0.8;
+            }
+            return ratios[font];
+        };
+        // Every character, with the line it sits on
+        const cols = [];
+        textDiv.querySelectorAll('p').forEach((para) => {
+            const size = parseFloat(para.style.fontSize) || o.sizePx;
+            const walker = document.createTreeWalker(para, NodeFilter.SHOW_TEXT);
+            const range = document.createRange();
+            let node;
+            while ((node = walker.nextNode())) {
+                const share = ascentShare(getComputedStyle(node.parentElement || para));
+                const str = node.nodeValue;
+                for (let i = 0; i < str.length; i++) {
+                    const ch = str[i];
+                    if (ch === '\n' || ch === '­')
+                        continue;
+                    range.setStart(node, i);
+                    range.setEnd(node, i + 1);
+                    const r = range.getClientRects()[0];
+                    if (!r || r.width < 0.2)
+                        continue;
+                    const left = x0 + (r.left - gr.left) / scale;
+                    const width = r.width / scale;
+                    const baseline = y0 + (r.top - gr.top) / scale + (r.height / scale) * share;
+                    const cy = baseline - size * (BASELINE_IN_BODY - 0.5); // middle of the body: the baseline sits the same way in every block
+                    const col = Math.floor((left + width / 2 - x0) / o.columnStep);
+                    if (col < 0 || col >= o.spans || cy > y0 + o.boxHeight)
+                        continue;
+                    (cols[col] || (cols[col] = [])).push({ left, width, cy, size, space: /\s/.test(ch) });
+                }
+            }
+        });
+        const frag = document.createDocumentFragment();
+        const rect = (attrs) => add(frag, 'rect', attrs);
+        // A run of standard pieces side by side along x, each outlined so the sum shows
+        const quads = (x, top, size, width, fractions) => {
+            standardPieces(width, fractions.map(f => f * size).concat([pxPerPt, pxPerPt / 2])).reduce((cx, w) => {
+                rect({ x: cx, y: top + size * 0.25, width: w, height: size * 0.75, fill: `url(#${pid}R)`, stroke: '#161616', 'stroke-width': 0.4 });
+                return cx + w;
+            }, x);
+        };
+        cols.forEach((chars, col) => {
+            if (!chars)
+                return;
+            chars.sort((a, b) => a.cy - b.cy || a.left - b.left);
+            const lines = [];
+            chars.forEach(c => {
+                const last = lines[lines.length - 1];
+                if (last && Math.abs(c.cy - last.cy) < Math.min(c.size, last.size) * 0.5) {
+                    last.chars.push(c);
+                    last.size = Math.max(last.size, c.size);
+                }
+                else
+                    lines.push({ cy: c.cy, size: c.size, chars: [c] });
+            });
+            const colX = x0 + col * o.columnStep;
+            let bottom = y0;
+            lines.forEach(l => {
+                const top = l.cy - l.size / 2;
+                // Lead between the previous line and this one: standard leads and slugs that add up to the gap
+                if (top - bottom > 0.3) {
+                    let y = bottom;
+                    standardPieces(top - bottom, LEAD_SIZES_PT.map(pt => pt * pxPerPt)).forEach(h => {
+                        rect({ x: colX, y, width: o.spanWidth, height: h, fill: `url(#${pid}R)`, stroke: '#161616', 'stroke-width': 0.5, 'fill-opacity': h >= 6 * pxPerPt * 0.99 ? 1 : 0.8 });
+                        y += h;
+                    });
+                }
+                bottom = top + l.size;
+                l.chars.sort((a, b) => a.left - b.left);
+                let minX = Infinity, maxX = -Infinity;
+                l.chars.forEach(c => {
+                    minX = Math.min(minX, c.left);
+                    maxX = Math.max(maxX, c.left + c.width);
+                    if (c.space)
+                        quads(c.left, top, l.size, c.width, SPACE_FRACTIONS);
+                    else
+                        {
+                            rect({ x: c.left, y: top, width: c.width, height: l.size, fill: `url(#${pid}T)`, stroke: '#101010', 'stroke-width': 0.7 });
+                            add(frag, 'path', { d: `M${c.left + 0.3} ${top + l.size - 0.3}V${top + 0.3}H${c.left + c.width - 0.3}`, fill: 'none', stroke: '#fff', 'stroke-opacity': 0.7, 'stroke-width': Math.max(0.6, l.size * 0.07) });
+                        }
+                });
+                // The empty end of the line is filled with quads
+                if (minX - colX > 0.5)
+                    quads(colX, top, l.size, minX - colX, FILL_FRACTIONS.concat(SPACE_FRACTIONS));
+                if (colX + o.spanWidth - maxX > 0.5)
+                    quads(maxX, top, l.size, colX + o.spanWidth - maxX, FILL_FRACTIONS.concat(SPACE_FRACTIONS));
+            });
+            const end = y0 + o.boxHeight;
+            if (end - bottom > 0.5)
+                rect({ x: colX, y: bottom, width: o.spanWidth, height: end - bottom, fill: `url(#${pid})`, stroke: '#6a6a6a', 'stroke-width': 0.5 });
+        });
+        g.appendChild(frag);
+    });
 }
 /**
  * Updates the page layout visualization
