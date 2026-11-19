@@ -481,16 +481,12 @@ body[data-step="8"] .scale-line{display:none}
 /* Measuring the preview while the Report is showing: laid out, but out of sight */
 body.measuring #visualizationContainer{display:flex!important;position:absolute;inset:0;visibility:hidden;pointer-events:none}
 
-.container .help-tip{margin:8px 0 0;font-size:12px;line-height:1.5;color:var(--cp-text);border-left:2px solid var(--yellow);padding-left:8px}
-.container .help-tip[hidden]{display:none}
-body.help-on .container [title]:not(#helpLink),body.help-on .preview-wrapper [title]{outline:1px dashed var(--yellow);outline-offset:2px}
-.container #helpLink[aria-pressed=true]{color:var(--yellow)}
 
 .intro-stage{display:none}
 body[data-step="1"] #visualizationContainer{display:none}
 body[data-step="1"] .intro-stage{display:flex;flex:1 1 0;min-height:0;overflow-y:auto;box-sizing:border-box;padding:6vw 5vw;background:none;color:#111;border:0;border-radius:0}
 .intro-stage p{margin:0;font-weight:300;font-style:italic;font-size:clamp(18px,2.2vw,32px);line-height:1.25;letter-spacing:-.01em}
-.intro-stage a{color:#111;text-decoration:underline dashed;text-decoration-thickness:1px;text-underline-offset:.18em}
+.intro-stage a{color:#111;text-decoration:underline wavy;text-decoration-thickness:1px;text-underline-offset:.24em}
 .intro-stage a:hover,.intro-stage a:focus-visible{text-decoration-style:solid;outline:none}
 .intro-stage sup{font-size:.4em;margin-left:.1em;vertical-align:super;font-style:normal}
 body[data-step="1"] .page-nav{width:100% !important}
@@ -498,7 +494,8 @@ body[data-step="1"] .scale-line,body[data-step="1"] #popOut{display:none}
 @media(max-width:900px){.intro-stage p{font-size:clamp(14px,3.9vw,26px);line-height:1.22}body[data-step="1"] .intro-stage{padding:8px 4px 20px;-webkit-mask-image:linear-gradient(#000 95%,transparent);mask-image:linear-gradient(#000 95%,transparent)}}
 
 .intro-stage{flex-direction:column}
-.intro-stage p+p{margin:1.2em 0 0;color:#666}
+.intro-stage p+p{margin:.9em 0 0}
+.intro-stage p.intro-iter{color:#666;margin-top:1.4em}
 .intro-stage p:first-child{margin-top:auto}
 .intro-stage p:last-child{margin-bottom:auto}
 body[data-step="8"] #popOut{display:none}
