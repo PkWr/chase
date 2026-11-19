@@ -21,7 +21,7 @@ function getLayerVisibility() {
     const showText = document.getElementById('showText')?.checked ?? true;
     const solidFills = document.getElementById('solidFills')?.checked ?? false;
     const showRaggedEdge = document.getElementById('showRaggedEdge')?.checked ?? false;
-    return { margins: showMargins, columns: showColumns, text: showText, solidFills, marginsSolid: document.getElementById('showMargins')?.dataset.solid === '1', columnsSolid: document.getElementById('showColumns')?.dataset.solid === '1', raggedEdge: showRaggedEdge, baseline: document.getElementById('showBaseline')?.checked ?? false, letterpress: document.getElementById('showLetterpress')?.checked ?? false };
+    return { margins: showMargins, columns: showColumns, text: showText, solidFills, marginsSolid: document.getElementById('showMargins')?.dataset.solid === '1', columnsSolid: document.getElementById('showColumns')?.dataset.solid === '1', raggedEdge: showRaggedEdge, baseline: document.getElementById('showBaseline')?.checked ?? false, letterpress: (document.getElementById('showLetterpress')?.checked ?? false) && document.body.getAttribute('data-step') !== '1' }; // not on the intro
 }
 // Page dimensions and margins are always in mm, gutter is always in em
 const PAGE_UNIT = 'mm';

@@ -144,6 +144,7 @@ body.page{padding:0}
 .container .cp-grab{position:sticky;top:0;z-index:3}
 .cp-viewbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:6px}
 .cp-viewbar .layer-controls{display:flex;gap:10px;margin:0;padding:0}
+body[data-step="1"] .cp-viewbar .view-lp{display:none}
 .cp-viewbar .view-lp{margin-right:auto;padding-left:12px;border-left:1px solid var(--cp-muted)}
 .container .view-lp .layer-checkbox span.ic{border-radius:4px;border-bottom:0;padding:0}
 .container .view-lp .layer-checkbox input:checked+span{background:var(--yellow);color:#000}
