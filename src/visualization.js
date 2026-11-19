@@ -464,7 +464,7 @@ function drawPage(svg, inputs, pageX, pageY, pageWidth, pageHeight, leftMargin, 
                     textDiv.style.transform = 'scaleX(-1)';
                     textDiv.style.color = '#f0f0f0'; // the raised face of the letter, lighter than the body of the type
                     textDiv.style.textShadow = '0 0.04em 0 rgba(0,0,0,0.55)';
-                    drawForme(parentSvg, textGroup, textDiv, { sizePx: fontSizeSVG, spanWidth, columnStep, gutter: scaledGutterWidth, spans: numberOfSpans, boxWidth, boxHeight: textBoxHeight, pxPerPt: lineHeight / leadingPt, page: { x: pageX, y: pageY, w: pageWidth, h: pageHeight }, margin: { x: textBoxX, y: textBoxY, w: fullTextBoxWidth, h: textBoxHeight } });
+                    drawForme(parentSvg, textGroup, textDiv, { sizePx: fontSizeSVG, spanWidth, columnStep, gutter: scaledGutterWidth, spans: numberOfSpans, boxWidth, boxHeight: textBoxHeight, pxPerPt: lineHeight / leadingPt, quoinSide: (isFacingPages() && pageX < pageWidth * 0.5) ? 'left' : 'right', page: { x: pageX, y: pageY, w: pageWidth, h: pageHeight }, margin: { x: textBoxX, y: textBoxY, w: fullTextBoxWidth, h: textBoxHeight } });
                 }
                 // Headings wrap onto tight lines; pad each to whole body lines to keep the baseline grid
                 requestAnimationFrame(() => {
@@ -553,8 +553,8 @@ function drawForme(svg, textGroup, textDiv, o) {
         return el;
     };
     // The chase is the iron frame at the edge of the page. Inside it the margins are made of furniture in standard
-    // pica sizes, locked with sidesticks, footsticks and quoins at the head and the right side; solid furniture
-    // backs the other two sides.
+    // pica sizes, locked with sticks and quoins at the foot and the outer side (as in a two-page forme, where the
+    // quoins sit on the outer edges and the foot); the head and the gutter side are solid furniture.
     const p = o.page, m = o.margin;
     const pt = o.pxPerPt || 1;
     const c = Math.max(4, p.w * 0.012);
@@ -564,7 +564,7 @@ function drawForme(svg, textGroup, textDiv, o) {
         if (D < 1 || len < 1)
             return;
         const gg = add(g, 'g', { transform: `matrix(${matrix})` });
-        const sDepth = locking ? Math.min(24 * pt, D * 0.6) : 0;
+        const sDepth = locking ? Math.min(30 * pt, D * 0.7) : 0;
         let vv = 0;
         // Furniture graduates from the smallest at the forme to the widest at the chase
         standardPieces(D - sDepth, FURNITURE).reverse().forEach(h => {
@@ -573,21 +573,25 @@ function drawForme(svg, textGroup, textDiv, o) {
         });
         if (!locking)
             return;
-        // Sidestick or footstick: thick at one end, thin at the other
-        const ts = sDepth * 0.3, tk = sDepth * 0.62;
-        const slope = (u) => vv + ts + (tk - ts) * u / len;
-        add(gg, 'polygon', { points: `0,${vv} ${len},${vv} ${len},${vv + tk} 0,${vv + ts}`, fill: '#747474', stroke: '#161616', 'stroke-width': 0.6 });
-        // The quoin, an expanding wedge, driven in between the stick and the chase
-        const u1 = len * 0.12, u2 = Math.min(len * 0.9, u1 + Math.min(len * 0.35, 72 * pt));
-        add(gg, 'polygon', { points: `${u1},${slope(u1)} ${u2},${slope(u2)} ${u2},${vv + sDepth} ${u1},${vv + sDepth}`, fill: '#9c9c9c', stroke: '#161616', 'stroke-width': 0.7 });
-        add(gg, 'rect', { x: u1 + (u2 - u1) * 0.1, y: slope(u1) + (vv + sDepth - slope(u1)) * 0.3, width: Math.min(6 * pt, (u2 - u1) * 0.2), height: (vv + sDepth - slope(u1)) * 0.4, fill: '#2a2a2a' }); // the key socket
+        // Steel sidestick or footstick against the forme's furniture, then the quoins between it and the chase
+        const st = sDepth * 0.38, gd = sDepth - st;
+        add(gg, 'rect', { x: 0, y: vv, width: len, height: st, fill: '#3c3c3c', stroke: '#161616', 'stroke-width': 0.6 });
+        add(gg, 'rect', { x: 0, y: vv + st, width: len, height: gd, fill: '#2a2a2a', stroke: '#161616', 'stroke-width': 0.6 });
+        const Lq = Math.min(len * 0.2, 60 * pt);
+        [0.25, 0.75].forEach(f => {
+            const x = len * f - Lq / 2;
+            add(gg, 'rect', { x, y: vv + st, width: Lq, height: gd, fill: '#9c9c9c', stroke: '#101010', 'stroke-width': 0.8 });
+            for (let k = 1; k < 6; k++) // the teeth of the wedge
+                add(gg, 'line', { x1: x + Lq * k / 6, y1: vv + st, x2: x + Lq * k / 6, y2: vv + st + gd * 0.18, stroke: '#303030', 'stroke-width': 0.6 });
+            add(gg, 'circle', { cx: x + Lq / 2, cy: vv + st + gd / 2, r: Math.max(1.2, Math.min(gd * 0.24, Lq * 0.12)), fill: '#1a1a1a', stroke: '#000', 'stroke-width': 0.5 }); // the key socket
+        });
     };
     const dTop = m.y - (p.y + c), dBottom = (p.y + p.h - c) - (m.y + m.h), dLeft = m.x - (p.x + c), dRight = (p.x + p.w - c) - (m.x + m.w);
     const sideLen = p.h - 2 * c - Math.max(0, dTop) - Math.max(0, dBottom);
-    side(`1 0 0 -1 ${p.x + c} ${m.y}`, p.w - 2 * c, dTop, true);
-    side(`1 0 0 1 ${p.x + c} ${m.y + m.h}`, p.w - 2 * c, dBottom, false);
-    side(`0 1 -1 0 ${m.x} ${p.y + c + Math.max(0, dTop)}`, sideLen, dLeft, false);
-    side(`0 1 1 0 ${m.x + m.w} ${p.y + c + Math.max(0, dTop)}`, sideLen, dRight, true);
+    side(`1 0 0 -1 ${p.x + c} ${m.y}`, p.w - 2 * c, dTop, false);
+    side(`1 0 0 1 ${p.x + c} ${m.y + m.h}`, p.w - 2 * c, dBottom, true);
+    side(`0 1 -1 0 ${m.x} ${p.y + c + Math.max(0, dTop)}`, sideLen, dLeft, o.quoinSide === 'left');
+    side(`0 1 1 0 ${m.x + m.w} ${p.y + c + Math.max(0, dTop)}`, sideLen, dRight, o.quoinSide !== 'left');
     // Bevel on the inner edge of the chase
     add(g, 'path', { d: `M${p.x + c} ${p.y + p.h - c}V${p.y + c}H${p.x + p.w - c}`, fill: 'none', stroke: '#000', 'stroke-width': 1.4 });
     add(g, 'path', { d: `M${p.x + c} ${p.y + p.h - c}H${p.x + p.w - c}V${p.y + c}`, fill: 'none', stroke: '#8a8a8a', 'stroke-width': 1 });
